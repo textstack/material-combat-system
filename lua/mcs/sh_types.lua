@@ -148,7 +148,7 @@ local function includeTypeSet(fl, dir, typeSet)
 	include(dir .. fl)
 end
 
-local _, dirs = file.Find("mcsTYPEs/*", "LUA")
+local _, dirs = file.Find("mcs_types/*", "LUA")
 for _, typeSet in ipairs(dirs) do
 	MCS.Types[typeSet] = MCS.Types[typeSet] or {}
 
@@ -156,7 +156,7 @@ for _, typeSet in ipairs(dirs) do
 		return MCS.Types[typeSet][id]
 	end
 
-	local subdir = "mcsTYPEs/" .. typeSet .. "/"
+	local subdir = "mcs_types/" .. typeSet .. "/"
 
 	local files = file.Find(subdir .. "*")
 	for _, fl in ipairs(files) do
