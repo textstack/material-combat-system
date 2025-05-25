@@ -1,0 +1,27 @@
+#######################
+
+    events !!!!!!!!
+
+#######################
+
+remember that:
+    1. all events implicitly include the player as 'self'
+    2. effects always include the effect count first as an argument
+
+#######################
+
+OnTakeDamage(dmg)
+    description:
+        called when the player takes damage
+    arguments:
+        dmg - the CTakeDamageInfo object for the damage
+    return:
+        true to cancel the damage event
+
+onDealDamage(dmg)
+    description:
+        called when the player deals damage
+    arguments:
+        dmg - the CTakeDamageInfo object for the damage
+    return:
+        true to cancel the damage event
