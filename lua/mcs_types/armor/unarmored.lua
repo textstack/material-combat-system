@@ -1,4 +1,5 @@
 local TYPE = {}
+TYPE.DoNotLoad = true
 
 TYPE.Set = "armor"
 TYPE.ID = "unarmored"
@@ -8,24 +9,20 @@ TYPE.Color = Color(128, 128, 128)
 
 TYPE.Symbols = { "X", "X" }
 TYPE.DamageMultipliers = {
-	["impact"] = 1,
-	["puncture"] = 1,
-	["slash"] = 1,
-	["shock"] = 1,
-	["heat"] = 1,
-	["toxin"] = 1,
-	["pressure"] = 1,
-	["particle"] = 1
+	["splitting"] = 1,
+	["kinetic"] = 1,
+	["penetrating"] = 1,
+	["thermal"] = 1,
+	["chemical"] = 1,
+	["subatomic"] = 1
 }
 TYPE.DrainRate = {
-	["impact"] = 1,
-	["puncture"] = 1,
-	["slash"] = 1,
-	["shock"] = 1,
-	["heat"] = 1,
-	["toxin"] = 1,
-	["pressure"] = 1,
-	["particle"] = 1
+	["splitting"] = 1,
+	["kinetic"] = 1,
+	["penetrating"] = 1,
+	["thermal"] = 1,
+	["chemical"] = 1,
+	["subatomic"] = 1
 }
 
 MCS.RegisterType(TYPE)

@@ -14,7 +14,7 @@ OnTakeDamage(dmg)
     description:
         called when the player takes damage
     arguments:
-        dmg - the CTakeDamageInfo object for the damage
+        dmg - the CTakeDamageInfo object for the damage (objects pass by reference)
     return:
         true to cancel the damage event
 
@@ -22,6 +22,12 @@ onDealDamage(dmg)
     description:
         called when the player deals damage
     arguments:
-        dmg - the CTakeDamageInfo object for the damage
+        dmg - the CTakeDamageInfo object for the damage (objects pass by reference)
     return:
         true to cancel the damage event
+
+handleArmorReduction(dmg)
+    description:
+        called before the player's armor is going to be calculated
+    arguments:
+        dmg - the CTakeDamageInfo object for the damage (objects pass by reference)

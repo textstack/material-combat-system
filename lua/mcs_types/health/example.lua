@@ -20,17 +20,12 @@ TYPE.Color = color_white
 
 TYPE.BloodColor = BLOOD_COLOR_RED
 TYPE.DamageMultipliers = {
-	["impact"] = 1,
-	["puncture"] = 1,
-	["slash"] = 1,
-	["shock"] = 1,
-	["heat"] = 1,
-	["toxin"] = 1,
-	["pressure"] = 1,
-	["particle"] = 1
-}
-TYPE.ArmorTypes = {
-	["example"] = true
+	["splitting"] = 1,
+	["kinetic"] = 1,
+	["penetrating"] = 1,
+	["thermal"] = 1,
+	["chemical"] = 1,
+	["subatomic"] = 1
 }
 
 -- hooks (self = player this typeset is applied to)

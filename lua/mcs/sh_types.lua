@@ -31,7 +31,7 @@ function PLAYER:MCS_TypeHook(eventName, ...)
 		if result ~= nil then return result end
 	end
 
-	for id, count in pairs(self:MCS_GetStatusEffects()) do
+	for id, count in pairs(self:MCS_GetEffects()) do
 		local effectEvent = MCS.EffectTypeValue(id, eventName)
 		if not effectEvent then continue end
 
@@ -90,14 +90,22 @@ function PLAYER:MCS_SetArmorType(id)
 	self:SetNWString("MCS_ArmorType", id)
 end
 
---[[ Returns all of the player's current status effects
+--[[ Returns all of the player's current effects
 	output:
-		a table of the player's status effects in the form (ID, count)
+		a table of the player's effects in the form (ID, count)
 --]]
-function PLAYER:MCS_GetStatusEffects()
+function PLAYER:MCS_GetEffects()
 	--TODO: status effects
 	-- should probably be moved to its own file
 	return {}
+end
+
+--[[ Returns all registered damage types
+	output:
+		a table of each damage type in the form (ID, object)
+--]]
+function MCS.GetDamageTypes()
+	return MCS.Types.damage
 end
 
 --[[ Make a table defining a valid type object

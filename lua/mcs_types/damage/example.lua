@@ -16,8 +16,6 @@ TYPE.Color = color_white
 
 -- damage-specific elements
 
-TYPE.GameDamage = {
-	[DMG_GENERIC] = true
-}
+TYPE.GameDamage = DMG_GENERIC + DMG_POISON
 
 MCS.RegisterType(TYPE)

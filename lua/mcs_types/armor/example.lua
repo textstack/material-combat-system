@@ -39,6 +39,9 @@ TYPE.DrainRate = {
 	["pressure"] = 1,
 	["particle"] = 1
 }
+TYPE.HealthTypes = {
+	["example"] = true
+}
 
 -- hooks (self = player this typeset is applied to)
 

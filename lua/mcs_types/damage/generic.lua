@@ -6,8 +6,6 @@ TYPE.ServerName = "Generic"
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
-TYPE.GameDamage = {
-	[DMG_GENERIC] = true
-}
+TYPE.GameDamage = DMG_GENERIC
 
 MCS.RegisterType(TYPE)
