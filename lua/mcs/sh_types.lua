@@ -19,23 +19,23 @@ local PLAYER = FindMetaTable("Player")
 		-- output would be "bar law"
 --]]
 function PLAYER:MCS_TypeHook(eventName, ...)
-	local healthType = self:MCS_GetHealthType()
-	if healthType and healthType[eventName] then
-		local result = healthType[eventName](self, ...)
+	local healthEvent = self:MCS_GetHealthTypeValue(eventName)
+	if healthEvent then
+		local result = healthEvent(self, ...)
 		if result ~= nil then return result end
 	end
 
-	local armorType = self:MCS_GetArmorType()
-	if armorType and armorType[eventName] then
-		local result = armorType[eventName](self, ...)
+	local armorEvent = self:MCS_GetArmorTypeValue(eventName)
+	if armorEvent then
+		local result = armorEvent(self, ...)
 		if result ~= nil then return result end
 	end
 
 	for id, count in pairs(self:MCS_GetStatusEffects()) do
-		local status = MCS.EffectType(id)
-		if not status or not status[eventName] then continue end
+		local effectEvent = MCS.EffectTypeValue(id, eventName)
+		if not effectEvent then continue end
 
-		local result = status[eventName](self, count, ...)
+		local result = effectEvent(self, count, ...)
 		if result ~= nil then return result end
 	end
 end
@@ -134,8 +134,11 @@ function MCS.RegisterType(TYPE)
 end
 
 --[[
-	All type sets automatically have a function to get a type object from its id
-	For example, the health type set gets the function MCS.HealthType(id)
+	For each type set:
+		there is a function to get the type from id
+			ie. MCS.HealthType(id)
+		there is a function to get a value from id
+			ie. MCS.HealthTypeValue(id, key)
 --]]
 
 local function includeTypeSet(fl, dir, typeSet)
@@ -154,6 +157,13 @@ for _, typeSet in ipairs(dirs) do
 
 	MCS[MCS.ToCapital(typeSet) .. "Type"] = function(id)
 		return MCS.Types[typeSet][id]
+	end
+
+	MCS[MCS.ToCapital(typeSet) .. "TypeValue"] = function(id, key)
+		local TYPE = MCS.Types[typeSet][id]
+		if not TYPE then return end
+
+		return TYPE[key]
 	end
 
 	local subdir = "mcs_types/" .. typeSet .. "/"
