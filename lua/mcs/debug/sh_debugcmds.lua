@@ -8,7 +8,7 @@ if CLIENT then
 end
 
 timer.Create("MCS_CheckUserInfo", 1, 0, function()
-	for _, ply in ipairs(player.Iterator()) do
+	for _, ply in player.Iterator() do
 		local enabled = ply:GetInfoNum("mcs_enabled", 0) ~= 0
 		local armorTypeID = ply:GetInfo("mcs_armortype")
 		local healthTypeID = ply:GetInfo("mcs_healthtype")

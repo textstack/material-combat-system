@@ -176,7 +176,7 @@ for _, typeSet in ipairs(dirs) do
 
 	local subdir = "mcs_types/" .. typeSet .. "/"
 
-	local files = file.Find(subdir .. "*")
+	local files = file.Find(subdir .. "*", "LUA")
 	for _, fl in ipairs(files) do
 		includeTypeSet(fl, subdir, typeSet)
 	end

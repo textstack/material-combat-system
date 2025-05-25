@@ -1,4 +1,6 @@
-local cfgMag = CreateConVar("mcs_damage_magnitude", 1.0, FCVAR_ARCHIVE, "How much to multiply armor/health damage reduction", 0, 9999)
+--TODO: npc support, ability to set their armor
+
+local cfgMag = CreateConVar("mcs_damage_magnitude", 1.0, FCVAR_ARCHIVE, "How much to multiply armor/health damage reduction", 0, 1)
 
 --- Returns each damage type the damageinfo object is associated with
 local function calculateDamageTypes(dmg)
@@ -14,7 +16,7 @@ local function calculateDamageTypes(dmg)
 	return dmgTypes
 end
 
---- Get the correct multiplier
+--- Get a damage multiplier scaled by a magnitude
 local function dmgMag(val, mag)
 	return (val - 1) * mag + 1
 end
