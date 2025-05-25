@@ -57,24 +57,12 @@ function PLAYER:MCS_TypeHook(eventName, ...)
 	end
 
 	for id, count in pairs(self:MCS_GetStatusEffects()) do
-		local status = MCS.StatusEffect(id)
+		local status = MCS.Status(id)
 		if not status or not status[eventName] then continue end
 
 		local result = status[eventName](self, count, ...)
 		if result ~= nil then return result end
 	end
-end
-
---- gets a status effect object from its id
-function MCS.StatusEffect(id)
-	if not MCS.Typesets.status then return end
-	return MCS.Typesets.status[id]
-end
-
---- gets a damage object from its id
-function MCS.Damage(id)
-	if not MCS.Typesets.damage then return end
-	return MCS.Typesets.damage[id]
 end
 
 --[[ Make a table defining a valid type object
@@ -110,6 +98,16 @@ function MCS.RegisterType(_type)
 	typeset[_type.ID] = _type
 end
 
+--- Capitalize a string in simple title case
+-- required to be here to load before the following code
+local function tchelper(first, rest)
+	return first:upper() .. rest:lower()
+end
+function MCS.ToCapital(str)
+	str = str:gsub("(%a)([%w_']*)", tchelper)
+	return str
+end
+
 local function includeTypeset(fl, dir, typeset)
 	if not string.EndsWith(fl, ".lua") then return end
 
@@ -123,6 +121,10 @@ end
 local _, dirs = file.Find("mcs_typesets/*", "LUA")
 for _, typeset in ipairs(dirs) do
 	MCS.Typesets[typeset] = MCS.Typesets[typeset] or {}
+
+	MCS[MCS.ToCapital(typeset)] = function(id)
+		return MCS.Typesets[typeset][id]
+	end
 
 	local subdir = "mcs_typesets/" .. typeset .. "/"
 
