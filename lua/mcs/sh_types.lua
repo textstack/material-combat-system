@@ -1,8 +1,8 @@
 MCS.Types = MCS.Types or {}
 
-local PLAYER = FindMetaTable("Player")
+local ENTITY = FindMetaTable("Entity")
 
---[[ Execute functions from the player's types (health, armor, statuses)
+--[[ Execute functions from the entity's types (health, armor, statuses)
 	inputs:
 		eventName - name of the event to execute
 		... - anything that should be pushed to the functions
@@ -18,7 +18,7 @@ local PLAYER = FindMetaTable("Player")
 		-- foo(text) return text .. " law" end
 		-- output would be "bar law"
 --]]
-function PLAYER:MCS_TypeHook(eventName, ...)
+function ENTITY:MCS_TypeHook(eventName, ...)
 	local healthEvent = self:MCS_GetHealthTypeValue(eventName)
 	if healthEvent then
 		local result = healthEvent(self, ...)
@@ -40,7 +40,7 @@ function PLAYER:MCS_TypeHook(eventName, ...)
 	end
 end
 
---[[ Get a value from a player's health type
+--[[ Get a value from a entity's health type
 	inputs:
 		key - the key that the value is assigned to in the type object
 	output:
@@ -50,51 +50,51 @@ end
 		-- jimmy has a health type with a ServerName of Foo
 		-- output would be Foo
 --]]
-function PLAYER:MCS_GetHealthTypeValue(key)
+function ENTITY:MCS_GetHealthTypeValue(key)
 	local healthType = self:MCS_GetHealthType()
 	if not healthType then return end
 
 	return healthType[key]
 end
 
---- Returns the health type object for the player's current health type
-function PLAYER:MCS_GetHealthType()
+--- Returns the health type object for the entity's current health type
+function ENTITY:MCS_GetHealthType()
 	return MCS.HealthType(self:GetNWString("MCS_HealthType", -1))
 end
 
---- Set the player's health type by id
-function PLAYER:MCS_SetHealthType(id)
+--- Set the entity's health type by id
+function ENTITY:MCS_SetHealthType(id)
 	self:SetNWString("MCS_HealthType", id)
 end
 
---[[ Get a value from a player's armor type
+--[[ Get a value from a entity's armor type
 	inputs:
 		key - the key that the value is assigned to in the type object
 	output:
 		the associated value, or nil if there was a problem
 --]]
-function PLAYER:MCS_GetArmorTypeValue(key)
+function ENTITY:MCS_GetArmorTypeValue(key)
 	local armorType = self:MCS_GetArmorType()
 	if not armorType then return end
 
 	return armorType[key]
 end
 
---- Returns the armor type object for the player's current armor type
-function PLAYER:MCS_GetArmorType()
+--- Returns the armor type object for the entity's current armor type
+function ENTITY:MCS_GetArmorType()
 	return MCS.ArmorType(self:GetNWString("MCS_ArmorType", -1))
 end
 
---- Set the player's armor type by id
-function PLAYER:MCS_SetArmorType(id)
+--- Set the entity's armor type by id
+function ENTITY:MCS_SetArmorType(id)
 	self:SetNWString("MCS_ArmorType", id)
 end
 
---[[ Returns all of the player's current effects
+--[[ Returns all of the entity's current effects
 	output:
-		a table of the player's effects in the form (ID, count)
+		a table of the entity's effects in the form (ID, count)
 --]]
-function PLAYER:MCS_GetEffects()
+function ENTITY:MCS_GetEffects()
 	--TODO: status effects
 	-- should probably be moved to its own file
 	return {}
