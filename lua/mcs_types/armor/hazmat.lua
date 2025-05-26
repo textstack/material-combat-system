@@ -1,5 +1,4 @@
 local TYPE = {}
-TYPE.DoNotLoad = true
 
 -- localization entries
 
@@ -11,8 +10,8 @@ TYPE.DoNotLoad = true
 -- generic elements
 
 TYPE.Set = "armor"
-TYPE.ID = "example"
-TYPE.ServerName = "Example" -- the server doesn't have access to localization
+TYPE.ID = "hazmat"
+TYPE.ServerName = "Hazmat" -- the server doesn't have access to localization
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
@@ -31,12 +30,12 @@ Multiplier key:
 TYPE.Symbols = { "⛊", "⛉" }
 TYPE.DamageMultipliers = {
 	["splitting"] = 1,
-	["kinetic"] = 1,
+	["kinetic"] = 0.75,
 	["penetrating"] = 1,
-	["thermal"] = 1,
-	["chemical"] = 1,
-	["electricity"] = 1,
-	["subatomic"] = 1
+	["thermal"] = 0.75,
+	["chemical"] = 0,
+	["electricity"] = 0,
+	["subatomic"] = 0
 }
 
 --[[
@@ -50,13 +49,13 @@ Drain key:
 ]]--
 
 TYPE.DrainRate = {
-	["splitting"] = 1,
-	["kinetic"] = 1,
-	["penetrating"] = 1,
-	["thermal"] = 1,
-	["chemical"] = 1,
-	["electricity"] = 1,
-	["subatomic"] = 1
+	["splitting"] = 3,
+	["kinetic"] = 0.5,
+	["penetrating"] = 3,
+	["thermal"] = 0.75,
+	["chemical"] = 0.25,
+	["electricity"] = 0.5,
+	["subatomic"] = 0.25
 }
 --[[
 

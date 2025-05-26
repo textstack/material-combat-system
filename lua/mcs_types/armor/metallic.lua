@@ -1,5 +1,4 @@
 local TYPE = {}
-TYPE.DoNotLoad = true
 
 -- localization entries
 
@@ -11,8 +10,8 @@ TYPE.DoNotLoad = true
 -- generic elements
 
 TYPE.Set = "armor"
-TYPE.ID = "example"
-TYPE.ServerName = "Example" -- the server doesn't have access to localization
+TYPE.ID = "metallic"
+TYPE.ServerName = "Metallic" -- the server doesn't have access to localization
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
@@ -30,13 +29,13 @@ Multiplier key:
 
 TYPE.Symbols = { "⛊", "⛉" }
 TYPE.DamageMultipliers = {
-	["splitting"] = 1,
-	["kinetic"] = 1,
-	["penetrating"] = 1,
+	["splitting"] = 0.25,
+	["kinetic"] = 1, --modern vehicles crumple for a reason
+	["penetrating"] = 0.5,
 	["thermal"] = 1,
-	["chemical"] = 1,
+	["chemical"] = 0.25,
 	["electricity"] = 1,
-	["subatomic"] = 1
+	["subatomic"] = 0.5
 }
 
 --[[
@@ -50,13 +49,13 @@ Drain key:
 ]]--
 
 TYPE.DrainRate = {
-	["splitting"] = 1,
-	["kinetic"] = 1,
-	["penetrating"] = 1,
-	["thermal"] = 1,
-	["chemical"] = 1,
+	["splitting"] = 0.25,
+	["kinetic"] = 2,
+	["penetrating"] = 0.5,
+	["thermal"] = 0,
+	["chemical"] = 0.5,
 	["electricity"] = 1,
-	["subatomic"] = 1
+	["subatomic"] = 2
 }
 --[[
 
