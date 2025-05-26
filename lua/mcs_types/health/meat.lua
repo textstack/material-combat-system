@@ -12,8 +12,8 @@ Damage key:
 	1.25: very quickly lethal (bullets against unarmored meat)
     1.0: things can get nasty (knife fight)
     0.75: unlikely to kill you as fast as a knife would (being pummeled to death by somebody's bare hands)
-    0.5: 
-    0.25: certified for 1000 hours of continuous operation against this hazard (steel against splitting)
+    0.5: can kill you if you get caught off guard (being tazed to death or experiencing an unfortunately long fire proc)
+    0.25: what doesn't kill you probably kills you later! (continuous x-ray attack against meat)
 ]]--
 
 

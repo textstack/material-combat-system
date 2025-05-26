@@ -1,5 +1,4 @@
 local TYPE = {}
-TYPE.DoNotLoad = true
 
 -- localization entries
 

@@ -9,7 +9,7 @@ TYPE.Color = Color(255, 192, 128)
 --[[
 Multiplier key: 
 	3.0: 100% critical hits
-	2.0: armor reacts violently to this hazard ()
+	2.0: armor reacts violently to this hazard
     1.0: doesn't block at all (x-rays against cardboard)
     0.75: cushons against (person fell against dirt as opposed to concrete)
     0.5: absorbs damage from (crumple factor of a car)
