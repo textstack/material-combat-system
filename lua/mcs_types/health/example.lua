@@ -19,9 +19,10 @@ TYPE.Color = color_white
 -- health-specific elements
 
 --[[
-Damage key: 
-	1.5: each hit rips limbs off of your body without much effort (ligneous creature vs flamethrower)
-	1.25: very quickly lethal (bullets against unarmored meat)
+Damage key:
+    1.75: softball-sized hole in your body for every hit (ligneous creature vs flamethrower)
+	1.5: each hit rips limbs off of your body without much effort (bullets against unarmored meat)
+	1.25: very quickly lethal (spear stuck in torso)
     1.0: things can get nasty (knife fight)
     0.75: unlikely to kill you as fast as a knife would (being pummeled to death by somebody's bare hands)
     0.5: can kill you if you get caught off guard (being tazed to death or experiencing an unfortunately long fire proc)
