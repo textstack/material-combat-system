@@ -20,12 +20,8 @@ local function dmgMag(val, mag)
 end
 
 --- Operation for multiplying damage types over a table of multipliers
-local function multiplyStat(dmgTypes, mults, augment)
+local function multiplyStat(dmgTypes, mults)
 	if not mults or table.IsEmpty(mults) then return 1 end
-
-	if augment then
-		dmgTypes[augment] = MCS.DamageType(augment)
-	end
 
 	local mag = cfgMag:GetFloat()
 	local totalMult = 1
@@ -87,8 +83,13 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	local healthType = ent:MCS_GetHealthType()
 	if not healthType then return end
 
+	local augment = MCS.DamageType(attacker:MCS_GetCurrentAugment(dmg:GetInflictor()))
+	if augment and augment.GameDamage then
+		dmg:SetDamageType(dmg:GetDamageType() + augment.GameDamage)
+	end
+
 	local dmgTypes = calculateDamageTypes(dmg)
-	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers, attacker:MCS_GetCurrentAugment(dmg:GetInflictor()))
+	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers)
 	local newDmgAmt = dmg:GetDamage() * mult
 
 	dmg:SetDamage(newDmgAmt)

@@ -162,10 +162,14 @@ for _, typeSet in ipairs(dirs) do
 	MCS.Types[typeSet] = MCS.Types[typeSet] or {}
 
 	MCS[MCS.ToCapital(typeSet) .. "Type"] = function(id)
+		if not id then return end
+
 		return MCS.Types[typeSet][id]
 	end
 
 	MCS[MCS.ToCapital(typeSet) .. "TypeValue"] = function(id, key)
+		if not id or not key then return end
+
 		local TYPE = MCS.Types[typeSet][id]
 		if not TYPE then return end
 
