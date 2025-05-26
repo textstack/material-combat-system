@@ -20,7 +20,7 @@ TYPE.Color = color_white
 TYPE.BaseTime = 5 -- the time passed before 1 stack expires
 TYPE.InflictChance = 0.5 -- base chance to apply per hit, if this isn't here this effect cannot apply on hit
 TYPE.Burst = 1 -- how many stacks to apply if the chance succeeds
-TYPE.Reducable = true -- whether a hit with multiple damage types reduces this effect's inflict chance
+TYPE.Reducible = true -- whether a hit with multiple damage types reduces this effect's inflict chance
 TYPE.InflictSound = ""
 
 TYPE.DamageTypes = {

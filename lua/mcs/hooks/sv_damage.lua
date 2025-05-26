@@ -101,7 +101,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
 		if not effectType.InflictChance then continue end
 		if math.random() > effectType.InflictChance then continue end
-		if effectType.Reducable and math.random() > reduce then continue end
+		if effectType.Reducible and math.random() > reduce then continue end
 
 		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end
 		if effectType.HealthTypeBlacklist and effectType.HealthTypeBlacklist[healthType.ID] then continue end
