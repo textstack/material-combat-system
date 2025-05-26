@@ -83,9 +83,9 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	local healthType = ent:MCS_GetHealthType()
 	if not healthType then return end
 
-	local augment = MCS.DamageType(attacker:MCS_GetCurrentAugment(dmg:GetInflictor()))
+	local augment = attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
 	if augment and augment.GameDamage then
-		dmg:SetDamageType(dmg:GetDamageType() + augment.GameDamage)
+		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.GameDamage))
 	end
 
 	local dmgTypes = calculateDamageTypes(dmg)
