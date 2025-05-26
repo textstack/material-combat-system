@@ -1,10 +1,7 @@
 util.AddNetworkString("mcs_effects")
 
---[[ Network the entire effects table
-	inputs:
-		ply - a player, list of players, or nil to send the data to (nil = everyone)
---]]
-function MCS.SendEffects(ply)
+--- Network the entire effects table
+function MCS.SendEffects()
 	net.Start("mcs_effects", true)
 	net.WriteBool(true)
 
@@ -18,11 +15,7 @@ function MCS.SendEffects(ply)
 		end
 	end
 
-	if ply then
-		net.Send(ply)
-	else
-		net.Broadcast()
-	end
+	net.Broadcast()
 end
 
 --- Network the effects for a single entity and broadcast
@@ -30,6 +23,7 @@ function ENTITY:MCS_BumpEffects()
 	self:MCS_CreateTimer("bumpEffects", 0, 1, function()
 		net.Start("mcs_effects")
 		net.WriteBool(false)
+
 		net.WriteUInt(1, MCS.ENTITY_LIST_NET_SIZE)
 		net.WriteUInt(self:EntIndex(), MCS.ENTITY_LIST_NET_SIZE)
 
@@ -39,15 +33,19 @@ function ENTITY:MCS_BumpEffects()
 			net.WriteString(effectID)
 			net.WriteUInt(data.count, MCS.EFFECT_COUNT_NET_SIZE)
 		end
+
+		net.Broadcast()
 	end)
 end
 
 --[[ Add an effect to an entity
 	inputs:
 		id - the id of the effect to add
-		amount - the amount of stacks to add
+		amount - the amount of stacks to add, default 1
 --]]
 function ENTITY:MCS_AddEffect(id, amount)
+	amount = amount or 1
+
 	local result = self:MCS_TypeHook("OnApplyEffect", id, amount)
 	if result ~= nil then return end
 
@@ -56,11 +54,13 @@ function ENTITY:MCS_AddEffect(id, amount)
 
 	effectList[id] = effectList[id] or {
 		count = 0,
+		speed = 0,
 		time = effectType.BaseTime or MCS.EFFECT_DEFAULT_TIME,
 		runningTime = effectType.BaseTime or MCS.EFFECT_DEFAULT_TIME
 	}
 
 	effectList[id].count = math.min(count + amount, MCS.MAX_EFFECT_COUNT)
+	effectList[id].speed = math.max(speed, count)
 
 	if not effectList[id].applied then
 		local func = MCS.EffectTypeValue(id, "EffectFirstApplied")
@@ -125,7 +125,7 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 
 		for effectID, data in pairs(effectList) do
 			-- the time shrink as the stack increases would need to be tested
-			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * (data.count * 0.5 + 0.5)
+			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * (data.speed * 0.5 + 0.5)
 			if data.runningTime > 0 then continue end
 
 			data.runningTime = data.time

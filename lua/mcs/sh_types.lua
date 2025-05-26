@@ -98,6 +98,14 @@ function MCS.GetDamageTypes()
 	return MCS.Types.damage
 end
 
+--[[ Returns all registered effect types
+	output:
+		a table of each damage type in the form (ID, object)
+--]]
+function MCS.GetEffectTypes()
+	return MCS.Types.effect
+end
+
 --[[ Make a table defining a valid type object
 	inputs:
 		TYPE - the table defining the type

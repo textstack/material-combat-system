@@ -5,9 +5,9 @@ local function calculateDamageTypes(dmg)
 	local gameDamageType = dmg:GetDamageType()
 
 	local dmgTypes = {}
-	for _, dmgType in pairs(MCS.GetDamageTypes()) do
+	for dmgID, dmgType in pairs(MCS.GetDamageTypes()) do
 		if dmgType.GameDamage and bit.bor(gameDamageType, dmgType.GameDamage) ~= 0 then
-			table.insert(dmgTypes, dmgType)
+			dmgTypes[dmgID] = dmgType
 		end
 	end
 
@@ -41,7 +41,7 @@ local function armorHandling(ent, dmg)
 	local totalDrain = 1
 	local multCount = 0
 	local drainCount = 0
-	for _, dmgType in ipairs(calculateDamageTypes(dmg)) do
+	for _, dmgType in pairs(calculateDamageTypes(dmg)) do
 		if armorMult and armorMult[dmgType.ID] then
 			totalMult = totalMult * dmgMag(armorMult[dmgType.ID], mag)
 			multCount = multCount + 1
@@ -52,12 +52,11 @@ local function armorHandling(ent, dmg)
 		end
 	end
 
+	local dmgAmt = dmg:GetDamage()
 	multCount = math.max(multCount, 1)
 	drainCount = math.max(drainCount, 1)
-
-	local dmgAmt = dmg:GetDamage()
-	local newDmgAmt = dmgAmt * dmgMag(totalMult, 1 / multCount)
-	local armorDmgAmt = dmgAmt * dmgMag(totalDrain, 1 / drainCount)
+	local newDmgAmt = dmgAmt * math.pow(totalMult, 1 / multCount)
+	local armorDmgAmt = dmgAmt * math.pow(totalDrain, 1 / drainCount)
 
 	if armorDmgAmt > armorAmt then
 		ent:MCS_SetArmor(0)
@@ -94,7 +93,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	local healthMult = healthType.DamageMultipliers
 	local totalMult = 1
 	local count = 0
-	for _, dmgType in ipairs(dmgTypes) do
+	for _, dmgType in pairs(dmgTypes) do
 		if healthMult and healthMult[dmgType.ID] then
 			totalMult = totalMult * dmgMag(healthMult[dmgType.ID], mag)
 			count = count + 1
@@ -102,13 +101,45 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	end
 
 	count = math.max(count, 1)
+	local newDmgAmt = dmg:GetDamage() * math.pow(totalMult, 1 / count)
 
-	local newDmgAmt = dmg:GetDamage() * dmgMag(totalMult, 1 / count)
 	dmg:SetDamage(newDmgAmt)
 
 	if not ent:IsPlayer() then
 		armorHandling(ent, dmg)
 	end
 
-	--TODO: effects
+	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
+		if not effectType.InflictChance then continue end
+		if math.random() > effectType.InflictChance then continue end
+
+		if effectType.DamageTypes then
+			local succeed
+			for dmgID, _ in pairs(dmgTypes) do
+				if effectType.DamageTypes[dmgID] then
+					succeed = true
+					break
+				end
+			end
+
+			if not succeed then continue end
+		end
+
+		if effectType.DamageTypeBlacklist then
+			local fail
+			for dmgID, _ in pairs(dmgTypes) do
+				if effectType.DamageTypes[dmgID] then
+					fail = true
+					break
+				end
+			end
+
+			if fail then continue end
+		end
+
+		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end
+		if effectType.HealthTypeBlacklist and effectType.HealthTypeBlacklist[healthType.ID] then continue end
+
+		ent:MCS_AddEffect(effectID)
+	end
 end)
