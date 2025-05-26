@@ -31,11 +31,11 @@ function ENTITY:MCS_TypeHook(eventName, ...)
 		if result ~= nil then return result end
 	end
 
-	for id, count in pairs(self:MCS_GetEffects()) do
+	for id, data in pairs(self:MCS_GetEffects()) do
 		local effectEvent = MCS.EffectTypeValue(id, eventName)
 		if not effectEvent then continue end
 
-		local result = effectEvent(self, count, ...)
+		local result = effectEvent(self, data.count, ...)
 		if result ~= nil then return result end
 	end
 end

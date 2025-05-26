@@ -31,7 +31,7 @@ end
 		func - the function to execute
 --]]
 function ENTITY:MCS_CreateTimer(name, time, repetitions, func)
-	local newName = name .. self:EntIndex()
+	local newName = "MCS_" .. name .. self:EntIndex()
 	timer.Create(newName, time, repetitions, function()
 		if not self:IsValid() then
 			timer.Remove(newName)
@@ -47,7 +47,7 @@ end
 		name - name of the timer
 --]]
 function ENTITY:MCS_RemoveTimer(name)
-	timer.Remove(name .. self:EntIndex())
+	timer.Remove("MCS_" .. name .. self:EntIndex())
 end
 
 --[[ Links up a game hook to a new type hook

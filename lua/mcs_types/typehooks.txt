@@ -1,6 +1,6 @@
 #######################
 
-    events !!!!!!!!
+    type hooks !!!!
 
 #######################
 
@@ -52,3 +52,24 @@ OnEnabled() SERVER
 OnDisabled() SERVER
     description:
         called when the entity gets MCS disabled
+
+OnEffectProc() SERVER
+    description:
+        called when effects are procced, intended to be used in effect types
+
+OnApplyEffect(id, amount) SERVER
+    description:
+        called when an effect is applied to a player
+    arguments:
+        id - id of the effect
+        amount - how many stacks are being applied at once
+    return:
+        any value to cancel the application
+
+EffectFirstApplied() SERVER LOCALIZED
+    description:
+        called on an effect when it's first applied (and not when it gets stacked onto itself)
+
+EffectExpired() SERVER LOCALIZED
+    description:
+        called on an effect when it runs out of stacks and expires

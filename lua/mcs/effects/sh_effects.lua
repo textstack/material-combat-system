@@ -1,13 +1,21 @@
 MCS.CurrentEffects = MCS.CurrentEffects or {}
 
+MCS.ENTITY_LIST_NET_SIZE = 14
+MCS.EFFECT_LIST_NET_SIZE = 5
+MCS.EFFECT_COUNT_NET_SIZE = 8
+
+MCS.EFFECT_DEFAULT_TIME = 5
+MCS.MAX_EFFECT_COUNT = 255
+
 local ENTITY = FindMetaTable("Entity")
 
 --[[ Returns all of the entity's current effects
 	output:
-		a table of the entity's effects in the form (ID, count)
+		a table of the entity's effects in the form (ID, data)
 --]]
 function ENTITY:MCS_GetEffects()
-	--TODO: status effects
-	-- should probably be moved to its own file
-	return {}
+	local effectList = MCS.CurrentEffects[self:EntIndex()]
+	if not effectList then return {} end
+
+	return effectList
 end

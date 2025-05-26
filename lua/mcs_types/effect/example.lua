@@ -16,6 +16,7 @@ TYPE.Color = color_white
 
 -- effect-specific elements
 
+TYPE.BaseTime = 5
 TYPE.InflictChance = 0.5
 TYPE.InflictSound = ""
 TYPE.DamageTypes = {
