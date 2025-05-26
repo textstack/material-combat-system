@@ -55,6 +55,7 @@ function ENTITY:MCS_AddEffect(id, amount)
 	effectList[id] = effectList[id] or {
 		count = 0,
 		speed = 0,
+		frac = 0,
 		time = effectType.BaseTime or MCS.EFFECT_DEFAULT_TIME,
 		runningTime = effectType.BaseTime or MCS.EFFECT_DEFAULT_TIME
 	}
@@ -128,8 +129,16 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * (data.speed * 0.5 + 0.5)
 			if data.runningTime > 0 then continue end
 
+			local reduce = math.floor(-data.runningTime / data.time) + 1
+
+			data.frac = data.frac - data.runningTime % 1
+			if data.frac >= 1 then
+				data.frac = data.frac - 1
+				reduce = reduce + 1
+			end
+
 			data.runningTime = data.time
-			data.count = data.count - 1
+			data.count = data.count - reduce
 
 			if data.count > 0 then continue end
 

@@ -19,6 +19,28 @@ local function dmgMag(val, mag)
 	return (val - 1) * mag + 1
 end
 
+--- Operation for multiplying damage types over a table of multipliers
+local function multiplyStat(dmgTypes, mults, augment)
+	if not mults or table.IsEmpty(mults) then return 1 end
+
+	if augment then
+		dmgTypes[augment] = MCS.DamageType(augment)
+	end
+
+	local mag = cfgMag:GetFloat()
+	local totalMult = 1
+	local count = 0
+	for _, dmgType in pairs(dmgTypes) do
+		if mults[dmgType.ID] then
+			totalMult = totalMult * dmgMag(healthMult[dmgType.ID], mag)
+			count = count + 1
+		end
+	end
+
+	local reduce = 1 / math.max(count, 1)
+	return math.pow(totalMult, reduce), reduce
+end
+
 --- Code to manage armor
 local function armorHandling(ent, dmg)
 	if not ent:MCS_GetEnabled() then return end
@@ -34,37 +56,15 @@ local function armorHandling(ent, dmg)
 	local armorType = ent:MCS_GetArmorType()
 	if not armorType then return false end
 
-	local mag = cfgMag:GetFloat()
-	local armorMult = armorType.DamageMultipliers
-	local armorDrain = armorType.DrainRate
-	local totalMult = 1
-	local totalDrain = 1
-	local multCount = 0
-	local drainCount = 0
-	for _, dmgType in pairs(calculateDamageTypes(dmg)) do
-		if armorMult and armorMult[dmgType.ID] then
-			totalMult = totalMult * dmgMag(armorMult[dmgType.ID], mag)
-			multCount = multCount + 1
-		end
-		if armorDrain and armorDrain[dmgType.ID] then
-			totalDrain = totalDrain * dmgMag(armorDrain[dmgType.ID], mag)
-			drainCount = drainCount + 1
-		end
-	end
-
 	local dmgAmt = dmg:GetDamage()
-	multCount = math.max(multCount, 1)
-	drainCount = math.max(drainCount, 1)
-	local newDmgAmt = dmgAmt * math.pow(totalMult, 1 / multCount)
-	local armorDmgAmt = dmgAmt * math.pow(totalDrain, 1 / drainCount)
+	local dmgTypes = calculateDamageTypes(dmg)
+	local augment = attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
+	local newDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DamageMultipliers, augment)
+	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRate, augment)
 
-	if armorDmgAmt > armorAmt then
-		ent:MCS_SetArmor(0)
-	else
-		ent:MCS_SetArmor(armorAmt - armorDmgAmt)
-	end
-
+	ent:MCS_SetArmor(math.max(armorAmt - armorDmgAmt, 0))
 	dmg:SetDamage(newDmgAmt)
+
 	return false
 end
 
@@ -88,20 +88,8 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	if not healthType then return end
 
 	local dmgTypes = calculateDamageTypes(dmg)
-
-	local mag = cfgMag:GetFloat()
-	local healthMult = healthType.DamageMultipliers
-	local totalMult = 1
-	local count = 0
-	for _, dmgType in pairs(dmgTypes) do
-		if healthMult and healthMult[dmgType.ID] then
-			totalMult = totalMult * dmgMag(healthMult[dmgType.ID], mag)
-			count = count + 1
-		end
-	end
-
-	count = math.max(count, 1)
-	local newDmgAmt = dmg:GetDamage() * math.pow(totalMult, 1 / count)
+	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers, attacker:MCS_GetCurrentAugment(dmg:GetInflictor()))
+	local newDmgAmt = dmg:GetDamage() * mult
 
 	dmg:SetDamage(newDmgAmt)
 
@@ -112,6 +100,10 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
 		if not effectType.InflictChance then continue end
 		if math.random() > effectType.InflictChance then continue end
+		if effectType.Reducable and math.random() > reduce then continue end
+
+		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end
+		if effectType.HealthTypeBlacklist and effectType.HealthTypeBlacklist[healthType.ID] then continue end
 
 		if effectType.DamageTypes then
 			local succeed
@@ -137,9 +129,6 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 			if fail then continue end
 		end
 
-		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end
-		if effectType.HealthTypeBlacklist and effectType.HealthTypeBlacklist[healthType.ID] then continue end
-
-		ent:MCS_AddEffect(effectID)
+		ent:MCS_AddEffect(effectID, effectType.Burst)
 	end
 end)

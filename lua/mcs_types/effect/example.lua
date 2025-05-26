@@ -15,11 +15,24 @@ TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
 -- effect-specific elements
+-- all of these are optional
 
-TYPE.BaseTime = 5
-TYPE.InflictChance = 0.5
+TYPE.BaseTime = 5 -- the time passed before 1 stack expires
+TYPE.InflictChance = 0.5 -- base chance to apply per hit, if this isn't here this effect cannot apply on hit
+TYPE.Burst = 1 -- how many stacks to apply if the chance succeeds
+TYPE.Reducable = true -- whether a hit with multiple damage types reduces this effect's inflict chance
 TYPE.InflictSound = ""
+
 TYPE.DamageTypes = {
+	["example"] = true
+}
+TYPE.DamageTypeBlacklist = {
+	["example"] = true
+}
+TYPE.HealthTypes = {
+	["example"] = true
+}
+TYPE.DamageTypeBlacklist = {
 	["example"] = true
 }
 

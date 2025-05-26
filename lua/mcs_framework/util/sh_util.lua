@@ -58,7 +58,7 @@ end
 function MCS.CreateTypeHook(hookName, typeHookName)
 	hook.Add(hookName, "MCS_" .. typeHookName, function(ent, ...)
 		if ent:MCS_GetEnabled() then
-			ent:MCS_TypeHook(typeHookName, ...)
+			return ent:MCS_TypeHook(typeHookName, ...)
 		end
 	end)
 end

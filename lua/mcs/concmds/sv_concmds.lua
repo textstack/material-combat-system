@@ -78,6 +78,7 @@ end)
 hook.Add("PlayerSpawn", "MCS_ResetRestrictions", function(ply)
 	ply.MCS_SetHealthType = nil
 	ply.MCS_SetArmorType = nil
+	ply.MCS_SetAugments = nil
 
 	local defaultArmorType, defaultHealthType = defaultTypes()
 
