@@ -26,7 +26,11 @@ TYPE.DamageTypes = {
 -- hooks (self = player this typeset is applied to)
 -- effects always include stack count as the first argument
 
-function TYPE:OnTakeDamage(count, dmg)
+function TYPE:EffectFirstApplied()
+	self:Kill()
+end
+
+function TYPE:EffectExpired()
 	self:Kill()
 end
 

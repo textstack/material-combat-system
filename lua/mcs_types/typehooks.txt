@@ -73,3 +73,19 @@ EffectFirstApplied() SERVER LOCALIZED
 EffectExpired() SERVER LOCALIZED
     description:
         called on an effect when it runs out of stacks and expires
+
+OnDeath(inflictor, attacker, damageBits) SERVER
+    description:
+        called when an entity is killed
+    arguments:
+        inflictor - the item used to kill the entity
+        attacker - the entity that killed the entity
+        damageBits - the game damagetypes of the killing blow
+
+OnKill(inflictor, victim, damageBits) SERVER
+    description:
+        called when an entity kills another entity
+    arguments:
+        inflictor - the item used to kill the player
+        victim - the entity that was killed
+        damageBits - the game damagetypes of the killing blow
