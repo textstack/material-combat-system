@@ -13,6 +13,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 0.25,
 	["thermal"] = 0.75,
 	["chemical"] = 0.75,
+	["electricity"] = 0.5,
 	["subatomic"] = 1.0
 }
 TYPE.DrainRate = {
@@ -21,6 +22,7 @@ TYPE.DrainRate = {
 	["penetrating"] = 1.5,
 	["thermal"] = 0.25,
 	["chemical"] = 2.0,
+	["electricity"] = 0.25,
 	["subatomic"] = 0.25
 }
 TYPE.HealthTypes = {
