@@ -26,9 +26,6 @@ TYPE.DrainRate = {
 	["electricity"] = 4.5,
 	["subatomic"] = 1.0
 }
-TYPE.HealthTypes = {
-	["meat"] = true
-}
 
 function TYPE:PostTakeDamage(dmg, wasDamageTaken)
 	if not wasDamageTaken then return end

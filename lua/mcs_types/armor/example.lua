@@ -38,10 +38,17 @@ TYPE.DrainRate = {
 	["toxin"] = 1,
 	["pressure"] = 1,
 	["particle"] = 1
-}
+}"
+--[[
+
+restricts armor to health class "example"
+
+when it doesn't exist, no restriction is made.
+
 TYPE.HealthTypes = {
 	["example"] = true
-}
+
+]]--
 
 -- hooks (self = player this typeset is applied to)
 

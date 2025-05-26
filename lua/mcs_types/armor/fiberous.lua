@@ -25,8 +25,5 @@ TYPE.DrainRate = {
 	["electricity"] = 0.25,
 	["subatomic"] = 0.25
 }
-TYPE.HealthTypes = {
-	["meat"] = true
-}
 
 MCS.RegisterType(TYPE)
