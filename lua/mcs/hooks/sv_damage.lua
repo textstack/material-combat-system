@@ -1,4 +1,4 @@
-local cfgMag = CreateConVar("mcs_damage_magnitude", 1.0, FCVAR_ARCHIVE, "How much to multiply armor/health damage reduction", 0, 1)
+local cfgMag = CreateConVar("mcs_sv_damage_magnitude", 1.0, FCVAR_ARCHIVE, "How much to multiply armor/health damage reduction", 0, 1)
 
 --- Returns each damage type the damageinfo object is associated with
 local function calculateDamageTypes(dmg)
@@ -24,7 +24,7 @@ local function armorHandling(ent, dmg)
 	if not ent:MCS_GetEnabled() then return end
 
 	local attacker = dmg:GetAttacker()
-	if not attacker:MCS_GetEnabled() then return false end
+	if IsValid(attacker) and not attacker:MCS_GetEnabled() then return end
 
 	ent:MCS_TypeHook("HandleArmorReduction", dmg)
 
@@ -69,11 +69,15 @@ local function armorHandling(ent, dmg)
 	return false
 end
 
-hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
-	if not ent:MCS_GetEnabled() then return end
+hook.Add("HandlePlayerArmorReduction", "MCS_Damage", armorHandling)
 
+hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	local attacker = dmg:GetAttacker()
-	if not attacker:MCS_GetEnabled() then return end
+	if not ent:MCS_GetEnabled() then
+		if IsValid(attacker) and attacker:MCS_GetEnabled() then return true end
+		return
+	end
+	if IsValid(attacker) and not attacker:MCS_GetEnabled() then return true end
 
 	local attResult = attacker:MCS_TypeHook("OnDealDamage", dmg)
 	if attResult then return true end
@@ -108,5 +112,3 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	--TODO: effects
 end)
-
-hook.Add("HandlePlayerArmorReduction", "MCS_Damage", armorHandling)

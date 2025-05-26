@@ -1,0 +1,3 @@
+CreateClientConVar("mcs_enabled", 1, false, true, "Whether MCS is enabled (0 == false, 1 == let server decide, 2 == true).", 0, 2)
+CreateClientConVar("mcs_armortype", "", true, true, "Your armor type for MCS.")
+CreateClientConVar("mcs_healthtype", "", true, true, "Your health type for MCS.")

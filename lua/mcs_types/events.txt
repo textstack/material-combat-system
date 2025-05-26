@@ -5,29 +5,50 @@
 #######################
 
 remember that:
-    1. all events implicitly include the player as 'self'
+    1. all events implicitly include the entity as 'self'
     2. effects always include the effect count first as an argument
 
 #######################
 
-OnTakeDamage(dmg)
+OnTakeDamage(dmg) SERVER
     description:
-        called when the player takes damage
+        called when the entity takes damage
     arguments:
         dmg - the CTakeDamageInfo object for the damage (objects pass by reference)
     return:
         true to cancel the damage event
 
-onDealDamage(dmg)
+OnDealDamage(dmg) SERVER
     description:
-        called when the player deals damage
+        called when the entity deals damage
     arguments:
         dmg - the CTakeDamageInfo object for the damage (objects pass by reference)
     return:
         true to cancel the damage event
 
-handleArmorReduction(dmg)
+HandleArmorReduction(dmg) SERVER
     description:
-        called before the player's armor is going to be calculated
+        called before the entity's armor is going to be calculated
     arguments:
         dmg - the CTakeDamageInfo object for the damage (objects pass by reference)
+
+PostTakeDamage(dmg, wasDamageTaken) SERVER
+    description:
+        called *after* the entity takes damage
+    arguments:
+        dmg - the CTakeDamageInfo object for the damage (objects pass by reference)
+        wasDamageTaken - Whether damage was actually taken
+
+OnPlayerSpawn(transition) SERVER
+    description:
+        called when a player spawns
+    arguments:
+        transition - true when they are spawning from a map transition
+
+OnEnabled() SERVER
+    description:
+        called when the entity gets MCS enabled
+
+OnDisabled() SERVER
+    description:
+        called when the entity gets MCS disabled

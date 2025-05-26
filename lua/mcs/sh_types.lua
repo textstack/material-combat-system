@@ -90,16 +90,6 @@ function ENTITY:MCS_SetArmorType(id)
 	self:SetNWString("MCS_ArmorType", id)
 end
 
---[[ Returns all of the entity's current effects
-	output:
-		a table of the entity's effects in the form (ID, count)
---]]
-function ENTITY:MCS_GetEffects()
-	--TODO: status effects
-	-- should probably be moved to its own file
-	return {}
-end
-
 --[[ Returns all registered damage types
 	output:
 		a table of each damage type in the form (ID, object)

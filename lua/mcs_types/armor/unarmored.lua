@@ -7,7 +7,6 @@ TYPE.Icon = "icon16/star.png"
 TYPE.Color = Color(128, 128, 128)
 
 TYPE.Symbols = { "", "" }
-TYPE.Unrestricted = true
 
 function TYPE:OnTakeDamage(dmg)
 	self:MCS_SetArmor(0)

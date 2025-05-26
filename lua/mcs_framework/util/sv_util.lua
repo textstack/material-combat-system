@@ -10,9 +10,13 @@ local ENTITY = FindMetaTable("Entity")
 function ENTITY:MCS_SetEnabled(enabled)
 	if enabled then
 		if self:GetNWBool("MCS_Enabled") then return end
+
 		self:SetNWBool("MCS_Enabled", true)
+		self:MCS_TypeHook("OnEnabled")
 	else
 		if not self:GetNWBool("MCS_Enabled") then return end
+
+		self:MCS_TypeHook("OnDisabled")
 		self:SetNWBool("MCS_Enabled")
 	end
 end
