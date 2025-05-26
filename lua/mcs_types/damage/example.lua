@@ -5,6 +5,7 @@ TYPE.DoNotLoad = true
 -- localization entries
 
 -- name key -> mcs.damage.example.name
+-- augment prefix -> mcs.damage.example.augment
 
 -- generic elements
 
@@ -16,6 +17,7 @@ TYPE.Color = color_white
 
 -- damage-specific elements
 
+-- if not included, this damage type will do nothing
 TYPE.GameDamage = DMG_GENERIC + DMG_POISON
 
 MCS.RegisterType(TYPE)

@@ -17,6 +17,7 @@ TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
 -- armor-specific elements
+-- all of these are optional
 
 --[[
 Multiplier key: 
@@ -58,16 +59,16 @@ TYPE.DrainRate = {
 	["electricity"] = 1,
 	["subatomic"] = 1
 }
---[[
 
-restricts armor to health class "example"
-
-when it doesn't exist, no restriction is made.
-
+-- restricts armor to health class "example"
 TYPE.HealthTypes = {
 	["example"] = true
+}
 
-]]--
+-- reverse of above (prevents "example" from using this armor)
+TYPE.DamageTypeBlacklist = {
+	["example"] = true
+}
 
 -- hooks (self = player this typeset is applied to)
 
