@@ -19,6 +19,8 @@ TYPE.Color = color_white
 -- armor-specific elements
 -- all of these are optional
 
+TYPE.Symbols = { "⛊", "⛉" }
+
 --[[
 Multiplier key: 
 	3.0: 100% critical hits
@@ -29,7 +31,6 @@ Multiplier key:
     0.25: industrial grade protection against (electricity against kevlar)
 ]]--
 
-TYPE.Symbols = { "⛊", "⛉" }
 TYPE.DamageMultipliers = {
 	["splitting"] = 1,
 	["kinetic"] = 1,
@@ -66,7 +67,7 @@ TYPE.HealthTypes = {
 }
 
 -- reverse of above (prevents "example" from using this armor)
-TYPE.DamageTypeBlacklist = {
+TYPE.HealthTypeBlacklist = {
 	["example"] = true
 }
 

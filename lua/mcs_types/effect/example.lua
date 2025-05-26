@@ -32,7 +32,7 @@ TYPE.DamageTypeBlacklist = {
 TYPE.HealthTypes = {
 	["example"] = true
 }
-TYPE.DamageTypeBlacklist = {
+TYPE.HealthTypeBlacklist = {
 	["example"] = true
 }
 
