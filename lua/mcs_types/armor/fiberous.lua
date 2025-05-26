@@ -1,8 +1,8 @@
 local TYPE = {}
 
 TYPE.Set = "armor"
-TYPE.ID = "kevlar"
-TYPE.ServerName = "Kevlar"
+TYPE.ID = "fiberous"
+TYPE.ServerName = "Fiberous"
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = Color(255, 192, 128)
 
