@@ -18,27 +18,46 @@ TYPE.Color = color_white
 
 -- armor-specific elements
 
+--[[
+Multiplier key: 
+	3.0: 100% critical hits
+	2.0: armor reacts violently to this hazard ()
+    1.0: doesn't block at all (x-rays against cardboard)
+    0.75: cushons against (person fell against dirt as opposed to concrete)
+    0.5: absorbs damage from (crumple factor of a car)
+    0.25: industrial grade protection against (electricity against kevlar)
+]]--
+
 TYPE.Symbols = { "⛊", "⛉" }
 TYPE.DamageMultipliers = {
-	["impact"] = 1,
-	["puncture"] = 1,
-	["slash"] = 1,
-	["shock"] = 1,
-	["heat"] = 1,
-	["toxin"] = 1,
-	["pressure"] = 1,
-	["particle"] = 1
+	["splitting"] = 1,
+	["kinetic"] = 1,
+	["penetrating"] = 1,
+	["thermal"] = 1,
+	["chemical"] = 1,
+	["electricity"] = 1,
+	["subatomic"] = 1
 }
+
+--[[
+Drain key: 
+	3.0: squidward trying to gently chisel marble
+	2.0: armor is extremely weak against this hazard (wood or cardboard on fire)
+    1.0: armor deforms for 100% of the damage it takes (crumple factor of a car)
+    0.75: armor naturally resists this (kevlar might be able to take a bullet or 2)
+    0.5: armor isn't very quickly depleted by this hazard (killing a vampire entirely with prayer)
+    0.25: certified for 1000 hours of continuous operation against this hazard (steel against splitting)
+]]--
+
 TYPE.DrainRate = {
-	["impact"] = 1,
-	["puncture"] = 1,
-	["slash"] = 1,
-	["shock"] = 1,
-	["heat"] = 1,
-	["toxin"] = 1,
-	["pressure"] = 1,
-	["particle"] = 1
-}"
+	["splitting"] = 1,
+	["kinetic"] = 1,
+	["penetrating"] = 1,
+	["thermal"] = 1,
+	["chemical"] = 1,
+	["electricity"] = 1,
+	["subatomic"] = 1
+}
 --[[
 
 restricts armor to health class "example"

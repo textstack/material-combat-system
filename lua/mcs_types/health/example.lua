@@ -18,6 +18,16 @@ TYPE.Color = color_white
 
 -- health-specific elements
 
+--[[
+Damage key: 
+	1.5: each hit rips limbs off of your body without much effort (ligneous creature vs flamethrower)
+	1.25: very quickly lethal (bullets against unarmored meat)
+    1.0: things can get nasty (knife fight)
+    0.75: unlikely to kill you as fast as a knife would (being pummeled to death by somebody's bare hands)
+    0.5: 
+    0.25: certified for 1000 hours of continuous operation against this hazard (steel against splitting)
+]]--
+
 TYPE.BloodColor = BLOOD_COLOR_RED
 TYPE.DamageMultipliers = {
 	["splitting"] = 1,
