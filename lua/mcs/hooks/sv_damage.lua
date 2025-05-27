@@ -6,7 +6,7 @@ local function calculateDamageTypes(dmg)
 
 	local dmgTypes = {}
 	for dmgID, dmgType in pairs(MCS.GetDamageTypes()) do
-		if dmgType.GameDamage and bit.bor(gameDamageType, dmgType.GameDamage) ~= 0 then
+		if dmgType.GameDamage and bit.band(gameDamageType, dmgType.GameDamage) ~= 0 then
 			dmgTypes[dmgID] = dmgType
 		end
 	end
@@ -48,8 +48,10 @@ local function armorHandling(ent, dmg)
 	local armorType = ent:MCS_GetArmorType()
 	if not armorType then return false end
 
-	local dmgAmt = dmg:GetDamage()
 	local dmgTypes = calculateDamageTypes(dmg)
+	if table.IsEmpty(dmgTypes) then return false end
+
+	local dmgAmt = dmg:GetDamage()
 	local newDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DamageMultipliers, 0.2)
 	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRate, 0.8)
 
