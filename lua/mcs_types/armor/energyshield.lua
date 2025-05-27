@@ -53,17 +53,16 @@ local function initShield(ent)
 
 	if armorAmt >= maxArmorAmt then return end
 
-	ent:MCS_RemoveTimer("energyshield-recharge")
-	ent:MCS_RemoveTimer("energyshield-full")
-
 	ent:MCS_CreateTimer("energyshield", 5, 1, function()
 		local increment = (maxArmorAmt - armorAmt) / 20
 
-		ent:MCS_CreateTimer("energyshield-recharge", 0.25, 19, function()
-			ent:MCS_SetArmor(ent:MCS_GetArmor() + increment)
-		end)
-		ent:MCS_CreateTimer("energyshield-full", 5, 1, function()
-			ent:MCS_SetArmor(maxArmorAmt)
+		ent:MCS_CreateTimer("energyshield-recharge", 0.25, 0, function()
+			local newAmt = math.min(ent:MCS_GetArmor() + increment, maxArmorAmt)
+			ent:MCS_SetArmor(newAmt)
+
+			if newAmt >= maxArmorAmt then
+				ent:MCS_RemoveTimer("energyshield-recharge")
+			end
 		end)
 	end)
 end
@@ -76,7 +75,6 @@ end
 
 local function disable(ent)
 	ent:MCS_RemoveTimer("energyshield-recharge")
-	ent:MCS_RemoveTimer("energyshield-full")
 	ent:MCS_RemoveTimer("energyshield")
 end
 

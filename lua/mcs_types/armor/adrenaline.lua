@@ -58,21 +58,28 @@ TYPE.DrainRate = {
 	["subatomic"] = 0
 }
 
-local function degenerate(ent, armorAmt)
+local function degenerate(ent)
 	ent.MCS_Adrenaline = true
-	local increment = armorAmt / 20
+	local increment = ent:MCS_GetArmor() / 20
 
-	ent:MCS_CreateTimer("adrenaline-increment", 0.5, 19, function()
-		ent:MCS_SetArmor(ent:MCS_GetArmor() - increment)
-		ent:SetHealth(ent:Health() - increment * 0.75)
+	ent:MCS_CreateTimer("adrenaline-increment", 0.5, 0, function()
+		local newAmt = ent:MCS_GetArmor() - increment
+		local healthSub = 0
+		if newAmt < 0 then
+			healthSub = newAmt
+			newAmt = 0
+		end
+
+		ent:MCS_SetArmor(newAmt)
+		ent:SetHealth(ent:Health() - increment - healthSub)
 
 		if ent:Health() <= 0 then
-			ent:TakeDamage(0)
+			ent:TakeDamage(1)
 		end
-	end)
 
-	ent:MCS_CreateTimer("adrenaline", 10, 1, function()
-		ent:MCS_SetArmor(0)
+		if newAmt <= 0 then
+			ent:MCS_RemoveTimer("adrenaline-increment")
+		end
 	end)
 end
 
@@ -89,7 +96,7 @@ function TYPE:PostTakeDamage(dmg, wasDamageTaken)
 	end
 
 	if armorAmt < maxArmorAmt then
-		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage(), maxArmorAmt))
+		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * 0.75, maxArmorAmt))
 	end
 
 	if not self:MCS_TimerExists("adrenaline") then
@@ -123,5 +130,6 @@ TYPE.OnSwitchFrom = disable
 
 TYPE.OnSwitchTo = enable
 TYPE.OnEnabled = enable
+TYPE.OnPlayerSpawn = enable
 
 MCS.RegisterType(TYPE)
