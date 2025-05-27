@@ -59,6 +59,7 @@ TYPE.DrainRate = {
 }
 
 local function degenerate(ent, armorAmt)
+	ent.MCS_Adrenaline = true
 	local increment = armorAmt / 20
 
 	ent:MCS_CreateTimer("adrenaline-increment", 0.5, 19, function()
@@ -94,13 +95,16 @@ function TYPE:PostTakeDamage(dmg, wasDamageTaken)
 	if not self:MCS_TimerExists("adrenaline") then
 		self:MCS_CreateTimer("adrenaline", 10, 1, function()
 			degenerate(self, armorAmt)
-			self.MCS_Adrenaline = true
 		end)
 	end
 end
 
-function TYPE:HandleArmorReduction()
-	if self:MCS_GetArmor() >= self:MCS_GetMaxArmor() then return true end
+function TYPE:HandleArmorReduction(dmg)
+	if self:MCS_GetArmor() < self:MCS_GetMaxArmor() then
+		dmg:ScaleDamage(0.25)
+	end
+
+	return true
 end
 
 local function enable(ent)
