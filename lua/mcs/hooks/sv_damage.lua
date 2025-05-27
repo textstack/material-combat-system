@@ -1,4 +1,4 @@
-local cfgMag = CreateConVar("mcs_sv_damage_magnitude", 1.0, FCVAR_ARCHIVE, "How much to multiply armor/health damage reduction", 0, 1)
+local cfgMag = CreateConVar("mcs_sv_damage_vanillaness", 0.0, FCVAR_ARCHIVE, "How 'close to vanilla' the damage calculations should be on a scale from 0 to 1", 0.0, 1.0)
 
 --- Returns each damage type the damageinfo object is associated with
 local function calculateDamageTypes(dmg)
@@ -15,20 +15,22 @@ local function calculateDamageTypes(dmg)
 end
 
 --- Get a damage multiplier scaled by a magnitude
-local function dmgMag(val, mag)
-	return (val - 1) * mag + 1
+--- mag must be between 0 and 1
+local function dmgMag(val, mag, center)
+	center = center or 1
+	return (val - center) * mag + center
 end
 
 --- Operation for multiplying damage types over a table of multipliers
-local function multiplyStat(dmgTypes, mults)
+local function multiplyStat(dmgTypes, mults, center)
 	if not mults or table.IsEmpty(mults) then return 1 end
 
-	local mag = cfgMag:GetFloat()
+	local mag = 1 - cfgMag:GetFloat()
 	local totalMult = 1
 	local count = 0
 	for _, dmgType in pairs(dmgTypes) do
 		if mults[dmgType.ID] then
-			totalMult = totalMult * dmgMag(healthMult[dmgType.ID], mag)
+			totalMult = totalMult * dmgMag(healthMult[dmgType.ID], mag, center)
 			count = count + 1
 		end
 	end
@@ -56,8 +58,8 @@ local function armorHandling(ent, dmg)
 	local dmgAmt = dmg:GetDamage()
 	local dmgTypes = calculateDamageTypes(dmg)
 	local augment = attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
-	local newDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DamageMultipliers, augment)
-	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRate, augment)
+	local newDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DamageMultipliers, augment, 0.2)
+	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRate, augment, 0.8)
 
 	ent:MCS_SetArmor(math.max(armorAmt - armorDmgAmt, 0))
 	dmg:SetDamage(newDmgAmt)
