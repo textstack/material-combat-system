@@ -40,8 +40,5 @@ TYPE.DamageMultipliers = {
 
 -- hooks (self = player this typeset is applied to)
 
-function TYPE:OnTakeDamage(dmg)
-	self:Kill()
-end
 
 MCS.RegisterType(TYPE)
