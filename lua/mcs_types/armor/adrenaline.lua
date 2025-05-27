@@ -59,56 +59,44 @@ TYPE.DrainRate = {
 }
 
 local function degenerate(ent)
-	ent.MCS_Adrenaline = true
-	local increment = ent:MCS_GetArmor() / 20
+	ent:MCS_RemoveTimer("adrenaline-increment")
 
-	ent:MCS_CreateTimer("adrenaline-increment", 0.5, 0, function()
-		local newAmt = ent:MCS_GetArmor() - increment
-		local healthSub = 0
-		if newAmt < 0 then
-			healthSub = newAmt
-			newAmt = 0
-		end
+	ent:MCS_CreateTimer("adrenaline", 10, 1, function()
+		ent:MCS_CreateTimer("adrenaline-increment", 0.5, 0, function()
+			local armorAmt = ent:MCS_GetArmor()
+			if armorAmt <= 0 then return end
 
-		ent:MCS_SetArmor(newAmt)
-		ent:SetHealth(ent:Health() - increment - healthSub)
+			local increment = ent:MCS_GetMaxArmor() / 20
 
-		if ent:Health() <= 0 then
-			ent:TakeDamage(1)
-		end
+			if armorAmt < increment then
+				ent:MCS_SetArmor(0)
+				ent:SetHealth(ent:Health() - increment + armorAmt)
+			else
+				ent:MCS_SetArmor(armorAmt - increment)
+				ent:SetHealth(ent:Health() - increment)
+			end
 
-		if newAmt <= 0 then
-			ent:MCS_RemoveTimer("adrenaline-increment")
-		end
+			-- setting health does not kill you, this will
+			if ent:Health() <= 0 then
+				ent:TakeDamage(1)
+			end
+		end)
 	end)
 end
 
 function TYPE:PostTakeDamage(dmg, wasDamageTaken)
 	if not wasDamageTaken then return end
 
-	local armorAmt = self:MCS_GetArmor()
-	local maxArmorAmt = self:MCS_GetMaxArmor()
-
-	if self.MCS_Adrenaline then
-		self:MCS_RemoveTimer("adrenaline")
-		self:MCS_RemoveTimer("adrenaline-increment")
-		self.MCS_Adrenaline = nil
-	end
-
-	if armorAmt < maxArmorAmt then
-		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * 0.75, maxArmorAmt))
-	end
-
-	if not self:MCS_TimerExists("adrenaline") then
-		self:MCS_CreateTimer("adrenaline", 10, 1, function()
-			degenerate(self, armorAmt)
-		end)
-	end
+	degenerate(self)
 end
 
 function TYPE:HandleArmorReduction(dmg)
-	if self:MCS_GetArmor() < self:MCS_GetMaxArmor() then
-		dmg:ScaleDamage(0.25)
+	local armorAmt = self:MCS_GetArmor()
+	local maxArmorAmt = self:MCS_GetMaxArmor()
+
+	if armorAmt < maxArmorAmt then
+		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * MCS.VanillaMag(0.75, "armorDrain"), maxArmorAmt))
+		dmg:ScaleDamage(MCS.VanillaMag(0.25, "armorDamage"))
 	end
 
 	return true
@@ -116,12 +104,12 @@ end
 
 local function enable(ent)
 	ent:MCS_SetArmor(0)
+	degenerate(ent)
 end
 
 local function disable(ent)
 	ent:MCS_RemoveTimer("adrenaline")
 	ent:MCS_RemoveTimer("adrenaline-increment")
-	ent.MCS_Adrenaline = nil
 end
 
 TYPE.OnDeath = disable

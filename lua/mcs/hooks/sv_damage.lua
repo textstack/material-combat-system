@@ -14,13 +14,6 @@ local function calculateDamageTypes(dmg)
 	return dmgTypes
 end
 
---- Get a damage multiplier scaled by a magnitude
---- mag must be between 0 and 1
-local function dmgMag(val, mag, center)
-	center = center or 1
-	return (val - center) * mag + center
-end
-
 --- Operation for multiplying damage types over a table of multipliers
 local function multiplyStat(dmgTypes, mults, center)
 	if not mults or table.IsEmpty(mults) then return 1 end
@@ -30,7 +23,7 @@ local function multiplyStat(dmgTypes, mults, center)
 	local count = 0
 	for _, dmgType in pairs(dmgTypes) do
 		if mults[dmgType.ID] then
-			totalMult = totalMult * dmgMag(healthMult[dmgType.ID], mag, center)
+			totalMult = totalMult * MCS.Magnitude(healthMult[dmgType.ID], mag, center)
 			count = count + 1
 		end
 	end
@@ -57,9 +50,8 @@ local function armorHandling(ent, dmg)
 
 	local dmgAmt = dmg:GetDamage()
 	local dmgTypes = calculateDamageTypes(dmg)
-	local augment = attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
-	local newDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DamageMultipliers, augment, 0.2)
-	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRate, augment, 0.8)
+	local newDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DamageMultipliers, 0.2)
+	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRate, 0.8)
 
 	ent:MCS_SetArmor(math.max(armorAmt - armorDmgAmt, 0))
 	dmg:SetDamage(newDmgAmt)
@@ -93,7 +85,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	end
 
 	local dmgTypes = calculateDamageTypes(dmg)
-	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers)
+	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers, 1)
 	local newDmgAmt = dmg:GetDamage() * mult
 
 	dmg:SetDamage(newDmgAmt)

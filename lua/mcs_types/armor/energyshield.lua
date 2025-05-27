@@ -48,21 +48,16 @@ TYPE.DrainRate = {
 }
 
 local function initShield(ent)
-	local armorAmt = ent:MCS_GetArmor()
-	local maxArmorAmt = ent:MCS_GetMaxArmor()
-
-	if armorAmt >= maxArmorAmt then return end
+	ent:MCS_RemoveTimer("energyshield-recharge")
 
 	ent:MCS_CreateTimer("energyshield", 5, 1, function()
-		local increment = (maxArmorAmt - armorAmt) / 20
-
 		ent:MCS_CreateTimer("energyshield-recharge", 0.25, 0, function()
-			local newAmt = math.min(ent:MCS_GetArmor() + increment, maxArmorAmt)
-			ent:MCS_SetArmor(newAmt)
+			local armorAmt = ent:MCS_GetArmor()
+			local maxArmorAmt = ent:MCS_GetMaxArmor()
+			if armorAmt >= maxArmorAmt then return end
 
-			if newAmt >= maxArmorAmt then
-				ent:MCS_RemoveTimer("energyshield-recharge")
-			end
+			local newAmt = math.min(armorAmt + maxArmorAmt / 20, maxArmorAmt)
+			ent:MCS_SetArmor(newAmt)
 		end)
 	end)
 end

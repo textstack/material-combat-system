@@ -6,6 +6,7 @@ TYPE.ServerName = "Generic"
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
+TYPE.Hidden = true
 TYPE.GameDamage = DMG_GENERIC
 
 MCS.RegisterType(TYPE)

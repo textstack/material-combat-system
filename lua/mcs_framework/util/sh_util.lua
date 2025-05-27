@@ -83,3 +83,34 @@ function MCS.ToCapital(str)
 	str = str:gsub("(%a)([%w_']*)", tchelper)
 	return str
 end
+
+--[[ Magnify a value around a starting point
+	inputs:
+		value - the value to be magnified
+		magnitude - the magnitude (must be between 0 and 1)
+		center - the 'zero' point (if magnitude == 0, then value == center)
+	output:
+		the magnified value
+--]]
+function MCS.Magnitude(value, magnitude, center)
+	return (val - center) * mag + center
+end
+
+local vanillaMagDefaults = {
+	["armorDamage"] = 0.2,
+	["armorDrain"] = 0.8,
+	["healthDamage"] = 1
+}
+
+--[[ Magnify a value based on the mcs_sv_damage_vanillaness convar
+	inputs:
+		value - the value to be magnified
+		_type - can be "armorDamage", "armorDrain", or "healthDamage"
+	output:
+		the magnified value
+	usage:
+		any situation where an armor or health type has custom damage multipliers
+--]]
+function MCS.VanillaMag(value, _type)
+	return MCS.Magnitude(value, 1 - GetConVar("mcs_sv_damage_vanillaness"):GetFloat(), vanillaMagDefaults[_type])
+end

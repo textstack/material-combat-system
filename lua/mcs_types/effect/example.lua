@@ -36,15 +36,19 @@ TYPE.HealthTypeBlacklist = {
 	["example"] = true
 }
 
--- hooks (self = player this typeset is applied to)
+-- hooks (self = entity this typeset is applied to)
 -- effects always include stack count as the first argument
 
-function TYPE:EffectFirstApplied()
-	self:Kill()
+function TYPE:EffectFirstApplied(count)
+	--
 end
 
-function TYPE:EffectExpired()
-	self:Kill()
+function TYPE:OnEffectProc(count)
+	--
+end
+
+function TYPE:EffectExpired(count)
+	--
 end
 
 MCS.RegisterType(TYPE)

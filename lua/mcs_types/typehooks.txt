@@ -4,9 +4,11 @@
 
 #######################
 
-remember that:
+remember:
     1. all events implicitly include the entity as 'self'
-    2. effects always include the effect count first as an argument
+    2. armors and health can be on non-players, avoid using player-specific functions
+    3. look at the util functions in mc_framework, they might be useful
+    4. effects always include the effect count first as an argument
 
 #######################
 
@@ -57,11 +59,11 @@ OnDisabled() SERVER
 
 OnEffectProc() SERVER
     description:
-        called when effects are procced, intended to be used in effect types
+        called when effects are procced (every 0.5 seconds), intended to be used in effect types
 
 OnApplyEffect(id, amount) SERVER
     description:
-        called when an effect is applied to a player
+        called when an effect is applied to an entity
     arguments:
         id - id of the effect
         amount - how many stacks are being applied at once
