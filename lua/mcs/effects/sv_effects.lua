@@ -1,5 +1,9 @@
 util.AddNetworkString("mcs_effects")
 
+local cfgSpeedMagnitude = CreateConVar("mcs_sv_effect_speed_magnitude", 0.5, FCVAR_ARCHIVE, "The magnitude of stack decay speed. (0 = nothing, 1 = a lot)", 0.0, 1.0)
+local cfgSpeedFalloff = CreateConVar("mcs_sv_effect_speed_falloff", 0.95, FCVAR_ARCHIVE, "The magnitude of stack decay speed. (0 = never above stack count, 1 = never dropping)", 0.0, 1.0)
+local cfgFullStackTimer = CreateConVar("mcs_sv_effect_full_stack_timer", 0, FCVAR_ARCHIVE, "Whether an expired stack timer should immediately remove the effect regardless of stack count.", 0, 1)
+
 local ENTITY = FindMetaTable("Entity")
 
 --- Network the entire effects table
@@ -63,7 +67,7 @@ function ENTITY:MCS_AddEffect(id, amount)
 	}
 
 	effectList[id].count = math.min(count + amount, MCS.MAX_EFFECT_COUNT)
-	effectList[id].speed = math.max(speed, count)
+	effectList[id].speed = math.max(speed * math.pow(cfgSpeedFalloff:GetFloat(), amount), count)
 
 	if not effectList[id].applied then
 		local func = MCS.EffectTypeValue(id, "EffectFirstApplied")
@@ -130,8 +134,19 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 
 		for effectID, data in pairs(effectList) do
 			-- the time shrink as the stack increases would need to be tested
-			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * (data.speed * 0.5 + 0.5)
+			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * MCS.Magnitude(data.speed, cfgSpeedMagnitude:GetFloat(), 1)
 			if data.runningTime > 0 then continue end
+
+			if cfgFullStackTimer:GetBool() then
+				local func = MCS.EffectTypeValue(effectID, "EffectExpired")
+				if func then
+					func(ent, data.count)
+				end
+
+				MCS.CurrentEffects[entID][effectID] = nil
+
+				continue
+			end
 
 			local reduce = math.floor(-data.runningTime / data.time) + 1
 
