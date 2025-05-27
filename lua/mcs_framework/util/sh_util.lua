@@ -1,8 +1,10 @@
 local ENTITY = FindMetaTable("Entity")
 
+cfgEnabled = CreateConVar("mcs_sv_enable_by_default", 1, FCVAR_ARCHIVE + FCVAR_REPLICATED, "Whether players have MCS enabled by default when they join.", 0, 1)
+
 --- Returns whether the entity has the combat system enabled
 function ENTITY:MCS_GetEnabled()
-	return self:GetNWBool("MCS_Enabled") or false
+	return self:GetNWBool("MCS_Enabled", cfgEnabled:GetBool()) or false
 end
 
 --- Get the armor of an entity

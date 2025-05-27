@@ -1,5 +1,8 @@
 MCS.Types = MCS.Types or {}
 
+local cfgDefaultHealthType = CreateConVar("mcs_sv_default_health_type", "meat", FCVAR_ARCHIVE + FCVAR_REPLICATED, "The default health type for players.")
+local cfgDefaultArmorType = CreateConVar("mcs_sv_default_armor_type", "unarmored", FCVAR_ARCHIVE + FCVAR_REPLICATED, "The default armor type for players.")
+
 local ENTITY = FindMetaTable("Entity")
 
 --[[ Execute functions from the entity's types (health, armor, statuses)
@@ -59,7 +62,12 @@ end
 
 --- Returns the health type object for the entity's current health type
 function ENTITY:MCS_GetHealthType()
-	return MCS.HealthType(self:GetNWString("MCS_HealthType", -1))
+	local healthTypeID = self:GetNWString("MCS_HealthType", -1)
+	if healthTypeID == -1 then
+		healthTypeID = cfgDefaultHealthType:GetString()
+	end
+
+	return MCS.HealthType(healthTypeID)
 end
 
 --- Set the entity's health type by id
@@ -82,28 +90,17 @@ end
 
 --- Returns the armor type object for the entity's current armor type
 function ENTITY:MCS_GetArmorType()
-	return MCS.ArmorType(self:GetNWString("MCS_ArmorType", -1))
+	local armorTypeID = self:GetNWString("MCS_ArmorType", -1)
+	if armorTypeID == -1 then
+		armorTypeID = cfgDefaultArmorType:GetString()
+	end
+
+	return MCS.ArmorType(armorTypeID)
 end
 
 --- Set the entity's armor type by id
 function ENTITY:MCS_SetArmorType(id)
 	self:SetNWString("MCS_ArmorType", id)
-end
-
---[[ Returns all registered damage types
-	output:
-		a table of each damage type in the form (ID, object)
---]]
-function MCS.GetDamageTypes()
-	return MCS.Types.damage
-end
-
---[[ Returns all registered effect types
-	output:
-		a table of each damage type in the form (ID, object)
---]]
-function MCS.GetEffectTypes()
-	return MCS.Types.effect
 end
 
 --[[ Make a table defining a valid type object
@@ -145,6 +142,8 @@ end
 			ie. MCS.HealthType(id)
 		there is a function to get a value from id
 			ie. MCS.HealthTypeValue(id, key)
+		there is a function to get every type of the set
+			ie. MCS.GetHealthTypes()
 --]]
 
 local function includeTypeSet(fl, dir, typeSet)
@@ -174,6 +173,10 @@ for _, typeSet in ipairs(dirs) do
 		if not TYPE then return end
 
 		return TYPE[key]
+	end
+
+	MCS["Get" .. MCS.ToCapital(typeSet) .. "Types"] = function()
+		return MCS.Types[typeSet]
 	end
 
 	local subdir = "mcs_types/" .. typeSet .. "/"

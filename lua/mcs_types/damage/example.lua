@@ -17,6 +17,9 @@ TYPE.Color = color_white
 
 -- damage-specific elements
 
+-- prevent this damage type from showing up anywhere
+TYPE.Hidden = true
+
 -- if not included, this damage type will do nothing
 TYPE.GameDamage = DMG_GENERIC + DMG_POISON
 

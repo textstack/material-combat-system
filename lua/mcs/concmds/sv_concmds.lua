@@ -1,22 +1,6 @@
-local function defaultTypes()
-	local defaultArmorType = MCS.ArmorType(GetConVar("mcs_sv_default_armor_type"):GetString())
-	local defaultHealthType = MCS.HealthType(GetConVar("mcs_sv_default_health_type"):GetString())
-
-	if not defaultArmorType then
-		defaultArmorType = MCS.ArmorType("unarmored")
-	end
-	if not defaultHealthType then
-		defaultHealthType = MCS.HealthType("meat")
-	end
-
-	return defaultArmorType, defaultHealthType
-end
-
 timer.Create("MCS_CheckUserInfo", 1, 0, function()
 	local default = GetConVar("mcs_sv_enable_by_default"):GetBool()
 	local force = GetConVar("mcs_sv_force"):GetBool()
-
-	local defaultArmorType, defaultHealthType = defaultTypes()
 
 	for _, ply in player.Iterator() do
 		local enabled
@@ -34,44 +18,6 @@ timer.Create("MCS_CheckUserInfo", 1, 0, function()
 		if enabled ~= ply:MCS_GetEnabled() then
 			ply:MCS_SetEnabled(enabled)
 		end
-
-		local setHealth
-		local healthType = MCS.HealthType(ply:GetInfo("mcs_healthtype"))
-		if not healthType or not ply.MCS_SetHealthType then
-			healthType = defaultHealthType
-		else
-			setHealth = true
-		end
-
-		if healthType.ID ~= ply:GetNWString("MCS_HealthType", -1) then
-			ply:MCS_SetHealthType(healthType.ID)
-
-			if setHealth then
-				ply.MCS_SetHealthType = true
-			end
-		end
-
-		local setArmor
-		local armorType = MCS.ArmorType(ply:GetInfo("mcs_armortype"))
-		if not armorType or not ply.MCS_SetArmorType then
-			armorType = defaultArmorType
-		else
-			setArmor = true
-		end
-		if armorType.HealthTypes and not armorType.HealthTypes[healthType.ID] then
-			armorType = defaultArmorType
-		end
-		if armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[healthType.ID] then
-			armorType = defaultArmorType
-		end
-
-		if armorType.ID ~= ply:GetNWString("MCS_ArmorType", -1) then
-			ply:MCS_SetArmorType(armorType.ID)
-
-			if setArmor then
-				ply.MCS_SetArmorType = true
-			end
-		end
 	end
 end)
 
@@ -79,30 +25,84 @@ hook.Add("PlayerSpawn", "MCS_ResetRestrictions", function(ply)
 	ply.MCS_SetHealthType = nil
 	ply.MCS_SetArmorType = nil
 	ply.MCS_SetAugments = nil
+end)
 
-	local defaultArmorType, defaultHealthType = defaultTypes()
+concommand.Add("mcs_set_health_type", function(ply, _, args)
+	if not IsValid(ply) then return end
 
-	local healthType = MCS.HealthType(ply:GetInfo("mcs_healthtype"))
+	local healthType = MCS.HealthType(args[1])
 	if not healthType then
-		healthType = defaultHealthType
+		ply:PrintMessage(HUD_PRINTCONSOLE, "Please include a valid health type id.")
+		return
+	end
+
+	if ply.MCS_SetHealthType then
+		ply:PrintMessage(HUD_PRINTCONSOLE, "You've already set a health type this life.")
+		return
 	end
 
 	if healthType.ID ~= ply:GetNWString("MCS_HealthType", -1) then
 		ply:MCS_SetHealthType(healthType.ID)
+		ply.MCS_SetHealthType = true
 	end
 
-	local armorType = MCS.ArmorType(ply:GetInfo("mcs_armortype"))
+	ply:PrintMessage(HUD_PRINTCONSOLE, string.format("Set your health type to %s.", string.lower(healthType.ServerName)))
+end, function(cmd, arg)
+	local autoCompletes = {}
+
+	arg = string.Trim(arg)
+
+	for id, _ in pairs(MCS.GetHealthTypes()) do
+		if string.StartsWith(id, arg) then
+			table.insert(autoCompletes, string.format("%s %s", cmd, id))
+		end
+	end
+
+	return autoCompletes
+end, "Set your MCS health type.", FCVAR_NONE)
+
+concommand.Add("mcs_set_armor_type", function(ply, _, args)
+	if not IsValid(ply) then return end
+
+	local armorType = MCS.ArmorType(args[1])
 	if not armorType then
-		armorType = defaultArmorType
+		ply:PrintMessage(HUD_PRINTCONSOLE, "Please include a valid armor type id.")
+		return
 	end
+
+	if ply.MCS_SetArmorType then
+		ply:PrintMessage(HUD_PRINTCONSOLE, "You've already set an armor type this life.")
+		return
+	end
+
+	local healthType = ply:MCS_GetHealthType()
+
 	if armorType.HealthTypes and not armorType.HealthTypes[healthType.ID] then
-		armorType = defaultArmorType
+		ply:PrintMessage(HUD_PRINTCONSOLE, "Your current health type doesn't allow this armor type.")
+		return
 	end
+
 	if armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[healthType.ID] then
-		armorType = defaultArmorType
+		ply:PrintMessage(HUD_PRINTCONSOLE, "Your current health type doesn't allow this armor type.")
+		return
 	end
 
 	if armorType.ID ~= ply:GetNWString("MCS_ArmorType", -1) then
 		ply:MCS_SetArmorType(armorType.ID)
+		ply.MCS_SetArmorType = true
 	end
-end)
+
+	ply:PrintMessage(HUD_PRINTCONSOLE, string.format("Set your armor type to %s.", string.lower(armorType.ServerName)))
+end, function(cmd, arg)
+	local autoCompletes = {}
+
+	arg = string.Trim(arg)
+
+	for id, _ in pairs(MCS.GetArmorTypes()) do
+		if string.StartsWith(id, arg) then
+			table.insert(autoCompletes, string.format("%s %s", cmd, id))
+		end
+	end
+
+	return autoCompletes
+end, "Set your MCS armor type.", FCVAR_NONE)

@@ -1,5 +1,7 @@
 util.AddNetworkString("mcs_effects")
 
+local ENTITY = FindMetaTable("Entity")
+
 --- Network the entire effects table
 function MCS.SendEffects()
 	net.Start("mcs_effects", true)
