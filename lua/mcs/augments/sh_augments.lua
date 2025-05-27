@@ -55,14 +55,14 @@ function ENTITY:MCS_SetAugment(id, swep, force)
 		return true
 	end
 
-	if not force and self.MCS_SetAugments and self.MCS_SetAugments[swep] then
+	if not force and self.MCS_HasSetAugments and self.MCS_HasSetAugments[swep] then
 		return false
 	end
 
-	self.MCS_SetAugments = self.MCS_SetAugments or {}
+	self.MCS_HasSetAugments = self.MCS_HasSetAugments or {}
 	self.MCS_Augments = self.MCS_Augments or {}
 
-	self.MCS_SetAugments[swep] = true
+	self.MCS_HasSetAugments[swep] = true
 	self.MCS_Augments[swep] = id
 
 	net.Start("mcs_augments")

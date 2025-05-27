@@ -22,9 +22,9 @@ timer.Create("MCS_CheckUserInfo", 1, 0, function()
 end)
 
 hook.Add("PlayerSpawn", "MCS_ResetRestrictions", function(ply)
-	ply.MCS_SetHealthType = nil
-	ply.MCS_SetArmorType = nil
-	ply.MCS_SetAugments = nil
+	ply.MCS_HasSetHealthType = nil
+	ply.MCS_HasSetArmorType = nil
+	ply.MCS_HasSetAugments = nil
 end)
 
 concommand.Add("mcs_set_health_type", function(ply, _, args)
@@ -36,14 +36,14 @@ concommand.Add("mcs_set_health_type", function(ply, _, args)
 		return
 	end
 
-	if ply.MCS_SetHealthType then
+	if ply.MCS_HasSetHealthType then
 		ply:PrintMessage(HUD_PRINTCONSOLE, "You've already set a health type this life.")
 		return
 	end
 
 	if healthType.ID ~= ply:GetNWString("MCS_HealthType", -1) then
 		ply:MCS_SetHealthType(healthType.ID)
-		ply.MCS_SetHealthType = true
+		ply.MCS_HasSetHealthType = true
 	end
 
 	ply:PrintMessage(HUD_PRINTCONSOLE, string.format("Set your health type to %s.", string.lower(healthType.ServerName)))
@@ -70,7 +70,7 @@ concommand.Add("mcs_set_armor_type", function(ply, _, args)
 		return
 	end
 
-	if ply.MCS_SetArmorType then
+	if ply.MCS_HasSetArmorType then
 		ply:PrintMessage(HUD_PRINTCONSOLE, "You've already set an armor type this life.")
 		return
 	end
@@ -89,7 +89,7 @@ concommand.Add("mcs_set_armor_type", function(ply, _, args)
 
 	if armorType.ID ~= ply:GetNWString("MCS_ArmorType", -1) then
 		ply:MCS_SetArmorType(armorType.ID)
-		ply.MCS_SetArmorType = true
+		ply.MCS_HasSetArmorType = true
 	end
 
 	ply:PrintMessage(HUD_PRINTCONSOLE, string.format("Set your armor type to %s.", string.lower(armorType.ServerName)))
