@@ -126,6 +126,8 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 			continue
 		end
 
+		ent:MCS_TypeHook("OnEffectProc")
+
 		for effectID, data in pairs(effectList) do
 			-- the time shrink as the stack increases would need to be tested
 			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * (data.speed * 0.5 + 0.5)
@@ -151,8 +153,6 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 
 			MCS.CurrentEffects[entID][effectID] = nil
 		end
-
-		ent:MCS_TypeHook("OnEffectProc")
 	end
 
 	MCS.SendEffects()
