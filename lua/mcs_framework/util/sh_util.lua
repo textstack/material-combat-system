@@ -93,7 +93,7 @@ end
 		the magnified value
 --]]
 function MCS.Magnitude(value, magnitude, center)
-	return (val - center) * mag + center
+	return (value - center) * magnitude + center
 end
 
 local vanillaMagDefaults = {

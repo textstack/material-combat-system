@@ -38,6 +38,8 @@ TYPE.DamageMultipliers = {
 	["subatomic"] = 0.25
 }
 
+local dmgMult = 0.25
+
 --[[
 Drain key: 
 	3.0: squidward trying to gently chisel marble
@@ -95,8 +97,8 @@ function TYPE:HandleArmorReduction(dmg)
 	local maxArmorAmt = self:MCS_GetMaxArmor()
 
 	if armorAmt < maxArmorAmt then
-		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * MCS.VanillaMag(0.75, "armorDrain"), maxArmorAmt))
-		dmg:ScaleDamage(MCS.VanillaMag(0.25, "armorDamage"))
+		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * MCS.VanillaMag(1 - dmgMult, "armorDrain"), maxArmorAmt))
+		dmg:ScaleDamage(MCS.VanillaMag(dmgMult, "armorDamage"))
 	end
 
 	return true
