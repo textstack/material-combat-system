@@ -69,8 +69,32 @@ function ENTITY:MCS_AddEffect(id, amount)
 	local result = self:MCS_TypeHook("OnApplyEffect", id, amount)
 	if result ~= nil then return end
 
-	local effectList = self:MCS_GetEffects()
 	local effectType = MCS.EffectType(id)
+
+	if effectType.InflictSound then
+		self:EmitSound(effectType.InflictSound, nil, nil, 0.75, CHAN_BODY)
+	end
+
+	if effectType.BaseTime and effectType.BaseTime <= 0 then
+		local func = MCS.EffectTypeValue(id, "EffectApplied")
+		if func then
+			func(self, amount, amount)
+		end
+
+		local func1 = MCS.EffectTypeValue(id, "EffectFirstApplied")
+		if func1 then
+			func1(self, amount)
+		end
+
+		local func2 = MCS.EffectTypeValue(id, "EffectExpired")
+		if func2 then
+			func2(self, amount)
+		end
+
+		return
+	end
+
+	local effectList = self:MCS_GetEffects()
 
 	effectList[id] = effectList[id] or {
 		count = 0,
@@ -80,17 +104,22 @@ function ENTITY:MCS_AddEffect(id, amount)
 		runningTime = effectType.BaseTime or MCS.EFFECT_DEFAULT_TIME
 	}
 
-	effectList[id].count = math.min(count + amount, MCS.MAX_EFFECT_COUNT)
-	effectList[id].speed = math.max(speed - amount * cfgSpeedFalloff:GetFloat(), count)
+	effectList[id].count = math.min(effectList[id].count + amount, MCS.MAX_EFFECT_COUNT, effectType.MaxStacks)
+	effectList[id].speed = math.max(effectList[id].speed - amount * cfgSpeedFalloff:GetFloat(), effectList[id].count)
 
-	if cfgFullStackTimer:GetBool() then
+	if effectList[id].count == effectType.MaxStacks or cfgFullStackTimer:GetBool() then
 		runningTime = time
 	end
 
+	local func = MCS.EffectTypeValue(id, "EffectApplied")
+	if func then
+		func(self, effectList[id].count, amount)
+	end
+
 	if not effectList[id].applied then
-		local func = MCS.EffectTypeValue(id, "EffectFirstApplied")
-		if func then
-			func(self, amount)
+		local func1 = MCS.EffectTypeValue(id, "EffectFirstApplied")
+		if func1 then
+			func1(self, amount)
 		end
 
 		effectList[id].applied = true

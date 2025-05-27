@@ -17,11 +17,12 @@ TYPE.Color = color_white
 -- effect-specific elements
 -- all of these are optional
 
-TYPE.BaseTime = 5 -- the time passed before 1 stack expires
+TYPE.BaseTime = 5 -- the time passed before 1 stack expires (infinite if not included)
+TYPE.MaxStacks = 4000000000 -- max stacks that can be applied at once
 TYPE.InflictChance = 0.5 -- base chance to apply per hit, if this isn't here this effect cannot apply on hit
 TYPE.Burst = 1 -- how many stacks to apply if the chance succeeds
-TYPE.Reducible = true -- whether a hit with multiple damage types reduces this effect's inflict chance
-TYPE.InflictSound = ""
+TYPE.Reducible = true -- whether a hit with multiple damage types reduces this effect's apply chance
+TYPE.InflictSound = "" -- sound when the effect is applied
 
 TYPE.DamageTypes = {
 	["example"] = true
@@ -40,6 +41,10 @@ TYPE.HealthTypeBlacklist = {
 -- effects always include stack count as the first argument
 
 function TYPE:EffectFirstApplied(count)
+	--
+end
+
+function TYPE:EffectApplied(count, amount)
 	--
 end
 

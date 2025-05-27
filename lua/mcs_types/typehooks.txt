@@ -69,6 +69,14 @@ OnApplyEffect(id, amount) SERVER
         amount - how many stacks are being applied at once
     return:
         any value to cancel the application
+    usage:
+        not for effect code; use this for when health/armor does something with effects
+
+EffectApplied(amount) SERVER LOCALIZED
+    description:
+        called on an effect when it's applied (including when it gets stacked onto itself)
+    arguments:
+        amount - the amount of stacks applied at once
 
 EffectFirstApplied() SERVER LOCALIZED
     description:
