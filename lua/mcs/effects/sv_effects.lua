@@ -69,6 +69,10 @@ function ENTITY:MCS_AddEffect(id, amount)
 	effectList[id].count = math.min(count + amount, MCS.MAX_EFFECT_COUNT)
 	effectList[id].speed = math.max(speed * math.pow(cfgSpeedFalloff:GetFloat(), amount), count)
 
+	if cfgFullStackTimer:GetBool() then
+		runningTime = time
+	end
+
 	if not effectList[id].applied then
 		local func = MCS.EffectTypeValue(id, "EffectFirstApplied")
 		if func then
