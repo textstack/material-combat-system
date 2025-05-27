@@ -1,12 +1,5 @@
 local TYPE = {}
 
--- localization entries
-
--- name key -> mcs.armor.example.name
--- description key -> mcs.armor.example.desc
--- abbreviation key -> mcs.armor.example.abbr
--- break flavor text key -> mcs.armor.example.flavor
-
 -- generic elements
 
 TYPE.Set = "armor"
@@ -16,6 +9,8 @@ TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
 -- armor-specific elements
+
+TYPE.Symbols = { "⛊", "⛉" }
 
 --[[
 Multiplier key: 
@@ -27,7 +22,6 @@ Multiplier key:
     0.25: industrial grade protection against (electricity against kevlar)
 ]]--
 
-TYPE.Symbols = { "⛊", "⛉" }
 TYPE.DamageMultipliers = {
 	["splitting"] = 0.25,
 	["kinetic"] = 0.25,
@@ -38,6 +32,7 @@ TYPE.DamageMultipliers = {
 	["subatomic"] = 0.25
 }
 
+-- the above is for show, this is what actually does the calculations
 local dmgMult = 0.25
 
 --[[
@@ -80,7 +75,7 @@ local function degenerate(ent)
 
 			-- setting health does not kill you, this will
 			if ent:Health() <= 0 then
-				ent:TakeDamage(1)
+				ent:MCS_TypelessDamage(1)
 			end
 		end)
 	end)
@@ -93,6 +88,8 @@ function TYPE:PostTakeDamage(dmg, wasDamageTaken)
 end
 
 function TYPE:HandleArmorReduction(dmg)
+	if table.IsEmpty(MCS.CalculateDamageTypes(dmg)) then return true end
+
 	local armorAmt = self:MCS_GetArmor()
 	local maxArmorAmt = self:MCS_GetMaxArmor()
 

@@ -22,21 +22,44 @@ function ENTITY:MCS_SetEnabled(enabled)
 end
 
 --- Set the armor of an entity
-function ENTITY:MCS_SetArmor(amt)
+function ENTITY:MCS_SetArmor(amount)
 	if self:IsPlayer() then
-		self:SetArmor(amt)
+		self:SetArmor(amount)
 		return
 	end
 
-	self:SetNWFloat("MCS_Armor", amt)
+	self:SetNWFloat("MCS_Armor", amount)
 end
 
 --- Set the max armor of an entity
-function ENTITY:MCS_SetMaxArmor(amt)
+function ENTITY:MCS_SetMaxArmor(amount)
 	if self:IsPlayer() then
-		self:SetMaxArmor(amt)
+		self:SetMaxArmor(amount)
 		return
 	end
 
-	self:SetNWFloat("MCS_MaxArmor", amt)
+	self:SetNWFloat("MCS_MaxArmor", amount)
+end
+
+--[[ Make an entity take direct damage
+	inputs:
+		amount - the amount of damage
+		attacker - the attacker (or nil)
+		inflictor - the inflictor (or nil)
+--]]
+function ENTITY:MCS_TypelessDamage(amount, attacker, inflictor)
+	local dmg = DamageInfo()
+
+	dmg:SetDamage(amount)
+	dmg:SetDamageType(DMG_DIRECT)
+
+	if attacker then
+		dmg:SetAttacker(attacker)
+	end
+
+	if inflictor then
+		dmg:SetInflictor(inflictor)
+	end
+
+	self:TakeDamageInfo(dmg)
 end

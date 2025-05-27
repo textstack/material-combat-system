@@ -1,13 +1,27 @@
 local cfgMag = CreateConVar("mcs_sv_damage_vanillaness", 0.0, FCVAR_ARCHIVE, "How 'close to vanilla' the damage calculations should be on a scale from 0 to 1", 0.0, 1.0)
 
---- Returns each damage type the damageinfo object is associated with
-local function calculateDamageTypes(dmg)
+--[[ Returns each damage type the damageinfo object is associated with
+	inputs:
+		dmg - the CTakeDamageInfo to check
+	output:
+		the MCS damage types that the damageinfo has
+--]]
+function MCS.CalculateDamageTypes(dmg)
 	local gameDamageType = dmg:GetDamageType()
 
 	local dmgTypes = {}
-	for dmgID, dmgType in pairs(MCS.GetDamageTypes()) do
-		if dmgType.GameDamage and bit.band(gameDamageType, dmgType.GameDamage) ~= 0 then
-			dmgTypes[dmgID] = dmgType
+
+	if gameDamageType == 0 then -- generic damage
+		for dmgID, dmgType in pairs(MCS.GetDamageTypes()) do
+			if dmgType.Generic then
+				dmgTypes[dmgID] = dmgType
+			end
+		end
+	else
+		for dmgID, dmgType in pairs(MCS.GetDamageTypes()) do
+			if dmgType.GameDamage and bit.band(gameDamageType, dmgType.GameDamage) ~= 0 then
+				dmgTypes[dmgID] = dmgType
+			end
 		end
 	end
 
@@ -48,7 +62,7 @@ local function armorHandling(ent, dmg)
 	local armorType = ent:MCS_GetArmorType()
 	if not armorType then return false end
 
-	local dmgTypes = calculateDamageTypes(dmg)
+	local dmgTypes = MCS.CalculateDamageTypes(dmg)
 	if table.IsEmpty(dmgTypes) then return false end
 
 	local dmgAmt = dmg:GetDamage()
@@ -86,7 +100,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.GameDamage))
 	end
 
-	local dmgTypes = calculateDamageTypes(dmg)
+	local dmgTypes = MCS.CalculateDamageTypes(dmg)
 	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers, 1)
 	local newDmgAmt = dmg:GetDamage() * mult
 
