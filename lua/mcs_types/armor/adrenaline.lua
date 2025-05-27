@@ -58,22 +58,66 @@ TYPE.DrainRate = {
 	["subatomic"] = 0
 }
 
+local function degenerate(ent, armorAmt)
+	local increment = armorAmt / 20
 
---[[
+	ent:MCS_CreateTimer("adrenaline-increment", 0.5, 19, function()
+		ent:MCS_SetArmor(ent:MCS_GetArmor() - increment)
+		ent:SetHealth(ent:Health() - increment * 0.75)
 
-restricts armor to health class "example"
+		if ent:Health() <= 0 then
+			ent:TakeDamage(0)
+		end
+	end)
 
-when it doesn't exist, no restriction is made.
-
-TYPE.HealthTypes = {
-	["example"] = true
-
-]]--
-
--- hooks (self = player this typeset is applied to)
-
-function TYPE:OnTakeDamage(dmg)
-	self:Kill()
+	ent:MCS_CreateTimer("adrenaline", 10, 1, function()
+		ent:MCS_SetArmor(0)
+	end)
 end
+
+function TYPE:PostTakeDamage(dmg, wasDamageTaken)
+	if not wasDamageTaken then return end
+
+	local armorAmt = self:MCS_GetArmor()
+	local maxArmorAmt = self:MCS_GetMaxArmor()
+
+	if self.MCS_Adrenaline then
+		self:MCS_RemoveTimer("adrenaline")
+		self:MCS_RemoveTimer("adrenaline-increment")
+		self.MCS_Adrenaline = nil
+	end
+
+	if armorAmt < maxArmorAmt then
+		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage(), maxArmorAmt))
+	end
+
+	if not self:MCS_TimerExists("adrenaline") then
+		self:MCS_CreateTimer("adrenaline", 10, 1, function()
+			degenerate(self, armorAmt)
+			self.MCS_Adrenaline = true
+		end)
+	end
+end
+
+function TYPE:HandleArmorReduction()
+	if self:MCS_GetArmor() >= self:MCS_GetMaxArmor() then return true end
+end
+
+local function enable(ent)
+	ent:MCS_SetArmor(0)
+end
+
+local function disable(ent)
+	ent:MCS_RemoveTimer("adrenaline")
+	ent:MCS_RemoveTimer("adrenaline-increment")
+	ent.MCS_Adrenaline = nil
+end
+
+TYPE.OnDeath = disable
+TYPE.OnDisabled = disable
+TYPE.OnSwitchFrom = disable
+
+TYPE.OnSwitchTo = enable
+TYPE.OnEnabled = enable
 
 MCS.RegisterType(TYPE)

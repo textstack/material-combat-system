@@ -72,7 +72,17 @@ end
 
 --- Set the entity's health type by id
 function ENTITY:MCS_SetHealthType(id)
+	local switchFrom = self:MCS_GetHealthTypeValue("OnSwitchFrom")
+	if switchFrom and self:MCS_GetEnabled() then
+		switchFrom()
+	end
+
 	self:SetNWString("MCS_HealthType", id)
+
+	local switchTo = MCS.HealthTypeValue(id, "OnSwitchTo")
+	if switchTo and self:MCS_GetEnabled() then
+		switchTo()
+	end
 end
 
 --[[ Get a value from a entity's armor type
@@ -100,7 +110,17 @@ end
 
 --- Set the entity's armor type by id
 function ENTITY:MCS_SetArmorType(id)
+	local switchFrom = self:MCS_GetArmorTypeValue("OnSwitchFrom")
+	if switchFrom and self:MCS_GetEnabled() then
+		switchFrom()
+	end
+
 	self:SetNWString("MCS_ArmorType", id)
+
+	local switchTo = MCS.ArmorTypeValue(id, "OnSwitchTo")
+	if switchTo and self:MCS_GetEnabled() then
+		switchTo()
+	end
 end
 
 --[[ Make a table defining a valid type object

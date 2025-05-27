@@ -52,6 +52,16 @@ function ENTITY:MCS_RemoveTimer(name)
 	timer.Remove("MCS_" .. name .. self:EntIndex())
 end
 
+--[[ Returns whether an entity-unique timer exists
+	inputs:
+		name - name of the timer
+	output:
+		whether the timer exists or not
+--]]
+function ENTITY:MCS_TimerExists(name)
+	return timer.Exists("MCS_" .. name .. self:EntIndex())
+end
+
 --[[ Links up a game hook to a new type hook
 	inputs:
 		hookName - name of the game hook

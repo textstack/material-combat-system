@@ -47,27 +47,45 @@ TYPE.DrainRate = {
 	["subatomic"] = 1
 }
 
-function TYPE:PostTakeDamage(dmg, wasDamageTaken)
-	if not wasDamageTaken then return end
+local function initShield(ent)
+	local armorAmt = ent:MCS_GetArmor()
+	local maxArmorAmt = ent:MCS_GetMaxArmor()
 
-	local armorAmt = self:MCS_GetArmor()
-	local maxArmorAmt = self:MCS_GetMaxArmor()
+	if armorAmt >= maxArmorAmt then return end
 
-	if armorAmt <= 0 or armorAmt >= maxArmorAmt then return end
+	ent:MCS_RemoveTimer("energyshield-recharge")
+	ent:MCS_RemoveTimer("energyshield-full")
 
-	self:MCS_RemoveTimer("energyshield-recharge")
-	self:MCS_RemoveTimer("energyshield-full")
-
-	self:MCS_CreateTimer("energyshield", 5, 1, function()
+	ent:MCS_CreateTimer("energyshield", 5, 1, function()
 		local increment = (maxArmorAmt - armorAmt) / 20
 
-		self:MCS_CreateTimer("energyshield-recharge", 0.25, 19, function()
-			self:MCS_SetArmor(self:MCS_GetArmor() + increment)
+		ent:MCS_CreateTimer("energyshield-recharge", 0.25, 19, function()
+			ent:MCS_SetArmor(ent:MCS_GetArmor() + increment)
 		end)
-		self:MCS_CreateTimer("energyshield-full", 5, 1, function()
-			self:MCS_SetArmor(maxArmorAmt)
+		ent:MCS_CreateTimer("energyshield-full", 5, 1, function()
+			ent:MCS_SetArmor(maxArmorAmt)
 		end)
 	end)
 end
+
+function TYPE:PostTakeDamage(dmg, wasDamageTaken)
+	if not wasDamageTaken then return end
+
+	initShield(self)
+end
+
+local function disable(ent)
+	ent:MCS_RemoveTimer("energyshield-recharge")
+	ent:MCS_RemoveTimer("energyshield-full")
+	ent:MCS_RemoveTimer("energyshield")
+end
+
+TYPE.OnDeath = disable
+TYPE.OnDisabled = disable
+TYPE.OnSwitchFrom = disable
+
+TYPE.OnSwitchTo = initShield
+TYPE.OnPlayerSpawn = initShield
+TYPE.OnEnabled = initShield
 
 MCS.RegisterType(TYPE)

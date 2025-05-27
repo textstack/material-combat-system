@@ -44,7 +44,8 @@ local function armorHandling(ent, dmg)
 	local attacker = dmg:GetAttacker()
 	if IsValid(attacker) and not attacker:MCS_GetEnabled() then return end
 
-	ent:MCS_TypeHook("HandleArmorReduction", dmg)
+	local result = ent:MCS_TypeHook("HandleArmorReduction", dmg)
+	if result then return false end
 
 	local armorAmt = ent:MCS_GetArmor()
 	if armorAmt <= 0 then return false end
@@ -72,7 +73,8 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 		if IsValid(attacker) and attacker:MCS_GetEnabled() then return true end
 		return
 	end
-	if IsValid(attacker) and not attacker:MCS_GetEnabled() then return true end
+	if not IsValid(attacker) then return end
+	if not attacker:MCS_GetEnabled() then return true end
 
 	local attResult = attacker:MCS_TypeHook("OnDealDamage", dmg)
 	if attResult then return true end

@@ -31,6 +31,8 @@ HandleArmorReduction(dmg) SERVER
         called before the entity's armor is going to be calculated
     arguments:
         dmg - the CTakeDamageInfo object for the damage (objects pass by reference)
+    return:
+        true to cancel any armor reduction
 
 PostTakeDamage(dmg, wasDamageTaken) SERVER
     description:
@@ -89,3 +91,11 @@ OnKill(inflictor, victim, damageBits) SERVER
         inflictor - the item used to kill the player
         victim - the entity that was killed
         damageBits - the game damagetypes of the killing blow
+
+OnSwitchFrom() SERVER LOCALIZED
+    description:
+        called on a health type or armor type when it is switched from
+
+OnSwitchTo() SERVER LOCALIZED
+    description:
+        called on a health type or armor type when it is switched to
