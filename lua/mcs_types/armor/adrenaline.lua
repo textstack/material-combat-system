@@ -88,8 +88,6 @@ function TYPE:PostTakeDamage(dmg, wasDamageTaken)
 end
 
 function TYPE:HandleArmorReduction(dmg)
-	if table.IsEmpty(MCS.CalculateDamageTypes(dmg)) then return true end
-
 	local armorAmt = self:MCS_GetArmor()
 	local maxArmorAmt = self:MCS_GetMaxArmor()
 

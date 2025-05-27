@@ -24,23 +24,37 @@ function MCS.SendEffects()
 	net.Broadcast()
 end
 
+local bumps = {}
+
 --- Network the effects for a single entity and broadcast
 function ENTITY:MCS_BumpEffects()
-	self:MCS_CreateTimer("bumpEffects", 0, 1, function()
-		net.Start("mcs_effects")
+	bumps[self:EntIndex()] = true
+
+	timer.Create("MCS_BumpEffects", 0, 1, function()
+		for entID, _ in pairs(bumps) do
+			if not IsValid(Entity(entID)) then
+				bumps[entID] = nil
+			end
+		end
+
+		net.Start("mcs_effects", true)
 		net.WriteBool(false)
 
-		net.WriteUInt(1, MCS.ENTITY_LIST_NET_SIZE)
-		net.WriteUInt(self:EntIndex(), MCS.ENTITY_LIST_NET_SIZE)
+		net.WriteUInt(table.Count(bumps), MCS.ENTITY_LIST_NET_SIZE)
+		for entID, _ in pairs(bumps) do
+			local effectList = MCS.CurrentEffects[entID] or {}
 
-		local effectList = self:MCS_GetEffects()
-		net.WriteUInt(table.Count(effectList), MCS.EFFECT_LIST_NET_SIZE)
-		for effectID, data in pairs(effectList) do
-			net.WriteString(effectID)
-			net.WriteUInt(data.count, MCS.EFFECT_COUNT_NET_SIZE)
+			net.WriteUInt(entID, MCS.ENTITY_LIST_NET_SIZE)
+			net.WriteUInt(table.Count(effectList), MCS.EFFECT_LIST_NET_SIZE)
+			for effectID, data in pairs(effectList) do
+				net.WriteString(effectID)
+				net.WriteUInt(data.count, MCS.EFFECT_COUNT_NET_SIZE)
+			end
 		end
 
 		net.Broadcast()
+
+		bumps = {}
 	end)
 end
 
