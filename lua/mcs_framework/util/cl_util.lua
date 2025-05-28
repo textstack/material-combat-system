@@ -12,5 +12,24 @@
 --]]
 function MCS.L(key, ...)
 	local lang = language.GetPhrase(key)
-	return string.format(lang, ...), lang ~= key
+
+	local format = {}
+	for _, item in ipairs({...}) do
+		local l = MCS.L(item)
+		table.insert(format, l)
+	end
+
+	return string.format(lang, unpack(format)), lang ~= key
 end
+
+net.Receive("mcs_notify", function()
+	local tag = net.ReadString()
+
+	local items = {}
+	local itemCount = net.ReadUInt(MCS.NOTIFY_FORMAT_NET_SIZE)
+	for i = 1, itemCount do
+		table.insert(items, net.ReadString())
+	end
+
+	LocalPlayer():MCS_Notify(tag, unpack(items))
+end)

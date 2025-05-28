@@ -27,4 +27,4 @@ CreateConVar("mcs_sv_effect_speed_falloff", 1.0, fcvarFlags, "How much the stack
 CreateConVar("mcs_sv_effect_full_stack_timer", 0, fcvarFlags, "Whether an expired stack timer should immediately remove the effect regardless of stack count.", 0, 1)
 CreateConVar("mcs_sv_default_health_type", "meat", fcvarFlags, "The default health type for players.")
 CreateConVar("mcs_sv_default_armor_type", "unarmored", fcvarFlags, "The default armor type for players.")
-CreateConVar("mcs_sv_damage_vanillaness", 0.0, fcvarFlags, "How 'close to vanilla' the damage calculations should be on a scale from 0 to 1", 0.0, 1.0)
+CreateConVar("mcs_sv_damage_vanillaness", 0.0, fcvarFlags, "How 'close to vanilla' the damage calculations should be on a scale from 0 to 1.", 0.0, 1.0)

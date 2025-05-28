@@ -32,17 +32,20 @@ end
 --[[ Set the entity's health type by id
 	inputs:
 		id - id of the health type to set
-	output:
+		force - serverside, set to true to bypass the one-per-life restriction for players
+	outputs:
 		whether the operation was successful
+		the tag for the error message if failed
 	usage:
 		clientside, use this to request a health type for the player
 		serverside, use this to set the health type of an entity
 --]]
-function ENTITY:MCS_SetHealthType(id)
-	if not MCS.HealthType(id) then return false end
+function ENTITY:MCS_SetHealthType(id, force)
+	if not MCS.HealthType(id) then return false, "mcs.error.invalid_health_type" end
+	if id == self:GetNWString("MCS_HealthType", -1) then return true end
 
 	if CLIENT then
-		if self ~= LocalPlayer() then return false end
+		if self ~= LocalPlayer() then return false, "mcs.error.self_only" end
 
 		net.Start("mcs_healtharmor")
 		net.WriteBool(true)
@@ -50,6 +53,11 @@ function ENTITY:MCS_SetHealthType(id)
 		net.SendToServer()
 
 		return true
+	end
+
+	if self:IsPlayer() then
+		if not force and self.MCS_HasSetHealthType then return false, "mcs.error.already_set_health_type" end
+		self.MCS_HasSetHealthType = true
 	end
 
 	local switchFrom = self:MCS_GetHealthTypeValue("OnSwitchFrom")
@@ -62,6 +70,11 @@ function ENTITY:MCS_SetHealthType(id)
 	local switchTo = MCS.HealthTypeValue(id, "OnSwitchTo")
 	if switchTo and self:MCS_GetEnabled() then
 		switchTo(self)
+	end
+
+	local armorType = self:MCS_GetArmorType()
+	if (armorType.HealthTypes and not armorType.HealthTypes[id]) or (armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[id]) then
+		self:MCS_SetArmorType(MCS.GetConVar("mcs_sv_default_armor_type"):GetString(), true)
 	end
 
 	return true
@@ -93,17 +106,27 @@ end
 --[[ Set the entity's armor type by id
 	inputs:
 		id - id of the armor type to set
-	output:
+		force - serverside, set to true to bypass the one-per-life restriction for players
+	outputs:
 		whether the operation was successful
+		the tag for the error message if failed
 	usage:
 		clientside, use this to request an armor type for the player
 		serverside, use this to set the armor type of an entity
 --]]
-function ENTITY:MCS_SetArmorType(id)
-	if not MCS.ArmorType(id) then return false end
+function ENTITY:MCS_SetArmorType(id, force)
+	local armorType = MCS.ArmorType(id)
+	if not armorType then return false, "mcs.error.invalid_armor_type" end
+	if id == self:GetNWString("MCS_ArmorType", -1) then return true end
+
+	local healthType = self:MCS_GetHealthType()
+	if healthType then
+		if armorType.HealthTypes and not armorType.HealthTypes[healthType.ID] then return false, "mcs.error.health_type_no_allow" end
+		if armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[healthType.ID] then return false, "mcs.error.health_type_no_allow" end
+	end
 
 	if CLIENT then
-		if self ~= LocalPlayer() then return false end
+		if self ~= LocalPlayer() then return false, "mcs.error.self_only" end
 
 		net.Start("mcs_healtharmor")
 		net.WriteBool(false)
@@ -111,6 +134,11 @@ function ENTITY:MCS_SetArmorType(id)
 		net.SendToServer()
 
 		return true
+	end
+
+	if self:IsPlayer() then
+		if not force and self.MCS_HasSetArmorType then return false, "mcs.error.already_set_armor_type" end
+		self.MCS_HasSetArmorType = true
 	end
 
 	local switchFrom = self:MCS_GetArmorTypeValue("OnSwitchFrom")
@@ -124,4 +152,6 @@ function ENTITY:MCS_SetArmorType(id)
 	if switchTo and self:MCS_GetEnabled() then
 		switchTo(self)
 	end
+
+	return true
 end

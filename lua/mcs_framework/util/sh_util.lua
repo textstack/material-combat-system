@@ -1,3 +1,5 @@
+MCS.NOTIFY_FORMAT_NET_SIZE = 6
+
 local ENTITY = FindMetaTable("Entity")
 
 --- Returns whether the entity has the combat system enabled
@@ -62,6 +64,30 @@ end
 --]]
 function ENTITY:MCS_TimerExists(name)
 	return timer.Exists("MCS_" .. name .. self:EntIndex())
+end
+
+--[[ Notify a player.
+	inputs:
+		tag - the localization tag of the message
+		... - anything the message needs to be formatted with
+--]]
+function ENTITY:MCS_Notify(tag, ...)
+	if not tag then return end
+	if not self:IsPlayer() then return end
+
+	if CLIENT then
+		self:ChatPrint(MCS.L(tag, ...))
+	else
+		local items = {...}
+
+		net.Start("mcs_notify")
+		net.WriteString(tag)
+		net.WriteUInt(table.Count(items), MCS.NOTIFY_FORMAT_NET_SIZE)
+		for _, item in ipairs(items) do
+			net.WriteString(tostring(item))
+		end
+		net.Send(self)
+	end
 end
 
 --- Capitalize a string in simple title case

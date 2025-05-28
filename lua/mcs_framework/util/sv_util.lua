@@ -1,3 +1,5 @@
+util.AddNetworkString("mcs_notify")
+
 local ENTITY = FindMetaTable("Entity")
 
 --[[ Set an entity's enabled state for the combat system

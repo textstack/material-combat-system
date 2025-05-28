@@ -1,1 +1,0 @@
-CreateConVar("mcs_sv_force", 0, FCVAR_ARCHIVE + FCVAR_REPLICATED, "Prevent players from being able to change whether MCS is enabled for them.", 0, 1)

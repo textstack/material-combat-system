@@ -7,7 +7,7 @@
 --]]
 function MCS.RequestSetting(setting, value)
     if not LocalPlayer():IsSuperAdmin() then
-        LocalPlayer():ChatPrint(MCS.L("mcs.admin.setting.superadmin_only"))
+        LocalPlayer():MCS_Notify("mcs.error.settings_superadmin_only")
         return
     end
 

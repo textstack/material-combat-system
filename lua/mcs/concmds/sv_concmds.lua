@@ -30,23 +30,15 @@ end)
 concommand.Add("mcs_set_health_type", function(ply, _, args)
 	if not IsValid(ply) then return end
 
-	local healthType = MCS.HealthType(args[1])
-	if not healthType then
-		ply:PrintMessage(HUD_PRINTCONSOLE, "Please include a valid health type id.")
-		return
-	end
+	local pass, message = ply:MCS_SetHealthType(args[1])
 
-	if ply.MCS_HasSetHealthType then
-		ply:PrintMessage(HUD_PRINTCONSOLE, "You've already set a health type this life.")
-		return
-	end
+	if pass then
+		local health = "mcs.health." .. args[1] .. ".name"
 
-	if healthType.ID ~= ply:GetNWString("MCS_HealthType", -1) then
-		ply:MCS_SetHealthType(healthType.ID)
-		ply.MCS_HasSetHealthType = true
+		ply:MCS_Notify("mcs.system.set_health_type", health)
+	else
+		ply:MCS_Notify(message)
 	end
-
-	ply:PrintMessage(HUD_PRINTCONSOLE, string.format("Set your health type to %s.", string.lower(healthType.ServerName)))
 end, function(cmd, arg)
 	local autoCompletes = {}
 
@@ -64,35 +56,15 @@ end, "Set your MCS health type.", FCVAR_NONE)
 concommand.Add("mcs_set_armor_type", function(ply, _, args)
 	if not IsValid(ply) then return end
 
-	local armorType = MCS.ArmorType(args[1])
-	if not armorType then
-		ply:PrintMessage(HUD_PRINTCONSOLE, "Please include a valid armor type id.")
-		return
+	local pass, message = ply:MCS_SetArmorType(args[1])
+
+	if pass then
+		local armor = "mcs.armor." .. args[1] .. ".name"
+
+		ply:MCS_Notify("mcs.system.set_armor_type", armor)
+	else
+		ply:MCS_Notify(message)
 	end
-
-	if ply.MCS_HasSetArmorType then
-		ply:PrintMessage(HUD_PRINTCONSOLE, "You've already set an armor type this life.")
-		return
-	end
-
-	local healthType = ply:MCS_GetHealthType()
-
-	if armorType.HealthTypes and not armorType.HealthTypes[healthType.ID] then
-		ply:PrintMessage(HUD_PRINTCONSOLE, "Your current health type doesn't allow this armor type.")
-		return
-	end
-
-	if armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[healthType.ID] then
-		ply:PrintMessage(HUD_PRINTCONSOLE, "Your current health type doesn't allow this armor type.")
-		return
-	end
-
-	if armorType.ID ~= ply:GetNWString("MCS_ArmorType", -1) then
-		ply:MCS_SetArmorType(armorType.ID)
-		ply.MCS_HasSetArmorType = true
-	end
-
-	ply:PrintMessage(HUD_PRINTCONSOLE, string.format("Set your armor type to %s.", string.lower(armorType.ServerName)))
 end, function(cmd, arg)
 	local autoCompletes = {}
 
@@ -110,25 +82,17 @@ end, "Set your MCS armor type.", FCVAR_NONE)
 concommand.Add("mcs_set_augment", function(ply, _, args)
 	if not IsValid(ply) then return end
 
-	local dmgType = MCS.DamageType(args[1])
-	if not dmgType then
-		ply:PrintMessage(HUD_PRINTCONSOLE, "Please include a valid damage type id.")
-		return
+	local pass, message = ply:MCS_SetAugment(args[1], args[2])
+
+	if pass then
+		local dmgType = MCS.DamageType(args[1])
+		local augment = dmgType and ("mcs.damage." .. args[1] .. ".name") or "mcs.nothing"
+		local swep = "#" .. (args[2] or ply:GetActiveWeapon():GetClass())
+
+		ply:MCS_Notify("mcs.system.set_augment", swep, augment)
+	else
+		ply:MCS_Notify(message)
 	end
-
-	local swep = args[2]
-	local success = ply:MCS_SetAugment(dmgType.ID, swep)
-
-	local message = "Couldn't set your augment, sorry :("
-	if success then
-		if swep then
-			message = string.format("Set %s's augment to %s.", swep, string.lower(dmgType.ServerName))
-		else
-			message = string.format("Set your current weapon's augment to %s.", string.lower(dmgType.ServerName))
-		end
-	end
-
-	ply:PrintMessage(HUD_PRINTCONSOLE, message)
 end, function(cmd, arg, args)
 	local autoCompletes = {}
 

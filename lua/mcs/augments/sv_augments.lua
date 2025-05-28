@@ -4,5 +4,9 @@ net.Receive("mcs_augments", function(_, ply)
 	local swep = net.ReadString()
 	local dmgID = net.ReadString()
 
-	ply:MCS_SetAugment(dmgID, swep)
+	local pass, message = ply:MCS_SetAugment(dmgID, swep)
+
+	if not pass then
+		ply:MCS_Notify(message)
+	end
 end)
