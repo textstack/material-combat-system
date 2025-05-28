@@ -5,7 +5,7 @@ net.Receive("mcs_settings", function(_, ply)
 
 	local setting = net.ReadString()
 
-	local conVar = GetConVar("mcs_sv_" .. setting)
+	local conVar = MCS.GetConVar("mcs_sv_" .. setting)
 	if not conVar then return end
 
 	local value = net.ReadString()

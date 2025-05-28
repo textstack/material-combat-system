@@ -1,5 +1,3 @@
-local cfgMag = CreateConVar("mcs_sv_damage_vanillaness", 0.0, FCVAR_ARCHIVE, "How 'close to vanilla' the damage calculations should be on a scale from 0 to 1", 0.0, 1.0)
-
 --[[ Returns each damage type the damageinfo object is associated with
 	inputs:
 		dmg - the CTakeDamageInfo to check
@@ -32,7 +30,7 @@ end
 local function multiplyStat(dmgTypes, mults, center)
 	if not mults or table.IsEmpty(mults) then return 1 end
 
-	local mag = 1 - cfgMag:GetFloat()
+	local mag = 1 - MCS.GetConVar("mcs_sv_damage_vanillaness"):GetFloat()
 	local totalMult = 1
 	local count = 0
 	for _, dmgType in pairs(dmgTypes) do

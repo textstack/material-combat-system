@@ -1,5 +1,4 @@
-local cfgDefaultHealthType = CreateConVar("mcs_sv_default_health_type", "meat", FCVAR_ARCHIVE + FCVAR_REPLICATED, "The default health type for players.")
-local cfgDefaultArmorType = CreateConVar("mcs_sv_default_armor_type", "unarmored", FCVAR_ARCHIVE + FCVAR_REPLICATED, "The default armor type for players.")
+-- MCS_GetArmor() and friends are located in mcs_framework/util! this folder is for health and armor *types*
 
 local ENTITY = FindMetaTable("Entity")
 
@@ -24,7 +23,7 @@ end
 function ENTITY:MCS_GetHealthType()
 	local healthTypeID = self:GetNWString("MCS_HealthType", -1)
 	if healthTypeID == -1 then
-		healthTypeID = cfgDefaultHealthType:GetString()
+		healthTypeID = MCS.GetConVar("mcs_sv_default_health_type"):GetString()
 	end
 
 	return MCS.HealthType(healthTypeID)
@@ -85,7 +84,7 @@ end
 function ENTITY:MCS_GetArmorType()
 	local armorTypeID = self:GetNWString("MCS_ArmorType", -1)
 	if armorTypeID == -1 then
-		armorTypeID = cfgDefaultArmorType:GetString()
+		armorTypeID = MCS.GetConVar("mcs_sv_default_armor_type"):GetString()
 	end
 
 	return MCS.ArmorType(armorTypeID)

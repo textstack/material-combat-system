@@ -1,10 +1,8 @@
 local ENTITY = FindMetaTable("Entity")
 
-cfgEnabled = CreateConVar("mcs_sv_enable_by_default", 1, FCVAR_ARCHIVE + FCVAR_REPLICATED, "Whether players have MCS enabled by default when they join.", 0, 1)
-
 --- Returns whether the entity has the combat system enabled
 function ENTITY:MCS_GetEnabled()
-	return self:GetNWBool("MCS_Enabled", cfgEnabled:GetBool()) or false
+	return self:GetNWBool("MCS_Enabled", MCS.GetConVar("mcs_sv_enable_by_default"):GetBool()) or false
 end
 
 --- Get the armor of an entity
@@ -103,5 +101,5 @@ local vanillaMagDefaults = {
 		any situation where an armor or health type has custom damage multipliers
 --]]
 function MCS.VanillaMag(value, _type)
-	return MCS.Magnitude(value, 1 - GetConVar("mcs_sv_damage_vanillaness"):GetFloat(), vanillaMagDefaults[_type])
+	return MCS.Magnitude(value, 1 - MCS.GetConVar("mcs_sv_damage_vanillaness"):GetFloat(), vanillaMagDefaults[_type])
 end

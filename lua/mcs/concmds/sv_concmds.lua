@@ -1,6 +1,6 @@
 timer.Create("MCS_CheckUserInfo", 1, 0, function()
-	local default = GetConVar("mcs_sv_enable_by_default"):GetBool()
-	local force = GetConVar("mcs_sv_force"):GetBool()
+	local default = MCS.GetConVar("mcs_sv_enable_by_default"):GetBool()
+	local force = MCS.GetConVar("mcs_sv_force"):GetBool()
 
 	for _, ply in player.Iterator() do
 		local enabled

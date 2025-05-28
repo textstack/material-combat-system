@@ -1,9 +1,5 @@
 util.AddNetworkString("mcs_effects")
 
-local cfgSpeedMagnitude = CreateConVar("mcs_sv_effect_speed_magnitude", 0.5, FCVAR_ARCHIVE, "The magnitude of stack decay speed. (0 = nothing, 1 = a lot)", 0.0, 1.0)
-local cfgSpeedFalloff = CreateConVar("mcs_sv_effect_speed_falloff", 1.0, FCVAR_ARCHIVE, "How much the stack decay speed drops per stack applied.")
-local cfgFullStackTimer = CreateConVar("mcs_sv_effect_full_stack_timer", 0, FCVAR_ARCHIVE, "Whether an expired stack timer should immediately remove the effect regardless of stack count.", 0, 1)
-
 local ENTITY = FindMetaTable("Entity")
 
 --- Network the entire effects table
@@ -105,9 +101,9 @@ function ENTITY:MCS_AddEffect(id, amount)
 	}
 
 	effectList[id].count = math.min(effectList[id].count + amount, MCS.MAX_EFFECT_COUNT, effectType.MaxStacks)
-	effectList[id].speed = math.max(effectList[id].speed - amount * cfgSpeedFalloff:GetFloat(), effectList[id].count)
+	effectList[id].speed = math.max(effectList[id].speed - amount * MCS.GetConVar("mcs_sv_effect_speed_falloff"):GetFloat(), effectList[id].count)
 
-	if effectList[id].count == effectType.MaxStacks or cfgFullStackTimer:GetBool() then
+	if effectList[id].count == effectType.MaxStacks or MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool() then
 		runningTime = time
 	end
 
@@ -180,10 +176,10 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 		ent:MCS_TypeHook("OnEffectProc")
 
 		for effectID, data in pairs(effectList) do
-			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * MCS.Magnitude(data.speed, cfgSpeedMagnitude:GetFloat(), 1)
+			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * MCS.Magnitude(data.speed, MCS.GetConVar("mcs_sv_effect_speed_magnitude"):GetFloat(), 1)
 			if data.runningTime > 0 then continue end
 
-			if cfgFullStackTimer:GetBool() then
+			if MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool() then
 				local func = MCS.EffectTypeValue(effectID, "EffectExpired")
 				if func then
 					func(ent, data.count)
