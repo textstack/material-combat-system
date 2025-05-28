@@ -21,6 +21,9 @@ TYPE.Color = color_white
 -- prevent this damage type from showing up anywhere
 TYPE.Hidden = true
 
+-- the damage type(s) applied for weapon augments, remove to not be able to augment
+TYPE.AugmentDamage = DMG_POISON
+
 -- the game damage types that this type maps to
 TYPE.GameDamage = DMG_POISON + DMG_CRUSH
 

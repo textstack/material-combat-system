@@ -58,12 +58,14 @@ end
 	inputs:
 		id - the id of the effect to add
 		amount - the amount of stacks to add, default 1
+	returns:
+		true if the effect applied, false otherwise
 --]]
 function ENTITY:MCS_AddEffect(id, amount)
 	amount = amount or 1
 
 	local result = self:MCS_TypeHook("OnApplyEffect", id, amount)
-	if result ~= nil then return end
+	if result ~= nil then return false end
 
 	local effectType = MCS.EffectType(id)
 
@@ -72,22 +74,22 @@ function ENTITY:MCS_AddEffect(id, amount)
 	end
 
 	if effectType.BaseTime and effectType.BaseTime <= 0 then
-		local func = MCS.EffectTypeValue(id, "EffectApplied")
-		if func then
-			func(self, amount, amount)
-		end
-
-		local func1 = MCS.EffectTypeValue(id, "EffectFirstApplied")
+		local func1 = effectType.EffectFirstApplied
 		if func1 then
 			func1(self, amount)
 		end
 
-		local func2 = MCS.EffectTypeValue(id, "EffectExpired")
+		local func = effectType.EffectApplied
+		if func then
+			func(self, amount, amount)
+		end
+
+		local func2 = effectType.EffectExpired
 		if func2 then
 			func2(self, amount)
 		end
 
-		return
+		return true
 	end
 
 	local effectList = self:MCS_GetEffects()
@@ -103,17 +105,12 @@ function ENTITY:MCS_AddEffect(id, amount)
 	effectList[id].count = math.min(effectList[id].count + amount, MCS.MAX_EFFECT_COUNT, effectType.MaxStacks)
 	effectList[id].speed = math.max(effectList[id].speed - amount * MCS.GetConVar("mcs_sv_effect_speed_falloff"):GetFloat(), effectList[id].count)
 
-	if effectList[id].count == effectType.MaxStacks or MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool() then
+	if effectType.FullStackTimer or effectList[id].count == effectType.MaxStacks or MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool() then
 		runningTime = time
 	end
 
-	local func = MCS.EffectTypeValue(id, "EffectApplied")
-	if func then
-		func(self, effectList[id].count, amount)
-	end
-
 	if not effectList[id].applied then
-		local func1 = MCS.EffectTypeValue(id, "EffectFirstApplied")
+		local func1 = effectType.EffectFirstApplied
 		if func1 then
 			func1(self, amount)
 		end
@@ -121,9 +118,16 @@ function ENTITY:MCS_AddEffect(id, amount)
 		effectList[id].applied = true
 	end
 
+	local func = effectType.EffectApplied
+	if func then
+		func(self, effectList[id].count, amount)
+	end
+
 	MCS.CurrentEffects[self:EntIndex()] = effectList
 
 	self:MCS_BumpEffects()
+
+	return true
 end
 
 --[[ Remove an effect from an entity
@@ -176,19 +180,29 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 		ent:MCS_TypeHook("OnEffectProc")
 
 		for effectID, data in pairs(effectList) do
-			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * MCS.Magnitude(data.speed, MCS.GetConVar("mcs_sv_effect_speed_magnitude"):GetFloat(), 1)
-			if data.runningTime > 0 then continue end
+			local effectType = MCS.EffectType(effectID)
 
-			if MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool() then
-				local func = MCS.EffectTypeValue(effectID, "EffectExpired")
+			if effectType.FullStackTimer or MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool() then
+				data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME
+				if data.runningTime > 0 then continue end
+
+				local func = effectType.EffectStackReduced
 				if func then
-					func(ent, data.count)
+					func(ent, data.count, data.count)
+				end
+
+				local func1 = effectType.EffectExpired
+				if func1 then
+					func1(ent, data.count)
 				end
 
 				MCS.CurrentEffects[entID][effectID] = nil
 
 				continue
 			end
+
+			data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME * MCS.Magnitude(data.speed, MCS.GetConVar("mcs_sv_effect_speed_magnitude"):GetFloat(), 1)
+			if data.runningTime > 0 then continue end
 
 			local reduce = math.floor(-data.runningTime / data.time) + 1
 
@@ -199,12 +213,17 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 			end
 
 			data.runningTime = data.time
-			data.count = data.count - reduce
+			data.count = math.max(data.count - reduce, 0)
+
+			local func = effectType.EffectStackReduced
+			if func then
+				func(ent, data.count, reduce)
+			end
 
 			if data.count > 0 then continue end
 
-			local func = MCS.EffectTypeValue(effectID, "EffectExpired")
-			if func then
+			local func1 = effectType.EffectExpired
+			if func1 then
 				func(ent, 0)
 			end
 

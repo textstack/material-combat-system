@@ -30,7 +30,8 @@ end
 		serverside, use this for npcs and stuff and forcing augments on players
 --]]
 function ENTITY:MCS_SetAugment(id, swep, force)
-	if not MCS.DamageType(id) then
+	local damageType = MCS.DamageType(id)
+	if not damageType or not damageType.AugmentDamage or (not force and damageType.Hidden) then
 		id = nil
 	end
 

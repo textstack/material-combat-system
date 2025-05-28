@@ -101,6 +101,7 @@ end, function(cmd, arg, args)
 
 	for id, dmgType in pairs(MCS.GetDamageTypes()) do
 		if dmgType.Hidden then continue end
+		if not dmgType.AugmentDamage then continue end
 
 		if string.StartsWith(id, cmpArg) then
 			table.insert(autoCompletes, string.format("%s %s%s", cmd, id, add))

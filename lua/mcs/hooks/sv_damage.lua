@@ -89,8 +89,8 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	if not healthType then return end
 
 	local augment = IsValid(attacker) and attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
-	if augment and augment.GameDamage then
-		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.GameDamage))
+	if augment and augment.AugmentDamage then
+		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.AugmentDamage))
 	end
 
 	local dmgTypes = MCS.CalculateDamageTypes(dmg)
@@ -135,6 +135,13 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 			if fail then continue end
 		end
 
-		ent:MCS_AddEffect(effectID, effectType.Burst)
+		local success = ent:MCS_AddEffect(effectID, effectType.Burst)
+
+		local func = effectType.EffectInstantDamage
+		if success and func then
+			local effectTable = ent:MCS_GetEffects()
+			local count = effectTable[effectID] and effectTable[effectID].count or effectType.Burst
+			func(ent, count, dmg)
+		end
 	end
 end)

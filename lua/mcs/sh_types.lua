@@ -55,6 +55,21 @@ function MCS.CreateTypeHook(hookName, typeHookName)
 	end)
 end
 
+--[[ Links up a game hook to a new type hook, supplying the local player
+	inputs:
+		hookName - name of the game hook
+		typeHookName - name of the new type hook
+--]]
+if CLIENT then
+	function MCS.CreateClientTypeHook(hookName, typeHookName)
+		hook.Add(hookName, "MCS_" .. typeHookName, function(...)
+			if LocalPlayer():MCS_GetEnabled() then
+				return LocalPlayer():MCS_TypeHook(typeHookName, ...)
+			end
+		end)
+	end
+end
+
 --[[ Make a table defining a valid type object
 	inputs:
 		TYPE - the table defining the type

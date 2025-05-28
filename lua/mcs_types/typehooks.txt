@@ -12,6 +12,14 @@ remember:
 
 #######################
 
+    SERVER - runs on the server
+    CLIENT - runs on the client
+    SHARED - runs on both server and client
+    LOCALIZED - runs on a specific type instance instead of the entity's entire set of types
+    PREDICTED - https://wiki.facepunch.com/gmod/prediction
+
+#######################
+
 OnTakeDamage(dmg) SERVER
     description:
         called when the entity takes damage
@@ -109,3 +117,52 @@ OnSwitchFrom() SERVER LOCALIZED
 OnSwitchTo() SERVER LOCALIZED
     description:
         called on a health type or armor type when it is switched to
+
+EffectInstantDamage(dmg) SERVER LOCALIZED
+    description:
+        called on an effect the moment it gets applied in a damage event
+    arguments:
+        dmg - the CTakeDamageInfo of the damage instance
+    usage:
+        any effect that is intended to deal instant damage on apply
+
+EffectStackReduced(reduce) SERVER LOCALIZED
+    description:
+        called on an effect when its stack gets reduced
+    arguments:
+        reduce - how many stacks expired this tick
+
+PlayerSetupMove(mv, cmd) SHARED PREDICTED
+    description:
+        called before the engine processes movements on a player (https://wiki.facepunch.com/gmod/GM:SetupMove)
+    arguments:
+        mv - the CMoveData of the movement
+        cmd - the CUserCmd of the movement
+
+DrawOverlay() CLIENT
+    description:
+        2d draw hook that renders after literally everything else in the game
+
+PostDrawOpaqueRenderables(drawingDepth, drawingSkybox, isDraw3dSkybox) CLIENT
+    description:
+        3d draw hook that renders after drawing all opaque entities
+    arguments:
+        drawingDepth - whether the current draw is writing depth
+        drawingSkybox - whether the current draw is drawing the skybox (3d or 2d), for 2d skyboxes this might always be true
+        isDraw3dSkybox - whether the current draw is drawing the 3d skybox
+
+PostDrawTranslucentRenderables(drawingDepth, drawingSkybox, isDraw3dSkybox) CLIENT
+    description:
+        3d draw hook that renders after drawing all translucent entities
+    arguments:
+        drawingDepth - whether the current draw is writing depth
+        drawingSkybox - whether the current draw is drawing the skybox (3d or 2d), for 2d skyboxes this might always be true
+        isDraw3dSkybox - whether the current draw is drawing the 3d skybox
+
+RenderScreenspaceEffects() CLIENT
+    description:
+        2d draw hook intended for drawing post processing effects (https://wiki.facepunch.com/gmod/GM:RenderScreenspaceEffects)
+
+SetupFog() client
+    description:
+        Allows usage of render.Fog* functions to mess with fog, applies to both skybox and world

@@ -1,0 +1,1 @@
+MCS.CreateTypeHook("SetupMove", "PlayerSetupMove")

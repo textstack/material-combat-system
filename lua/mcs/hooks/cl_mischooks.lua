@@ -1,0 +1,6 @@
+MCS.CreateClientTypeHook("DrawOverlay", "DrawOverlay")
+MCS.CreateClientTypeHook("PostDrawOpaqueRenderables", "PostDrawOpaqueRenderables")
+MCS.CreateClientTypeHook("PostDrawTranslucentRenderables", "PostDrawTranslucentRenderables")
+MCS.CreateClientTypeHook("RenderScreenspaceEffects", "RenderScreenspaceEffects")
+MCS.CreateClientTypeHook("SetupWorldFog", "SetupFog")
+MCS.CreateClientTypeHook("SetupSkyboxFog", "SetupFog")
