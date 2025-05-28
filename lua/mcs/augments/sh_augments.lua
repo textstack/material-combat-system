@@ -52,6 +52,7 @@ function ENTITY:MCS_SetAugment(id, swep, force)
 		net.WriteString(swep)
 		net.WriteString(id or "")
 		net.SendToServer()
+
 		return true
 	end
 

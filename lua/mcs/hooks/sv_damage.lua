@@ -50,9 +50,6 @@ end
 local function armorHandling(ent, dmg)
 	if not ent:MCS_GetEnabled() then return end
 
-	local attacker = dmg:GetAttacker()
-	if IsValid(attacker) and not attacker:MCS_GetEnabled() then return end
-
 	if bit.band(dmg:GetDamageType(), DMG_DIRECT) == DMG_DIRECT then return false end
 
 	local result = ent:MCS_TypeHook("HandleArmorReduction", dmg)
@@ -80,17 +77,11 @@ end
 hook.Add("HandlePlayerArmorReduction", "MCS_Damage", armorHandling)
 
 hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
-	local attacker = dmg:GetAttacker()
-	if not ent:MCS_GetEnabled() then
-		if IsValid(attacker) and attacker:MCS_GetEnabled() then return true end
-		return
-	end
-	if not IsValid(attacker) then return end
-	if not attacker:MCS_GetEnabled() then return true end
+	if not ent:MCS_GetEnabled() then return end
 
 	if bit.band(dmg:GetDamageType(), DMG_DIRECT) == DMG_DIRECT then return end
 
-	local attResult = attacker:MCS_TypeHook("OnDealDamage", dmg)
+	local attResult = IsValid(attacker) and attacker:MCS_TypeHook("OnDealDamage", dmg)
 	if attResult then return true end
 
 	local result = ent:MCS_TypeHook("OnTakeDamage", dmg)
@@ -99,7 +90,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	local healthType = ent:MCS_GetHealthType()
 	if not healthType then return end
 
-	local augment = attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
+	local augment = IsValid(attacker) and attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
 	if augment and augment.GameDamage then
 		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.GameDamage))
 	end

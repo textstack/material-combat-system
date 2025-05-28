@@ -19,6 +19,8 @@ local ENTITY = FindMetaTable("Entity")
 		-- output would be "bar law"
 --]]
 function ENTITY:MCS_TypeHook(eventName, ...)
+	if not self:MCS_GetEnabled() then return end
+
 	local healthEvent = self:MCS_GetHealthTypeValue(eventName)
 	if healthEvent then
 		local result = healthEvent(self, ...)
@@ -38,6 +40,19 @@ function ENTITY:MCS_TypeHook(eventName, ...)
 		local result = effectEvent(self, data.count, ...)
 		if result ~= nil then return result end
 	end
+end
+
+--[[ Links up a game hook to a new type hook
+	inputs:
+		hookName - name of the game hook
+		typeHookName - name of the new type hook
+--]]
+function MCS.CreateTypeHook(hookName, typeHookName)
+	hook.Add(hookName, "MCS_" .. typeHookName, function(ent, ...)
+		if ent:MCS_GetEnabled() then
+			return ent:MCS_TypeHook(typeHookName, ...)
+		end
+	end)
 end
 
 --[[ Make a table defining a valid type object

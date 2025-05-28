@@ -28,6 +28,8 @@ function ENTITY:MCS_SetArmor(amount)
 		return
 	end
 
+	if self:GetMaxHealth() <= 0 then return end
+
 	self:SetNWFloat("MCS_Armor", amount)
 end
 
@@ -37,6 +39,8 @@ function ENTITY:MCS_SetMaxArmor(amount)
 		self:SetMaxArmor(amount)
 		return
 	end
+
+	if self:GetMaxHealth() <= 0 then return end
 
 	self:SetNWFloat("MCS_MaxArmor", amount)
 end

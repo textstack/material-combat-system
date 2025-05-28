@@ -13,6 +13,8 @@ function ENTITY:MCS_GetArmor()
 		return self:Armor()
 	end
 
+	if self:GetMaxHealth() <= 0 then return 0 end
+
 	return self:GetNWFloat("MCS_Armor", 0)
 end
 
@@ -21,6 +23,8 @@ function ENTITY:MCS_GetMaxArmor()
 	if self:IsPlayer() then
 		return self:GetMaxArmor()
 	end
+
+	if self:GetMaxHealth() <= 0 then return 0 end
 
 	return self:GetNWFloat("MCS_MaxArmor", 100)
 end
@@ -60,19 +64,6 @@ end
 --]]
 function ENTITY:MCS_TimerExists(name)
 	return timer.Exists("MCS_" .. name .. self:EntIndex())
-end
-
---[[ Links up a game hook to a new type hook
-	inputs:
-		hookName - name of the game hook
-		typeHookName - name of the new type hook
---]]
-function MCS.CreateTypeHook(hookName, typeHookName)
-	hook.Add(hookName, "MCS_" .. typeHookName, function(ent, ...)
-		if ent:MCS_GetEnabled() then
-			return ent:MCS_TypeHook(typeHookName, ...)
-		end
-	end)
 end
 
 --- Capitalize a string in simple title case
