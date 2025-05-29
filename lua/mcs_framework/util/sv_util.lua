@@ -98,8 +98,14 @@ end
 		enabled - if false, entity cannot gain health
 --]]
 function ENTITY:MCS_SetCanHeal(enabled)
+	if enabled then
+		self.MCS_PrevHealth = nil
+		self.MCS_AntiHeal = nil
+		return
+	end
+
 	self.MCS_PrevHealth = self:Health()
-	self.MCS_AntiHeal = not enabled
+	self.MCS_AntiHeal = true
 end
 
 --[[ Set whether an entity can gain armor
@@ -107,8 +113,14 @@ end
 		enabled - if false, entity cannot gain armor
 --]]
 function ENTITY:MCS_SetCanGainArmor(enabled)
+	if enabled then
+		self.MCS_PrevArmor = nil
+		self.MCS_AntiArmor = nil
+		return
+	end
+
 	self.MCS_PrevArmor = self:MCS_GetArmor()
-	self.MCS_AntiArmor = not enabled
+	self.MCS_AntiArmor = true
 end
 
 --[[ Returns every entity with MCS enabled
@@ -135,6 +147,11 @@ end)
 
 hook.Add("EntityRemoved", "MCS_FindMCSEnts", function(ent)
 	mcsEntities[ent:EntIndex()] = nil
+end)
+
+hook.Add("PostPlayerDeath", "MCS_RemoveAntiHeal", function(ply)
+	ply:MCS_SetCanHeal(true)
+	ply:MCS_SetCanGainArmor(true)
 end)
 
 hook.Add("Think", "MCS_AntiHeal", function()
