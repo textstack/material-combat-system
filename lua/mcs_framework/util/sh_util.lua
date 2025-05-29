@@ -4,7 +4,19 @@ local ENTITY = FindMetaTable("Entity")
 
 --- Returns whether the entity has the combat system enabled
 function ENTITY:MCS_GetEnabled()
-	return self:GetNWBool("MCS_Enabled", MCS.GetConVar("mcs_sv_enable_by_default"):GetBool()) or false
+	if self:GetMaxHealth() <= 0 then return false end
+
+	local enabled = self:GetNWBool("MCS_Enabled", -1)
+
+	if enabled == -1 then
+		if self:IsNextBot() or self:IsNPC() or self:IsPlayer() then
+			enabled = MCS.GetConVar("mcs_sv_enable_by_default"):GetBool()
+		else
+			enabled = false
+		end
+	end
+
+	return enabled or false
 end
 
 --- Get the armor of an entity
@@ -14,6 +26,9 @@ function ENTITY:MCS_GetArmor()
 	end
 
 	if self:GetMaxHealth() <= 0 then return 0 end
+
+	local result = self:MCS_TypeHook("EntityGetArmor")
+	if result ~= nil then return result end
 
 	return self:GetNWFloat("MCS_Armor", 0)
 end
@@ -25,6 +40,9 @@ function ENTITY:MCS_GetMaxArmor()
 	end
 
 	if self:GetMaxHealth() <= 0 then return 0 end
+
+	local result = self:MCS_TypeHook("EntityGetMaxArmor")
+	if result ~= nil then return result end
 
 	return self:GetNWFloat("MCS_MaxArmor", 100)
 end

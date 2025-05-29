@@ -70,6 +70,8 @@ if CLIENT then
 	end
 end
 
+local inheritTypes = {}
+
 --[[ Make a table defining a valid type object
 	inputs:
 		TYPE - the table defining the type
@@ -100,7 +102,30 @@ function MCS.RegisterType(TYPE)
 
 	if TYPE.DoNotLoad then return end
 
+	if TYPE._InheritedType then
+		if MCS_LOADED then
+			local inheritType = typeSet[TYPE._InheritedType]
+			if inheritType then
+				table.Inherit(TYPE, inheritType)
+			end
+		else
+			inheritTypes[TYPE.Set] = inheritTypes[TYPE.Set] or {}
+			inheritTypes[TYPE.Set][TYPE.ID] = true
+		end
+	end
+
 	typeSet[TYPE.ID] = TYPE
+end
+
+--[[ Make a type object inherit values from a different type
+	inputs:
+		id - id of the type to inherit from
+	usage:
+		you have a type that's similar to another
+		this doesn't work with chains of inheritance!
+--]]
+function MCS.InheritType(TYPE, id)
+	TYPE._InheritedType = id
 end
 
 --[[
@@ -153,3 +178,20 @@ for _, typeSet in ipairs(dirs) do
 		includeTypeSet(fl, subdir, typeSet)
 	end
 end
+
+for set, types in pairs(inheritTypes) do
+	local typeSet = MCS.Types[set]
+	if not typeSet then continue end
+
+	for id, _ in pairs(types) do
+		local TYPE = typeSet[id]
+		if not TYPE or not TYPE._InheritedType then continue end
+
+		local inheritType = typeSet[TYPE._InheritedType]
+		if inheritType then
+			table.Inherit(TYPE, inheritType)
+		end
+	end
+end
+
+inheritTypes = nil

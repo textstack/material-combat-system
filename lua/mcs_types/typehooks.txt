@@ -163,6 +163,18 @@ RenderScreenspaceEffects() CLIENT
     description:
         2d draw hook intended for drawing post processing effects (https://wiki.facepunch.com/gmod/GM:RenderScreenspaceEffects)
 
-SetupFog() client
+SetupFog() CLIENT
     description:
         Allows usage of render.Fog* functions to mess with fog, applies to both skybox and world
+
+EntityGetArmor() SHARED
+    description:
+        Called when a non-player gets their armor checked
+    return:
+        any number value the armor should be
+
+EntityGetMaxArmor() SHARED
+    description:
+        Called when a non-player gets their max armor checked
+    return:
+        any number value the max armor should be

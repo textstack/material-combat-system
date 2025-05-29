@@ -17,3 +17,11 @@ hook.Add("entity_killed", "MCS_EntityKilled", function(data)
 		victim:MCS_ClearEffects()
 	end
 end)
+
+hook.Add("OnEntityCreated", "MCS_OnEntityCreated", function(ent)
+	timer.Simple(0, function()
+		if IsValid(ent) and ent:MCS_GetEnabled() then
+			ent:MCS_TypeHook("OnEnabled")
+		end
+	end)
+end)

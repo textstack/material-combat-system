@@ -6,13 +6,42 @@ TYPE.ServerName = "Unarmored"
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = Color(128, 128, 128)
 
-local function noArmor(ent)
-	ent:MCS_SetArmor(0)
+if SERVER then
+	local noArmorEnts = {}
+
+	hook.Add("Think", "MCS_Unarmored", function()
+		for id, ent in pairs(noArmorEnts) do
+			if not IsValid(ent) then
+				noArmorEnts[id] = nil
+				continue
+			end
+
+			ent:MCS_SetArmor(0)
+		end
+	end)
+
+	local function enable(ent)
+		if ent:IsPlayer() then
+			noArmorEnts[ent:EntIndex()] = ent
+		end
+	end
+
+	local function disable(ent)
+		noArmorEnts[ent:EntIndex()] = nil
+	end
+
+	TYPE.OnEnabled = enable
+	TYPE.OnSwitchTo = enable
+
+	TYPE.OnDisabled = disable
+	TYPE.OnSwitchFrom = disable
 end
 
-TYPE.OnTakeDamage = noArmor
-TYPE.OnSwitchTo = noArmor
-TYPE.OnPlayerSpawn = noArmor
-TYPE.OnEnabled = noArmor
+local function noArmor()
+	return 0
+end
+
+TYPE.EntityGetArmor = noArmor
+TYPE.EntityGetMaxArmor = noArmor
 
 MCS.RegisterType(TYPE)

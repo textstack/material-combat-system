@@ -24,6 +24,7 @@ TYPE.Burst = 1 -- how many stacks to apply if the chance succeeds
 TYPE.Reducible = true -- whether a hit with multiple damage types reduces this effect's apply chance
 TYPE.InflictSound = "" -- sound when the effect is applied
 TYPE.FullStackTimer = false -- whether a depleted stack timer destroys the entire effect instead of 1 stack
+TYPE.NoTimerResets = false -- prevents the decay timer from resetting in any situation
 
 TYPE.DamageTypes = {
 	["example"] = true

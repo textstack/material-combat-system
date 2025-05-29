@@ -62,12 +62,14 @@ end
 		true if the effect applied, false otherwise
 --]]
 function ENTITY:MCS_AddEffect(id, amount)
+	local effectType = MCS.EffectType(id)
+
 	amount = amount or 1
+	amount = math.min(amount, MCS.MAX_EFFECT_COUNT, effectType.MaxStacks)
+	if amount == 0 then return end
 
 	local result = self:MCS_TypeHook("OnApplyEffect", id, amount)
 	if result ~= nil then return false end
-
-	local effectType = MCS.EffectType(id)
 
 	if effectType.InflictSound then
 		self:EmitSound(effectType.InflictSound, nil, nil, 0.75, CHAN_BODY)
@@ -105,7 +107,7 @@ function ENTITY:MCS_AddEffect(id, amount)
 	effectList[id].count = math.min(effectList[id].count + amount, MCS.MAX_EFFECT_COUNT, effectType.MaxStacks)
 	effectList[id].speed = math.max(effectList[id].speed - amount * MCS.GetConVar("mcs_sv_effect_speed_falloff"):GetFloat(), effectList[id].count)
 
-	if effectType.FullStackTimer or effectList[id].count == effectType.MaxStacks or MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool() then
+	if not effectType.NoTimerResets and (effectType.FullStackTimer or effectList[id].count == effectType.MaxStacks or MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool()) then
 		runningTime = time
 	end
 
