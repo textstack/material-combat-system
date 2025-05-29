@@ -113,7 +113,7 @@ end
 
 --[[ Returns every entity with MCS enabled
 	output:
-		the mcs entities in a sequential table; validity not guaranteed
+		the mcs entities; validity not guaranteed
 --]]
 function MCS.GetMCSEntities()
 	return mcsEntities
@@ -133,8 +133,14 @@ hook.Add("OnEntityCreated", "MCS_FindMCSEnts", function(ent)
 	end)
 end)
 
+hook.Add("EntityRemoved", "MCS_FindMCSEnts", function(ent)
+	mcsEntities[ent:EntIndex()] = nil
+end)
+
 hook.Add("Think", "MCS_AntiHeal", function()
-	for _, ent in ipairs(mcsEntities) do
+	for _, ent in pairs(mcsEntities) do
+		if not IsValid(ent) then continue end
+
 		if ent.MCS_AntiArmor then
 			local armorAmt = ent:MCS_GetArmor()
 
