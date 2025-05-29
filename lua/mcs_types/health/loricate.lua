@@ -34,7 +34,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 1.75, --penetrated bullets have nothing to interrupt movement once they've penetrated
 	["thermal"] = 0.25, --to get to your important parts, it has to go through your outer surface first.
 	["chemical"] = 1.5, --your surface's breathing holes are extremely vulnerable to reactions. see: how dish soap kills bees
-	["electricity"] = 1, --your outer carapace is neutral against electricity
+	["voltage"] = 1, --your outer carapace is neutral against voltage
 	["subatomic"] = 1.25 --radiation quickly hollows out bones, so there's no telling what it'll do to your exoskeleton.
 }
 

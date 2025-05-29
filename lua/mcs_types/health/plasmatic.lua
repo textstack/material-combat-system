@@ -34,7 +34,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 0.25, --you can put a hole into a slime, but it really isn't going to change it very much.
 	["thermal"] = 1, --from slimes, to ghosts, and divine entities, fire averages out to be pretty much neutral.
 	["chemical"] = 1.5, --demons, though resistant to physical attack, very easily absorb holy water. every entity in this category has an analogue.
-	["electricity"] = 1.25, --These are beings of vague, wobbly energy--fluids. Electricity loves fluids.
+	["voltage"] = 1.25, --These are beings of vague, wobbly energy--fluids. voltage loves fluids.
 	["subatomic"] = 1.75 --egon gun
 }
 

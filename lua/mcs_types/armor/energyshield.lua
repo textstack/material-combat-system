@@ -13,7 +13,7 @@ Multiplier key:
     1.0: doesn't block at all (x-rays against cardboard)
     0.75: cushons against (person fell against dirt as opposed to concrete)
     0.5: absorbs damage from (crumple factor of a car)
-    0.25: industrial grade protection against (electricity against kevlar)
+    0.25: industrial grade protection against (voltage against kevlar)
 ]]--
 
 TYPE.Symbols = { "⊡", "⊠" }
@@ -23,7 +23,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 0.0,
 	["thermal"] = 1.0,
 	["chemical"] = 0.25,
-	["electricity"] = 3.0,
+	["voltage"] = 3.0,
 	["subatomic"] = 0.25
 }
 
@@ -43,7 +43,7 @@ TYPE.DrainRate = {
 	["penetrating"] = 3.0,
 	["thermal"] = 0.5,
 	["chemical"] = 0.25,
-	["electricity"] = 2.0,
+	["voltage"] = 2.0,
 	["subatomic"] = 1
 }
 

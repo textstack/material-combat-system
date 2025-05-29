@@ -34,7 +34,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 0.75, --there's more empty space inside a machine compared to a lot of other hp types.
 	["thermal"] = 0.25, --try not to overheat
 	["chemical"] = 1.5, --immediately sensitive to basically all liquids during normal operation
-	["electricity"] = 1.75, --a computer can handle a drop of water, but the little bit of ESD from your finger can instantly kill it
+	["voltage"] = 1.75, --a computer can handle a drop of water, but the little bit of ESD from your finger can instantly kill it
 	["subatomic"] = 0.5 --general system disruption can pretty quickly kill you if you let it
 }
 

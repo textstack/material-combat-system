@@ -34,7 +34,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 1.25, --trees take quite a lot of hail damage
 	["thermal"] = 1.75, --this hp type should be the most flammable because wood is wood
 	["chemical"] = 0.5, --do not salt the earth
-	["electricity"] = 1, --trees are okay conductors. water content & sap.
+	["voltage"] = 1, --trees are okay conductors. water content & sap.
 	["subatomic"] = 0.25 --wood just sucks up isotopes for some reason. a lot of plants do.
 }
 

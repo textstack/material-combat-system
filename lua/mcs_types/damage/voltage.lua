@@ -8,8 +8,8 @@ local TYPE = {}
 -- generic elements
 
 TYPE.Set = "damage"
-TYPE.ID = "electricity"
-TYPE.ServerName = "Electricity" -- the server doesn't have access to localization
+TYPE.ID = "voltage"
+TYPE.ServerName = "Voltage" -- the server doesn't have access to localization
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 

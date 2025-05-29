@@ -34,7 +34,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 1.5, --pickaxes exist
 	["thermal"] = 1.25, --thermal shock has a huge effect on these substances
 	["chemical"] = 0.75, --some porous rocks completely dissolve on contact with 
-	["electricity"] = 0.5, --with enough charge, you can cause microfractures on the inside of the rock.
+	["voltage"] = 0.5, --with enough charge, you can cause microfractures on the inside of the rock.
 	["subatomic"] = 1 --inorganic solids tend to heavily rely on their atomic-level structure way more than people think. Look up how borosilicate glass differs from soda-lime glass.
 }
 

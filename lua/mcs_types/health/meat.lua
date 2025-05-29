@@ -25,7 +25,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 1.5, --being shot drops you a little bit slower than being sliced
 	["thermal"] = 0.5, --taking too many burns too quickly can kill you from shock
 	["chemical"] = 0.75, --toxins like mustard gas drop you faster than a stabbing would
-	["electricity"] = 1.25, --it's easy to be tazed to death while expending the same amount of energy used in a gun or blade
+	["voltage"] = 1.25, --it's easy to be tazed to death while expending the same amount of energy used in a gun or blade
 	["subatomic"] = 0.25 --this will just kill you later
 }
 

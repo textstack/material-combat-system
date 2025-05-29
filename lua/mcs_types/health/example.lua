@@ -36,7 +36,7 @@ TYPE.DamageMultipliers = {
 	["penetrating"] = 1,
 	["thermal"] = 1,
 	["chemical"] = 1,
-	["electricity"] = 1,
+	["voltage"] = 1,
 	["subatomic"] = 1
 }
 
