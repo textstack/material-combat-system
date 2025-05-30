@@ -63,7 +63,7 @@ end
 if CLIENT then
 	function MCS.CreateClientTypeHook(hookName, typeHookName)
 		hook.Add(hookName, "MCS_" .. typeHookName, function(...)
-			if LocalPlayer():MCS_GetEnabled() then
+			if IsValid(LocalPlayer()) and LocalPlayer():MCS_GetEnabled() then
 				return LocalPlayer():MCS_TypeHook(typeHookName, ...)
 			end
 		end)

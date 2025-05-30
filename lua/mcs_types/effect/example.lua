@@ -22,7 +22,7 @@ TYPE.MaxStacks = 4000000000 -- max stacks that can be applied at once
 TYPE.InflictChance = 0.5 -- base chance to apply per hit, if this isn't here this effect cannot apply on hit
 TYPE.Burst = 1 -- how many stacks to apply if the chance succeeds
 TYPE.Reducible = true -- whether a hit with multiple damage types reduces this effect's apply chance
-TYPE.InflictSound = "" -- sound when the effect is applied
+TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav" -- sound when the effect is applied
 TYPE.FullStackTimer = false -- whether a depleted stack timer destroys the entire effect instead of 1 stack
 TYPE.NoTimerResets = false -- prevents the decay timer from resetting in any situation
 

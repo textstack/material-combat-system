@@ -69,11 +69,11 @@ OnEffectProc() SERVER
     description:
         called when effects are procced (every 0.5 seconds), intended to be used in effect types
 
-OnApplyEffect(id, amount) SERVER
+OnApplyEffect(effectType, amount) SERVER
     description:
         called when an effect is applied to an entity
     arguments:
-        id - id of the effect
+        effectType - the effect type object of the effect to be applied
         amount - how many stacks are being applied at once
     return:
         any value to cancel the application
@@ -178,3 +178,9 @@ EntityGetMaxArmor() SHARED
         Called when a non-player gets their max armor checked
     return:
         any number value the max armor should be
+
+EffectCanApply(amount) SERVER LOCALIZED
+    description:
+        Called on an effect to determine if an incoming application is allowed
+    arguments:
+        amount - the amount of stacks to be applied

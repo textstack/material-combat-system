@@ -79,6 +79,11 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	if bit.band(dmg:GetDamageType(), DMG_DIRECT) == DMG_DIRECT then return end
 
+	local augment = IsValid(attacker) and attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
+	if augment and augment.AugmentDamage then
+		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.AugmentDamage))
+	end
+
 	local attResult = IsValid(attacker) and attacker:MCS_TypeHook("OnDealDamage", dmg)
 	if attResult then return true end
 
@@ -87,11 +92,6 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	local healthType = ent:MCS_GetHealthType()
 	if not healthType then return end
-
-	local augment = IsValid(attacker) and attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
-	if augment and augment.AugmentDamage then
-		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.AugmentDamage))
-	end
 
 	local dmgTypes = MCS.CalculateDamageTypes(dmg)
 	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers, 1)
@@ -105,7 +105,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
 		if not effectType.InflictChance then continue end
-		if math.random() > effectType.InflictChance then continue end
+		if ent.MCS_StatusGuarantee or math.random() > effectType.InflictChance then continue end
 		if effectType.Reducible and math.random() > reduce then continue end
 
 		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end

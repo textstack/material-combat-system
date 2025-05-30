@@ -54,6 +54,44 @@ function ENTITY:MCS_BumpEffects()
 	end)
 end
 
+--[[ Adds effects to an entity according to health and damage type
+	inputs:
+		damageTypeID - the ID of the damage type for the effect
+		amount - the amount of stacks to add, default 1
+--]]
+function ENTITY:MCS_AddTypedEffects(damageTypeID, amount)
+	local healthType = self:MCS_GetHealthType()
+	if not healthType then return end
+
+	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
+		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end
+		if effectType.HealthTypeBlacklist and effectType.HealthTypeBlacklist[healthType.ID] then continue end
+		if effectType.DamageTypes and not effectType.DamageTypes[damageTypeID] then continue end
+		if effectType.DamageTypeBlacklist and effectType.DamageTypeBlacklist[damageTypeID] then continue end
+
+		self:MCS_AddEffect(effectID, amount)
+	end
+end
+
+--[[ Removes effects from an entity according to health and damage type
+	inputs:
+		damageTypeID - the ID of the damage type for the effect
+		amount - the amount of stacks to remove, nil for all
+--]]
+function ENTITY:MCS_RemoveTypedEffects(damageTypeID, amount)
+	local healthType = self:MCS_GetHealthType()
+	if not healthType then return end
+
+	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
+		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end
+		if effectType.HealthTypeBlacklist and effectType.HealthTypeBlacklist[healthType.ID] then continue end
+		if effectType.DamageTypes and not effectType.DamageTypes[damageTypeID] then continue end
+		if effectType.DamageTypeBlacklist and effectType.DamageTypeBlacklist[damageTypeID] then continue end
+
+		self:MCS_RemoveEffect(effectID, amount)
+	end
+end
+
 --[[ Add an effect to an entity
 	inputs:
 		id - the id of the effect to add
@@ -68,7 +106,14 @@ function ENTITY:MCS_AddEffect(id, amount)
 	amount = math.min(amount, MCS.MAX_EFFECT_COUNT, effectType.MaxStacks)
 	if amount == 0 then return end
 
-	local result = self:MCS_TypeHook("OnApplyEffect", id, amount)
+	local effectList = self:MCS_GetEffects()
+
+	local canApply = effectType.EffectCanApply
+	if canApply and not canApply(self, effectList[id] and effectList[id].count or amount, amount) then
+		return false
+	end
+
+	local result = self:MCS_TypeHook("OnApplyEffect", effectType, amount)
 	if result ~= nil then return false end
 
 	if effectType.InflictSound then
@@ -93,8 +138,6 @@ function ENTITY:MCS_AddEffect(id, amount)
 
 		return true
 	end
-
-	local effectList = self:MCS_GetEffects()
 
 	effectList[id] = effectList[id] or {
 		count = 0,

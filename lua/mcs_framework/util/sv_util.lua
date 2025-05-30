@@ -78,12 +78,23 @@ function ENTITY:MCS_TypelessDamage(amount, attacker, inflictor)
 	self:TakeDamageInfo(dmg)
 end
 
+--[[ Make an entity lose armor
+	inputs:
+		amount - the amount of damage
+--]]
+function ENTITY:MCS_ArmorDamage(amount)
+	if amount < 0 then return end
+
+	self:MCS_SetArmor(math.max(self:MCS_GetArmor() + amount, 0))
+end
+
 --[[ Heal an entity by an amount
 	inputs:
 		amount - the amount of health to heal
 --]]
 function ENTITY:MCS_Heal(amount)
 	if amount < 0 then return end
+	if self.MCS_AntiHeal then return end
 
 	local healthAmt = self:Health()
 	local maxHealthAmt = self:GetMaxHealth()
@@ -91,6 +102,22 @@ function ENTITY:MCS_Heal(amount)
 	if healthAmt >= maxHealthAmt then return end
 
 	self:SetHealth(math.min(healthAmt + amount, maxHealthAmt))
+end
+
+--[[ Repair an entity's armor by an amount
+	inputs:
+		amount - the amount of armor to repair
+--]]
+function ENTITY:MCS_RepairArmor(amount)
+	if amount < 0 then return end
+	if self.MCS_AntiArmor then return end
+
+	local armorAmt = self:MCS_GetArmor()
+	local maxArmorAmt = self:MCS_GetMaxArmor()
+
+	if armorAmt >= maxArmorAmt then return end
+
+	self:MCS_SetArmor(math.min(armorAmt + amount, maxArmorAmt))
 end
 
 --[[ Set whether an entity can heal
@@ -112,7 +139,7 @@ end
 	inputs:
 		enabled - if false, entity cannot gain armor
 --]]
-function ENTITY:MCS_SetCanGainArmor(enabled)
+function ENTITY:MCS_SetCanRepairArmor(enabled)
 	if enabled then
 		self.MCS_PrevArmor = nil
 		self.MCS_AntiArmor = nil
@@ -151,7 +178,7 @@ end)
 
 hook.Add("PostPlayerDeath", "MCS_RemoveAntiHeal", function(ply)
 	ply:MCS_SetCanHeal(true)
-	ply:MCS_SetCanGainArmor(true)
+	ply:MCS_SetCanRepairArmor(true)
 end)
 
 hook.Add("Think", "MCS_AntiHeal", function()
