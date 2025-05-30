@@ -35,7 +35,7 @@ local function multiplyStat(dmgTypes, mults, center)
 	local count = 0
 	for _, dmgType in pairs(dmgTypes) do
 		if mults[dmgType.ID] then
-			totalMult = totalMult * MCS.Magnitude(healthMult[dmgType.ID], mag, center)
+			totalMult = totalMult * MCS.Magnitude(mults[dmgType.ID], mag, center)
 			count = count + 1
 		end
 	end

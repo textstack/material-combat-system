@@ -22,18 +22,17 @@ Multiplier key:
     0.25: industrial grade protection against (voltage against kevlar)
 ]]--
 
-TYPE.DamageMultipliers = {
-	["splitting"] = 0.25,
-	["kinetic"] = 0.25,
-	["penetrating"] = 0.25,
-	["thermal"] = 0.25,
-	["chemical"] = 0.25,
-	["voltage"] = 0.25,
-	["subatomic"] = 0.25
-}
-
--- the above is for show, this is what actually does the calculations
 local dmgMult = 0.25
+
+TYPE.DamageMultipliers = {
+	["splitting"] = dmgMult,
+	["kinetic"] = dmgMult,
+	["penetrating"] = dmgMult,
+	["thermal"] = dmgMult,
+	["chemical"] = dmgMult,
+	["voltage"] = dmgMult,
+	["subatomic"] = dmgMult
+}
 
 --[[
 Drain key: 
@@ -46,13 +45,13 @@ Drain key:
 ]]--
 
 TYPE.DrainRate = {
-	["splitting"] = 0,
-	["kinetic"] = 0,
-	["penetrating"] = 0,
-	["thermal"] = 0,
-	["chemical"] = 0,
-	["voltage"] = 0,
-	["subatomic"] = 0
+	["splitting"] = 1 - dmgMult,
+	["kinetic"] = 1 - dmgMult,
+	["penetrating"] = 1 - dmgMult,
+	["thermal"] = 1 - dmgMult,
+	["chemical"] = 1 - dmgMult,
+	["voltage"] = 1 - dmgMult,
+	["subatomic"] = 1 - dmgMult
 }
 
 local function degenerate(ent)

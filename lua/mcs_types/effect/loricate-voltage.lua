@@ -25,7 +25,7 @@ function TYPE:EffectFirstApplied()
 		return
 	end
 
-	self:SetVelocity(0)
+	self:SetVelocity(vector_origin)
 end
 
 MCS.RegisterType(TYPE)

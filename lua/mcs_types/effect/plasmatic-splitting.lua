@@ -20,12 +20,12 @@ TYPE.HealthTypes = {
 function TYPE:EffectInstantDamage(_, dmg)
 	dmg:ScaleDamage(1.25)
 
-	local healAmt = self.MCS_PlasmaSplRepair + dmg:GetDamage() / 10
+	local healAmt = dmg:GetDamage() / 10
 
 	self.MCS_PlasmaSplRepair = self.MCS_PlasmaSplRepair or 0
 	self.MCS_PlasmaSplRepairMax = self.MCS_PlasmaSplRepair or 0
-	self.MCS_PlasmaSplRepair = healAmt
-	self.MCS_PlasmaSplRepairMax = healAmt
+	self.MCS_PlasmaSplRepair = self.MCS_PlasmaSplRepair + healAmt
+	self.MCS_PlasmaSplRepairMax = self.MCS_PlasmaSplRepairMax + healAmt
 end
 
 function TYPE:OnEffectProc()
