@@ -1,31 +1,28 @@
 local TYPE = {}
 
 TYPE.Set = "effect"
-TYPE.ID = "plasmatic-chemical"
+TYPE.ID = "mechanical-subatomic"
 TYPE.ServerName = "Example"
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
 
-TYPE.BaseTime = 10
-TYPE.MaxStacks = 1
+TYPE.BaseTime = 5
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true
-TYPE.NoTimerResets = true
 TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
 
 TYPE.DamageTypes = {
-	["chemical"] = true
+	["subatomic"] = true
 }
 TYPE.HealthTypes = {
-	["plasmatic"] = true
+	["mechanical"] = true
 }
 
-function TYPE:OnApplyEffect(_, effectType)
-	if effectType.ID == "plasmatic-chemical" then return true end
-end
+function TYPE:DrawOverlay(count)
+	surface.SetMaterial("effects/tvscreen_noise003a")
+	surface.SetDrawColor(255, 255, 255, math.log(count + 1) * 20)
 
-function TYPE:OnEffectProc()
-	self:MCS_TypelessDamage(2)
+	surface.drawTexturedRect(0, 0, ScrW(), ScrH())
 end
 
 MCS.RegisterType(TYPE)

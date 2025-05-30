@@ -21,6 +21,10 @@ TYPE.HealthTypes = {
 	["ligneous"] = true
 }
 
+function TYPE:OnApplyEffect(_, effectType)
+	if effectType.ID == "ligneous-splitting" then return true end
+end
+
 function TYPE:OnTakeDamage(_, dmg)
 	self.MCS_StatusGuarantee = true
 	timer.Simple(0, function()

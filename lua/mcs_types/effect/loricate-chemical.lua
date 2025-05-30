@@ -21,6 +21,10 @@ TYPE.HealthTypes = {
 	["loricate"] = true
 }
 
+function TYPE:OnApplyEffect(count, effectType)
+	if effectType.ID == "loricate-chemical" and count >= 20 then return true end
+end
+
 function TYPE:OnEffectProc(count)
 	if count < 20 then return end
 

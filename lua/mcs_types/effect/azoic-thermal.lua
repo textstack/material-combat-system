@@ -8,7 +8,7 @@ TYPE.Color = color_white
 
 TYPE.BaseTime = 5
 TYPE.MaxStacks = 1
-TYPE.InflictChance = 0.75
+TYPE.InflictChance = 0.5
 TYPE.Reducible = true
 TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
 

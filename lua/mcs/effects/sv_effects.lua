@@ -73,18 +73,14 @@ function ENTITY:MCS_AddTypedEffects(damageTypeID, amount)
 	end
 end
 
---[[ Removes effects from an entity according to health and damage type
+--[[ Removes effects from an entity according to damage type
 	inputs:
 		damageTypeID - the ID of the damage type for the effect
 		amount - the amount of stacks to remove, nil for all
 --]]
 function ENTITY:MCS_RemoveTypedEffects(damageTypeID, amount)
-	local healthType = self:MCS_GetHealthType()
-	if not healthType then return end
-
+	-- ignoring health type to avoid complications if players switch health types mid-effect
 	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
-		if effectType.HealthTypes and not effectType.HealthTypes[healthType.ID] then continue end
-		if effectType.HealthTypeBlacklist and effectType.HealthTypeBlacklist[healthType.ID] then continue end
 		if effectType.DamageTypes and not effectType.DamageTypes[damageTypeID] then continue end
 		if effectType.DamageTypeBlacklist and effectType.DamageTypeBlacklist[damageTypeID] then continue end
 

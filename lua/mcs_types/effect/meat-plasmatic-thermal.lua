@@ -1,7 +1,7 @@
 local TYPE = {}
 
 TYPE.Set = "effect"
-TYPE.ID = "plasmatic-thermal"
+TYPE.ID = "meat-plasmatic-thermal"
 TYPE.ServerName = "Example"
 TYPE.Icon = "icon16/star.png"
 TYPE.Color = color_white
@@ -15,7 +15,8 @@ TYPE.DamageTypes = {
 	["thermal"] = true
 }
 TYPE.HealthTypes = {
-	["plasmatic"] = true
+	["plasmatic"] = true,
+	["meat"] = true
 }
 
 local function chanceUnapply(ent)
@@ -39,6 +40,7 @@ function TYPE:OnEffectProc()
 end
 
 function TYPE:PlayerSetupMove(_, cmd)
+	if CLIENT then return end
 	if not cmd:KeyDown(IN_DUCK) then return end
 
 	self.MCS_FireDir = self.MCS_FireDir or IN_FORWARD
