@@ -139,6 +139,12 @@ PlayerSetupMove(mv, cmd) SHARED PREDICTED
         mv - the CMoveData of the movement
         cmd - the CUserCmd of the movement
 
+PlayerStartCommand(cmd) SHARED PREDICTED
+    description:
+        called to be able to modify player input (https://wiki.facepunch.com/gmod/GM:StartCommand)
+    arguments:
+        cmd - the CUserCmd of the incoming movement
+
 DrawOverlay() CLIENT
     description:
         2d draw hook that renders after literally everything else in the game

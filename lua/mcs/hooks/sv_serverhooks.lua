@@ -3,16 +3,16 @@ MCS.CreateGameTypeHook("PlayerSpawn", "OnPlayerSpawn")
 
 gameevent.Listen("entity_killed")
 hook.Add("entity_killed", "MCS_EntityKilled", function(data)
-	local inflictor = Entity(data.entindex_inflictor)
-	local attacker = Entity(data.entindex_attacker)
-	local victim = Entity(data.entindex_killed)
+	local inflictor = Entity(data.entindex_inflictor or -1)
+	local attacker = Entity(data.entindex_attacker or -1)
+	local victim = Entity(data.entindex_killed or -1)
 	local damageBits = data.damagebits
 
-	if attacker:MCS_GetEnabled() then
+	if IsValid(attacker) and attacker:MCS_GetEnabled() then
 		attacker:MCS_TypeHook("OnKill", inflictor, victim, damageBits)
 	end
 
-	if victim:MCS_GetEnabled() then
+	if IsValid(victim) and victim:MCS_GetEnabled() then
 		victim:MCS_TypeHook("OnDeath", inflictor, attacker, damageBits)
 		victim:MCS_ClearEffects()
 	end

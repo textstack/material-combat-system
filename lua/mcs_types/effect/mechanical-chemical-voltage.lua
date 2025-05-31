@@ -53,11 +53,23 @@ end
 TYPE.EffectFirstApplied = setMove
 TYPE.OnEffectProc = setMove
 
-function TYPE:PlayerSetupMove(_, cmd)
+function TYPE:PlayerStartCommand(_, cmd)
 	local key = self:GetNW2Int("MCS_MechaMove", -1)
 	if key <= 0 then return end
 
 	cmd:SetButtons(bit.bor(cmd:GetButtons(), key))
+
+	if bit.band(key, IN_FORWARD) == IN_FORWARD then
+		cmd:SetForwardMove(10000)
+	elseif bit.band(key, IN_BACK) == IN_BACK then
+		cmd:SetForwardMove(-10000)
+	end
+
+	if bit.band(key, IN_RIGHT) == IN_RIGHT then
+		cmd:SetSideMove(10000)
+	elseif bit.band(key, IN_LEFT) == IN_LEFT then
+		cmd:SetSideMove(-10000)
+	end
 end
 
 function TYPE:EffectExpired()

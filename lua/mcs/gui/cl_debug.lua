@@ -1,12 +1,7 @@
 hook.Add("HUDPaint", "MCS_EffectDraw", function()
-	surface.SetDrawColor(255, 255, 255)
-	surface.SetFont("ChatFont")
-
 	local y = 20
 	for id, data in pairs(LocalPlayer():MCS_GetEffects()) do
-		surface.SetTextPos(ScrW() / 2, ScrH() - y)
-		surface.DrawText(data.count .. "x " .. id)
-
+		draw.SimpleText(data.count .. "x " .. id, "TargetIDSmall", ScrW() / 2, ScrH() - y, color_white)
 		y = y + 20
 	end
 end)
@@ -65,14 +60,9 @@ hook.Add("HUDDrawTargetID", "MCS_EffectDraw", function()
 
 	y = y + h + 5
 
-	surface.SetDrawColor(255, 255, 255)
-	surface.SetFont("ChatFont")
-
 	local y1 = 20
 	for id, data in pairs(LocalPlayer():MCS_GetEffects()) do
-		surface.SetTextPos(x, y + y1)
-		surface.DrawText(data.count .. "x " .. id)
-
+		draw.SimpleText(data.count .. "x " .. id, font, x, y + y1, gm:GetTeamColor(trace.Entity))
 		y1 = y1 + 20
 	end
 

@@ -133,7 +133,7 @@ function ENTITY:MCS_AddEffect(id, amount)
 	effectList[id].speed = math.max(effectList[id].speed - amount * MCS.GetConVar("mcs_sv_effect_speed_falloff"):GetFloat(), effectList[id].count)
 
 	if not effectType.NoTimerResets and (effectType.FullStackTimer or effectList[id].count == effectType.MaxStacks or MCS.GetConVar("mcs_sv_effect_full_stack_timer"):GetBool()) then
-		runningTime = time
+		effectList[id].runningTime = effectList[id].time
 	end
 
 	if not effectList[id].applied then
