@@ -164,7 +164,7 @@ function ENTITY:MCS_RemoveEffect(id, amount)
 	local newCount = effectData.count - amount
 
 	if newCount < 0 then
-		self:MCS_LocalTypeHook("effect", id, "EffectExpired", 0)
+		self:MCS_LocalTypeHook("effect", id, "EffectExpired", effectData.count)
 		MCS.CurrentEffects[self:EntIndex()][id] = nil
 	else
 		effectData.count = newCount
