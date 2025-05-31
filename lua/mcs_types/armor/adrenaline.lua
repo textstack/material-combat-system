@@ -67,7 +67,7 @@ local function degenerate(ent)
 
 			if armorAmt < increment then
 				ent:MCS_SetArmor(0)
-				ent:SetHealth(ent:Health() - increment + armorAmt)
+				ent:SetHealth(ent:Health() - armorAmt)
 			else
 				ent:MCS_SetArmor(armorAmt - increment)
 				ent:SetHealth(ent:Health() - increment)
