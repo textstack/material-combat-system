@@ -12,7 +12,7 @@ TYPE.Vanilla = true
 TYPE.Set = "health"
 TYPE.ID = "mechanical"
 TYPE.ServerName = "Mechanical" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/star.png"
+TYPE.Icon = "icons/health/mechanical.png"
 TYPE.Color = color_white
 
 -- health-specific elements

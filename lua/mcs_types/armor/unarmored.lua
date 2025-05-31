@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "armor"
 TYPE.ID = "unarmored"
 TYPE.ServerName = "Unarmored"
-TYPE.Icon = "icon16/star.png"
+TYPE.Icon = "icons/armor/unarmored.png"
 TYPE.Color = Color(128, 128, 128)
 
 if SERVER then

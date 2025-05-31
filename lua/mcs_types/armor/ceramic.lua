@@ -13,7 +13,7 @@ TYPE.Vanilla = true
 TYPE.Set = "armor"
 TYPE.ID = "ceramic"
 TYPE.ServerName = "Ceramic" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/star.png"
+TYPE.Icon = "icons/armor/ceramic.png"
 TYPE.Color = color_white
 
 -- armor-specific elements

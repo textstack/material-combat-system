@@ -12,7 +12,7 @@ TYPE.Vanilla = true
 TYPE.Set = "health"
 TYPE.ID = "loricate"
 TYPE.ServerName = "Loricate" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/star.png"
+TYPE.Icon = "icons/health/loricate.png"
 TYPE.Color = color_white
 
 -- health-specific elements

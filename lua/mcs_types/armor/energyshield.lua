@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "armor"
 TYPE.ID = "energyshield"
 TYPE.ServerName = "Energy Shield"
-TYPE.Icon = "icon16/star.png"
+TYPE.Icon = "icons/armor/energyshield.png"
 TYPE.Color = Color(255, 192, 128)
 
 --[[
