@@ -126,12 +126,10 @@ end
 --]]
 function ENTITY:MCS_SetCanHeal(enabled)
 	if enabled then
-		self.MCS_PrevHealth = nil
 		self.MCS_AntiHeal = nil
 		return
 	end
 
-	self.MCS_PrevHealth = self:Health()
 	self.MCS_AntiHeal = true
 end
 
@@ -141,12 +139,10 @@ end
 --]]
 function ENTITY:MCS_SetCanRepairArmor(enabled)
 	if enabled then
-		self.MCS_PrevArmor = nil
 		self.MCS_AntiArmor = nil
 		return
 	end
 
-	self.MCS_PrevArmor = self:MCS_GetArmor()
 	self.MCS_AntiArmor = true
 end
 
@@ -185,24 +181,28 @@ hook.Add("Think", "MCS_AntiHeal", function()
 	for _, ent in pairs(mcsEntities) do
 		if not IsValid(ent) then continue end
 
-		if ent.MCS_AntiArmor then
-			local armorAmt = ent:MCS_GetArmor()
+		local armorAmt = ent:MCS_GetArmor()
 
-			if ent.MCS_PrevArmor < armorAmt then
+		if ent.MCS_PrevArmor and ent.MCS_PrevArmor ~= armorAmt then
+			if ent.MCS_AntiArmor and ent.MCS_PrevArmor < armorAmt then
 				ent:MCS_SetArmor(ent.MCS_PrevArmor)
+			else
+				ent:MCS_TypeHook("OnArmorChanged", ent.MCS_PrevArmor, armorAmt)
 			end
-
-			ent.MCS_PrevArmor = armorAmt
 		end
 
-		if ent.MCS_AntiHeal then
-			local healthAmt = ent:Health()
+		ent.MCS_PrevArmor = armorAmt
 
-			if ent.MCS_PrevHealth < healthAmt then
-				ent:MCS_SetArmor(ent.MCS_PrevHealth)
+		local healthAmt = ent:Health()
+
+		if ent.MCS_PrevHealth and ent.MCS_PrevHealth ~= healthAmt then
+			if ent.MCS_AntiHeal and ent.MCS_PrevHealth < healthAmt then
+				ent:SetHealth(ent.MCS_PrevHealth)
+			else
+				ent:MCS_TypeHook("OnHealthChanged", ent.MCS_PrevHealth, healthAmt)
 			end
-
-			ent.MCS_PrevHealth = healthAmt
 		end
+
+		ent.MCS_PrevHealth = healthAmt
 	end
 end)

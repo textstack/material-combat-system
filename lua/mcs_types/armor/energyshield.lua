@@ -68,6 +68,12 @@ function TYPE:PostTakeDamage(_, wasDamageTaken)
 	initShield(self)
 end
 
+function TYPE:OnArmorChanged(prevArmor, armor)
+	if prevArmor < armor then return end
+
+	initShield(self)
+end
+
 local function disable(ent)
 	ent:MCS_RemoveTimer("energyshield-recharge")
 	ent:MCS_RemoveTimer("energyshield")

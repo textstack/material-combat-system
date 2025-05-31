@@ -184,3 +184,17 @@ EffectCanApply(amount) SERVER LOCALIZED
         Called on an effect to determine if an incoming application is allowed
     arguments:
         amount - the amount of stacks to be applied
+
+OnArmorChanged(prevArmor, armor) SERVER
+    description:
+        Called when a player's armor value is changed from the previous tick
+    arguments:
+        prevArmor - the armor last tick
+        armor - the armor this tick
+
+OnHealthChanged(prevHealth, health) SERVER
+    description:
+        Called when a player's health value is changed from the previous tick
+    arguments:
+        prevHealth - the health last tick
+        health - the health this tick

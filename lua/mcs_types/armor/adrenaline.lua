@@ -86,6 +86,12 @@ function TYPE:PostTakeDamage(dmg, wasDamageTaken)
 	degenerate(self)
 end
 
+function TYPE:OnArmorChanged(prevArmor, armor)
+	if prevArmor < armor then return end
+
+	degenerate(self)
+end
+
 function TYPE:HandleArmorReduction(dmg)
 	local armorAmt = self:MCS_GetArmor()
 	local maxArmorAmt = self:MCS_GetMaxArmor()
