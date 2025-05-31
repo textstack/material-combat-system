@@ -23,7 +23,7 @@ function TYPE:EffectFirstApplied(count)
 		for _, ent in pairs(ents.FindInSphere(self:WorldSpaceCenter(), 400)) do
 			if ent == self or not ent:MCS_GetEnabled() then continue end
 
-			self:MCS_AddTypedEffects("subatomic", count)
+			ent:MCS_AddTypedEffects("subatomic", count)
 		end
 	end)
 end
