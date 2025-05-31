@@ -265,7 +265,7 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 
 			local func1 = effectType.EffectExpired
 			if func1 then
-				func(ent, 0)
+				func1(ent, 0)
 			end
 
 			MCS.CurrentEffects[entID][effectID] = nil

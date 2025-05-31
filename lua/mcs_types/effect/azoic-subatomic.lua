@@ -19,10 +19,13 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectFirstApplied(count)
-	for _, ent in pairs(ents.FindInSphere(self:WorldSpaceCenter(), 400)) do
-		if ent == self or not ent:MCS_GetEnabled() then continue end
-		self:MCS_AddTypedEffects("subatomic", count)
-	end
+	self:MCS_CreateTimer("azoic-subatomic", 0, 1, function()
+		for _, ent in pairs(ents.FindInSphere(self:WorldSpaceCenter(), 400)) do
+			if ent == self or not ent:MCS_GetEnabled() then continue end
+
+			self:MCS_AddTypedEffects("subatomic", count)
+		end
+	end)
 end
 
 MCS.RegisterType(TYPE)
