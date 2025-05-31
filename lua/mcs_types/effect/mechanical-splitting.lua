@@ -19,15 +19,13 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(count, dmg)
-	timer.Simple(0, function()
-		if not dmg or not IsValid(self) then return end
+	if not IsValid(dmg) or not IsValid(self) then return end
 
-		local newDmg = DamageInfo()
-		newDmg:SetDamage(dmg:GetDamage() * count * 0.15)
-		newDmg:SetDamageType(DMG_BURN)
+	local newDmg = DamageInfo()
+	newDmg:SetDamage(dmg:GetDamage() * count * 0.15)
+	newDmg:SetDamageType(DMG_BURN)
 
-		self:TakeDamageInfo(newDmg)
-	end)
+	self:TakeDamageInfo(newDmg)
 end
 
 MCS.RegisterType(TYPE)

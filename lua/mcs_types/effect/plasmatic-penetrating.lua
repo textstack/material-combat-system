@@ -16,6 +16,7 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(_, dmg)
+	if not IsValid(dmg) then return end
 	local healAmt = dmg:GetDamage()
 
 	self.MCS_PlasmaPenRepair = self.MCS_PlasmaPenRepair or 0

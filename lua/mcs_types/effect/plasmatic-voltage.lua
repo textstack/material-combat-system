@@ -19,6 +19,7 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(count, dmg)
+	if not IsValid(dmg) or not IsValid(dmg:GetDamageForce()) then return end
 	self.MCS_PlasmaVolForce = self.MCS_PlasmaVolForce or Vector()
 	self.MCS_PlasmaVolForce = self.MCS_PlasmaVolForce + dmg:GetDamageForce() * count * 0.05
 end

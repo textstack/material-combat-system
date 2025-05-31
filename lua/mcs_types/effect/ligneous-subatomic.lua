@@ -19,9 +19,7 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(count, dmg)
-	timer.Simple(0, function()
-		if not dmg or not IsValid(self) then return end
-		self:MCS_Heal(dmg:GetDamage() * count * 2)
-	end)
+	if not IsValid(dmg) or not IsValid(self) then return end
+	self:MCS_Heal(dmg:GetDamage() * count * 2)
 end
 MCS.RegisterType(TYPE)

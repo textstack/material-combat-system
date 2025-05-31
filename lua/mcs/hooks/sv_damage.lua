@@ -72,7 +72,9 @@ local function armorHandling(ent, dmg)
 	return false
 end
 
-hook.Add("HandlePlayerArmorReduction", "MCS_Damage", armorHandling)
+hook.Add("HandlePlayerArmorReduction", "MCS_Damage", function(ply)
+	if ply:MCS_GetEnabled() then return false end
+end)
 
 hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	if not ent:MCS_GetEnabled() then return end
@@ -99,9 +101,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	dmg:SetDamage(newDmgAmt)
 
-	if not ent:IsPlayer() then
-		armorHandling(ent, dmg)
-	end
+	armorHandling(ent, dmg)
 
 	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
 		if not effectType.InflictChance then continue end

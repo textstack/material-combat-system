@@ -62,7 +62,7 @@ local function initShield(ent)
 	end)
 end
 
-function TYPE:PostTakeDamage(dmg, wasDamageTaken)
+function TYPE:PostTakeDamage(_, wasDamageTaken)
 	if not wasDamageTaken then return end
 
 	initShield(self)

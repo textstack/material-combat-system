@@ -20,12 +20,19 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectFirstApplied()
+	local phys = self:GetPhysicsObject()
+	if not IsValid(phys) then return end
+
+	phys:SetVelocityInstantaneous(vector_origin)
+
+	--[[
 	if self:IsPlayer() then
 		self:SetVelocity(-self:GetVelocity())
 		return
 	end
 
 	self:SetVelocity(vector_origin)
+	--]]
 end
 
 MCS.RegisterType(TYPE)

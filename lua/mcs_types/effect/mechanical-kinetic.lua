@@ -19,11 +19,14 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(count, dmg)
+	if not IsValid(dmg) then return end
+	local dmgAmt = dmg:GetDamage()
+
 	timer.Simple(0.5, function()
-		if not dmg or not IsValid(self) then return end
+		if not IsValid(self) then return end
 
 		local newDmg = DamageInfo()
-		newDmg:SetDamage(dmg:GetDamage() * count * 0.1)
+		newDmg:SetDamage(dmgAmt * count * 0.1)
 		newDmg:SetDamageType(DMG_SONIC)
 
 		self:TakeDamageInfo(newDmg)

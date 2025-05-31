@@ -19,12 +19,10 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(count, dmg)
-	timer.Simple(0, function()
-		if not dmg or not IsValid(self) then return end
-		local amt = dmg:GetDamage() * count * math.random()
-		self:MCS_TypelessDamage(amt)
-		self:MCS_RepairArmor(amt)
-	end)
+	if not IsValid(dmg) or not IsValid(self) then return end
+	local amt = dmg:GetDamage() * count * math.random()
+	self:MCS_TypelessDamage(amt)
+	self:MCS_RepairArmor(amt)
 end
 
 MCS.RegisterType(TYPE)

@@ -20,6 +20,7 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(_, dmg)
+	if not IsValid(dmg) then return end
 	dmg:ScaleDamage(3)
 end
 

@@ -19,6 +19,7 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(count, dmg)
+	if not IsValid(dmg) or not IsValid(dmg:GetDamageForce()) then return end
 	dmg:SetDamageForce(dmg:GetDamageForce() * 10 * count)
 end
 

@@ -18,6 +18,7 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(_, dmg)
+	if not IsValid(dmg) then return end
 	dmg:ScaleDamage(1.25)
 
 	local healAmt = dmg:GetDamage() / 10

@@ -19,6 +19,8 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectInstantDamage(count, dmg)
+	if not IsValid(dmg) then return end
+
 	self:FireBullets({
 		Damage = dmg:GetDamage(),
 		Num = count,
