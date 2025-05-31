@@ -23,16 +23,16 @@ Multiplier key:
     0.25: industrial grade protection against (voltage against kevlar)
 ]]--
 
-local dmgMult = 0.25
+TYPE.dmgMult = 0.25
 
 TYPE.DamageMultipliers = {
-	["splitting"] = dmgMult,
-	["kinetic"] = dmgMult,
-	["penetrating"] = dmgMult,
-	["thermal"] = dmgMult,
-	["chemical"] = dmgMult,
-	["voltage"] = dmgMult,
-	["subatomic"] = dmgMult
+	["splitting"] = TYPE.dmgMult,
+	["kinetic"] = TYPE.dmgMult,
+	["penetrating"] = TYPE.dmgMult,
+	["thermal"] = TYPE.dmgMult,
+	["chemical"] = TYPE.dmgMult,
+	["voltage"] = TYPE.dmgMult,
+	["subatomic"] = TYPE.dmgMult
 }
 
 --[[
@@ -46,13 +46,13 @@ Drain key:
 ]]--
 
 TYPE.DrainRate = {
-	["splitting"] = 1 - dmgMult,
-	["kinetic"] = 1 - dmgMult,
-	["penetrating"] = 1 - dmgMult,
-	["thermal"] = 1 - dmgMult,
-	["chemical"] = 1 - dmgMult,
-	["voltage"] = 1 - dmgMult,
-	["subatomic"] = 1 - dmgMult
+	["splitting"] = 1 - TYPE.dmgMult,
+	["kinetic"] = 1 - TYPE.dmgMult,
+	["penetrating"] = 1 - TYPE.dmgMult,
+	["thermal"] = 1 - TYPE.dmgMult,
+	["chemical"] = 1 - TYPE.dmgMult,
+	["voltage"] = 1 - TYPE.dmgMult,
+	["subatomic"] = 1 - TYPE.dmgMult
 }
 
 local function degenerate(ent)
@@ -92,8 +92,8 @@ function TYPE:HandleArmorReduction(dmg)
 	local maxArmorAmt = self:MCS_GetMaxArmor()
 
 	if armorAmt < maxArmorAmt then
-		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * MCS.VanillaMag(1 - dmgMult, "armorDrain"), maxArmorAmt))
-		dmg:ScaleDamage(MCS.VanillaMag(dmgMult, "armorDamage"))
+		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * MCS.VanillaMag(1 - this.dmgMult, "armorDrain"), maxArmorAmt))
+		dmg:ScaleDamage(MCS.VanillaMag(this.dmgMult, "armorDamage"))
 	end
 
 	return true

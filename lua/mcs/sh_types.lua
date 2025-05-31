@@ -2,6 +2,17 @@ MCS.Types = MCS.Types or {}
 
 local ENTITY = FindMetaTable("Entity")
 
+local function lTypeHook(ply, _type, eventName, ...)
+	if not _type then return end
+
+	local func = _type[eventName]
+	if not func then return end
+
+	this = _type
+
+	return func(ply, ...)
+end
+
 --[[ Execute functions from the entity's types (health, armor, statuses)
 	inputs:
 		eventName - name of the event to execute
@@ -21,30 +32,15 @@ local ENTITY = FindMetaTable("Entity")
 function ENTITY:MCS_TypeHook(eventName, ...)
 	if not self:MCS_GetEnabled() then return end
 
-	local healthEvent = self:MCS_GetHealthTypeValue(eventName)
-	if healthEvent then
-		this = self:MCS_GetHealthType()
+	local healthResult = lTypeHook(self, self:MCS_GetHealthType(), eventName, ...)
+	if healthResult ~= nil then return healthResult end
 
-		local result = healthEvent(self, ...)
-		if result ~= nil then return result end
-	end
-
-	local armorEvent = self:MCS_GetArmorTypeValue(eventName)
-	if armorEvent then
-		this = self:MCS_GetArmorType()
-
-		local result = armorEvent(self, ...)
-		if result ~= nil then return result end
-	end
+	local armorResult = lTypeHook(self, self:MCS_GetArmorType(), eventName, ...)
+	if armorResult ~= nil then return armorResult end
 
 	for id, data in pairs(self:MCS_GetEffects()) do
-		local effectEvent = MCS.EffectTypeValue(id, eventName)
-		if not effectEvent then continue end
-
-		this = MCS.EffectType(id)
-
-		local result = effectEvent(self, data.count, ...)
-		if result ~= nil then return result end
+		local effectResult = lTypeHook(self, MCS.EffectType(id), eventName, data.count, ...)
+		if effectResult ~= nil then return effectResult end
 	end
 end
 
@@ -66,9 +62,10 @@ end
 --]]
 function ENTITY:MCS_LocalTypeHook(set, id, eventName, ...)
 	if not self:MCS_GetEnabled() then return end
-	if not set then return end
 
 	if type(set) == "string" then
+		if not set then return end
+
 		local tbl = MCS.Types[set]
 		if not tbl then return end
 
@@ -83,16 +80,7 @@ function ENTITY:MCS_LocalTypeHook(set, id, eventName, ...)
 		return func(self, ...)
 	end
 
-	local _type = set
-	local _eventName = id
-	local _first = eventName
-
-	local func = _type[_eventName]
-	if not func then return end
-
-	this = _type
-
-	return func(self, _first, ...)
+	return lTypeHook(self, set, id, eventName, ...)
 end
 
 --[[ Links up a game hook to a new type hook
