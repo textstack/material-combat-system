@@ -1,5 +1,6 @@
 local TYPE = {}
 
+TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "plasmatic-chemical"
 TYPE.ServerName = "Example"

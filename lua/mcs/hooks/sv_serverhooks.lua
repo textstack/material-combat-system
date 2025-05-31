@@ -1,5 +1,5 @@
-MCS.CreateTypeHook("PostEntityTakeDamage", "PostTakeDamage")
-MCS.CreateTypeHook("PlayerSpawn", "OnPlayerSpawn")
+MCS.CreateGameTypeHook("PostEntityTakeDamage", "PostTakeDamage")
+MCS.CreateGameTypeHook("PlayerSpawn", "OnPlayerSpawn")
 
 gameevent.Listen("entity_killed")
 hook.Add("entity_killed", "MCS_EntityKilled", function(data)

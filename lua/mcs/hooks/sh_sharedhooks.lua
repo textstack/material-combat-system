@@ -1,1 +1,1 @@
-MCS.CreateTypeHook("SetupMove", "PlayerSetupMove")
+MCS.CreateGameTypeHook("SetupMove", "PlayerSetupMove")

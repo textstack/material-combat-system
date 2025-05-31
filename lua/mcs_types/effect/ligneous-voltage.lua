@@ -1,5 +1,6 @@
 local TYPE = {}
 
+TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "ligneous-voltage"
 TYPE.ServerName = "Example"

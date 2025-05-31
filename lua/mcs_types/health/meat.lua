@@ -1,5 +1,6 @@
 local TYPE = {}
 
+TYPE.Vanilla = true
 TYPE.Set = "health"
 TYPE.ID = "meat"
 TYPE.ServerName = "Meat"

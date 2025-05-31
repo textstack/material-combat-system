@@ -23,12 +23,16 @@ function ENTITY:MCS_TypeHook(eventName, ...)
 
 	local healthEvent = self:MCS_GetHealthTypeValue(eventName)
 	if healthEvent then
+		this = self:MCS_GetHealthType()
+
 		local result = healthEvent(self, ...)
 		if result ~= nil then return result end
 	end
 
 	local armorEvent = self:MCS_GetArmorTypeValue(eventName)
 	if armorEvent then
+		this = self:MCS_GetArmorType()
+
 		local result = armorEvent(self, ...)
 		if result ~= nil then return result end
 	end
@@ -37,9 +41,58 @@ function ENTITY:MCS_TypeHook(eventName, ...)
 		local effectEvent = MCS.EffectTypeValue(id, eventName)
 		if not effectEvent then continue end
 
+		this = MCS.EffectType(id)
+
 		local result = effectEvent(self, data.count, ...)
 		if result ~= nil then return result end
 	end
+end
+
+--[[ Execute a function for a specific type
+	inputs:
+		set - the set of the type object (health, armor, effect, etc.)
+		id - the id of the type
+		eventName - the name of the event to execute
+		... - anything that the function needs
+	overload-inputs:
+		type - the type object to execute the event on
+		eventName - the name of the event to execute
+		... - anything that the function needs
+	output:
+		whatever the function returned
+	note:
+		unlike MCS_TypeHook(), this function does NOT automatically grab the count for effects.
+		if you make a local type hook for an effect, you need to include the count as the first argument yourself.
+--]]
+function ENTITY:MCS_LocalTypeHook(set, id, eventName, ...)
+	if not self:MCS_GetEnabled() then return end
+	if not set then return end
+
+	if type(set) == "string" then
+		local tbl = MCS.Types[set]
+		if not tbl then return end
+
+		local _type = tbl[id]
+		if not _type then return end
+
+		local func = _type[eventName]
+		if not func then return end
+
+		this = _type
+
+		return func(self, ...)
+	end
+
+	local _type = set
+	local _eventName = id
+	local _first = eventName
+
+	local func = _type[_eventName]
+	if not func then return end
+
+	this = _type
+
+	return func(self, _first, ...)
 end
 
 --[[ Links up a game hook to a new type hook
@@ -47,7 +100,7 @@ end
 		hookName - name of the game hook
 		typeHookName - name of the new type hook
 --]]
-function MCS.CreateTypeHook(hookName, typeHookName)
+function MCS.CreateGameTypeHook(hookName, typeHookName)
 	hook.Add(hookName, "MCS_" .. typeHookName, function(ent, ...)
 		if ent:MCS_GetEnabled() then
 			return ent:MCS_TypeHook(typeHookName, ...)

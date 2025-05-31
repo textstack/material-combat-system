@@ -1,5 +1,6 @@
 local TYPE = {}
 
+TYPE.Vanilla = true
 TYPE.Set = "damage"
 TYPE.ID = "splitting"
 TYPE.ServerName = "Splitting" -- the server doesn't have access to localization

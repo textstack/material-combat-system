@@ -8,6 +8,7 @@ local TYPE = {}
 
 -- generic elements
 
+TYPE.Vanilla = true
 TYPE.Set = "health"
 TYPE.ID = "ligneous"
 TYPE.ServerName = "Ligneous" -- the server doesn't have access to localization

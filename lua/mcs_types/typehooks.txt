@@ -5,7 +5,7 @@
 #######################
 
 remember:
-    1. all events implicitly include the entity as 'self'
+    1. all events implicitly include the entity as 'self' and the type object as 'this'
     2. armors and health can be on non-players, avoid using player-specific functions
     3. look at the util functions in mc_framework, they might be useful
     4. effects always include the effect count first as an argument

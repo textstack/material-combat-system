@@ -1,5 +1,6 @@
 local TYPE = {}
 
+TYPE.Vanilla = true
 TYPE.Set = "armor"
 TYPE.ID = "fibrous"
 TYPE.ServerName = "Fibrous"

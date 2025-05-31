@@ -104,33 +104,19 @@ function ENTITY:MCS_AddEffect(id, amount)
 
 	local effectList = self:MCS_GetEffects()
 
-	local canApply = effectType.EffectCanApply
-	if canApply and not canApply(self, effectList[id] and effectList[id].count or amount, amount) then
-		return false
-	end
+	local oldCount = effectList[id] and effectList[id].count or 0
+	if self:MCS_LocalTypeHook(effectType, "EffectCanApply", oldCount, amount) == false then return false end
 
-	local result = self:MCS_TypeHook("OnApplyEffect", effectType, amount)
-	if result ~= nil then return false end
+	if self:MCS_TypeHook("OnApplyEffect", effectType, amount) ~= nil then return false end
 
 	if effectType.InflictSound then
 		self:EmitSound(effectType.InflictSound, nil, nil, 0.75, CHAN_BODY)
 	end
 
 	if effectType.BaseTime and effectType.BaseTime <= 0 then
-		local func1 = effectType.EffectFirstApplied
-		if func1 then
-			func1(self, amount)
-		end
-
-		local func = effectType.EffectApplied
-		if func then
-			func(self, amount, amount)
-		end
-
-		local func2 = effectType.EffectExpired
-		if func2 then
-			func2(self, amount)
-		end
+		self:MCS_LocalTypeHook(effectType, "EffectFirstApplied", amount)
+		self:MCS_LocalTypeHook(effectType, "EffectApplied", amount, amount)
+		self:MCS_LocalTypeHook(effectType, "EffectExpired", amount)
 
 		return true
 	end
@@ -151,18 +137,11 @@ function ENTITY:MCS_AddEffect(id, amount)
 	end
 
 	if not effectList[id].applied then
-		local func1 = effectType.EffectFirstApplied
-		if func1 then
-			func1(self, amount)
-		end
-
+		self:MCS_LocalTypeHook(effectType, "EffectFirstApplied", amount)
 		effectList[id].applied = true
 	end
 
-	local func = effectType.EffectApplied
-	if func then
-		func(self, effectList[id].count, amount)
-	end
+	self:MCS_LocalTypeHook(effectType, "EffectApplied", effectList[id].count, amount)
 
 	MCS.CurrentEffects[self:EntIndex()] = effectList
 
@@ -185,11 +164,7 @@ function ENTITY:MCS_RemoveEffect(id, amount)
 	local newCount = effectData.count - amount
 
 	if newCount < 0 then
-		local func = MCS.EffectTypeValue(id, "EffectExpired")
-		if func then
-			func(self, effectData.count)
-		end
-
+		self:MCS_LocalTypeHook("effect", id, "EffectExpired", effectData.count)
 		MCS.CurrentEffects[self:EntIndex()][id] = nil
 	else
 		effectData.count = newCount
@@ -200,10 +175,7 @@ end
 function ENTITY:MCS_ClearEffects()
 	local effectList = self:MCS_GetEffects()
 	for effectID, data1 in pairs(effectList) do
-		local func = MCS.EffectTypeValue(effectID, "EffectExpired")
-		if func then
-			func(self, data1.count)
-		end
+		self:MCS_LocalTypeHook("effect", effectID, "EffectExpired", effectData.count)
 	end
 
 	MCS.CurrentEffects[self:EntIndex()] = {}
@@ -227,15 +199,8 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 				data.runningTime = data.runningTime - MCS.EFFECT_PROC_TIME
 				if data.runningTime > 0 then continue end
 
-				local func = effectType.EffectStackReduced
-				if func then
-					func(ent, data.count, data.count)
-				end
-
-				local func1 = effectType.EffectExpired
-				if func1 then
-					func1(ent, data.count)
-				end
+				ent:MCS_LocalTypeHook(effectType, "EffectStackReduced", data.count, data.count)
+				ent:MCS_LocalTypeHook(effectType, "EffectExpired", data.count)
 
 				MCS.CurrentEffects[entID][effectID] = nil
 
@@ -256,17 +221,11 @@ timer.Create("MCS_EffectProc", MCS.EFFECT_PROC_TIME, 0, function()
 			data.runningTime = data.time
 			data.count = math.max(data.count - reduce, 0)
 
-			local func = effectType.EffectStackReduced
-			if func then
-				func(ent, data.count, reduce)
-			end
+			ent:MCS_LocalTypeHook(effectType, "EffectStackReduced", data.count, reduce)
 
 			if data.count > 0 then continue end
 
-			local func1 = effectType.EffectExpired
-			if func1 then
-				func1(ent, 0)
-			end
+			ent:MCS_LocalTypeHook(effectType, "EffectExpired", 0)
 
 			MCS.CurrentEffects[entID][effectID] = nil
 		end

@@ -137,11 +137,9 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 		local success = ent:MCS_AddEffect(effectID, effectType.Burst)
 
-		local func = effectType.EffectInstantDamage
-		if success and func then
+		if success then
 			local effectTable = ent:MCS_GetEffects()
-			local count = effectTable[effectID] and effectTable[effectID].count or effectType.Burst
-			func(ent, count, dmg)
+			ent:MCS_LocalTypeHook(effectType, "EffectInstantDamage", effectTable[effectID] and effectTable[effectID].count or effectType.Burst, dmg)
 		end
 	end
 end)

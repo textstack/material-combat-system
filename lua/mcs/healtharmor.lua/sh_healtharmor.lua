@@ -60,17 +60,11 @@ function ENTITY:MCS_SetHealthType(id, force)
 		self.MCS_HasSetHealthType = true
 	end
 
-	local switchFrom = self:MCS_GetHealthTypeValue("OnSwitchFrom")
-	if switchFrom and self:MCS_GetEnabled() then
-		switchFrom(self)
-	end
+	self:MCS_LocalTypeHook(self:MCS_GetHealthType(), "OnSwitchFrom")
 
 	self:SetNWString("MCS_HealthType", id)
 
-	local switchTo = MCS.HealthTypeValue(id, "OnSwitchTo")
-	if switchTo and self:MCS_GetEnabled() then
-		switchTo(self)
-	end
+	self:MCS_LocalTypeHook("health", id, "OnSwitchTo")
 
 	local armorType = self:MCS_GetArmorType()
 	if (armorType.HealthTypes and not armorType.HealthTypes[id]) or (armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[id]) then
@@ -141,17 +135,11 @@ function ENTITY:MCS_SetArmorType(id, force)
 		self.MCS_HasSetArmorType = true
 	end
 
-	local switchFrom = self:MCS_GetArmorTypeValue("OnSwitchFrom")
-	if switchFrom and self:MCS_GetEnabled() then
-		switchFrom(self)
-	end
+	self:MCS_LocalTypeHook(self:MCS_GetArmorType(), "OnSwitchFrom")
 
 	self:SetNWString("MCS_ArmorType", id)
 
-	local switchTo = MCS.ArmorTypeValue(id, "OnSwitchTo")
-	if switchTo and self:MCS_GetEnabled() then
-		switchTo(self)
-	end
+	self:MCS_LocalTypeHook("armor", id, "OnSwitchTo")
 
 	return true
 end
