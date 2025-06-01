@@ -20,11 +20,12 @@ TYPE.HealthTypes = {
 	["meat"] = true
 }
 
-local ang = Angle(2, 2, 0)
-
 function TYPE:EffectFirstApplied()
 	if self:IsPlayer() then
-		self:SetEyeAngles(self:EyeAngles() + AngleRand(-1, 1) * ang)
+		local a = AngleRand(-2, 2)
+		a.r = 0
+
+		self:SetEyeAngles(self:EyeAngles() + a)
 	end
 end
 
