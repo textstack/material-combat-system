@@ -22,6 +22,48 @@ function MCS.L(key, ...)
 	return string.format(lang, unpack(format)), lang ~= key
 end
 
+--[[ Gets the icon material for a type
+	inputs:
+		_type - the type object to get the icon from
+		fallback - an optional fallback texture
+	output:
+		the material for the type's icon, or a fallback material
+--]]
+local fallbacks = {}
+local fallback1 = Material("icon16/star.png")
+function MCS.GetIconMaterial(_type, fallback)
+	if not _type or not _type.Icon then
+		if type(fallback) ~= "string" then return fallback1 end
+
+		if not fallbacks[fallback] then
+			fallbacks[fallback] = Material(fallback)
+		end
+
+		if fallbacks[fallback]:IsError() then
+			fallbacks[fallback] = fallback1
+		end
+
+		return fallbacks[fallback]
+	end
+
+	local setMat = _type.Material ~= nil
+	if not setMat and _type.Icon then
+		_type.Material = Material(_type.Icon)
+		setMat = true
+	end
+
+	if type(fallback) == "string" and (not setMat or _type.Material:IsError()) then
+		_type.Material = Material(fallback)
+		setMat = true
+	end
+
+	if not setMat or _type.Material:IsError() then
+		_type.Material = fallback1
+	end
+
+	return _type.Material
+end
+
 net.Receive("mcs_notify", function()
 	local tag = net.ReadString()
 

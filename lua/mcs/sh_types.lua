@@ -156,6 +156,10 @@ function MCS.RegisterType(TYPE)
 	end
 
 	typeSet[TYPE.ID] = TYPE
+
+	if MCS_LOADED then
+		hook.Run("MCS_LateLoadType", TYPE)
+	end
 end
 
 --[[ Make a type object inherit values from a different type

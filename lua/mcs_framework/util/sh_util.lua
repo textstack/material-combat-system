@@ -147,3 +147,15 @@ local vanillaMagDefaults = {
 function MCS.VanillaMag(value, _type)
 	return MCS.Magnitude(value, 1 - MCS.GetConVar("mcs_sv_damage_vanillaness"):GetFloat(), vanillaMagDefaults[_type])
 end
+
+--[[ Applies one frame's worth of a dampening effect on a value from A to B
+	inputs:
+		speed - speed of the transition
+		from - the old value
+		to - the target value
+	usage:
+		whenever you want to smooth out a changing value or animate something moving without knowledge of when it will change
+==]]
+function MCS.Dampen(speed, from, to)
+	return Lerp(1 - math.exp(-speed * FrameTime()), from, to)
+end
