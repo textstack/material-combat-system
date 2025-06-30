@@ -7,6 +7,8 @@ TYPE.ServerName = "Unarmored"
 TYPE.Icon = "icons/armor/unarmored.png"
 TYPE.Color = Color(128, 128, 128)
 
+TYPE.HideOnHud = true
+
 if SERVER then
 	local noArmorEnts = {}
 

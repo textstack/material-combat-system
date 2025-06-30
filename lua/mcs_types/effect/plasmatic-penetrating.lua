@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "plasmatic-penetrating"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Regeneration"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(0, 179, 255)
 
 TYPE.InflictChance = 1
 

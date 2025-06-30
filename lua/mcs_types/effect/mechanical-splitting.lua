@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "mechanical-splitting"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Internal Fire"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(0, 250, 255)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.25

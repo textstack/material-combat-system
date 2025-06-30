@@ -13,6 +13,8 @@ local ENTITY = FindMetaTable("Entity")
 --[[ Returns all of the entity's current effects
 	output:
 		a table of the entity's effects in the form (ID, data)
+		the only important member in data is .count
+		the server has some more internal variables if you check sv_effects.lua though
 --]]
 function ENTITY:MCS_GetEffects()
 	local effectList = MCS.CurrentEffects[self:EntIndex()]

@@ -5,7 +5,7 @@ TYPE.Set = "armor"
 TYPE.ID = "energyshield"
 TYPE.ServerName = "Energy Shield"
 TYPE.Icon = "icons/armor/energyshield.png"
-TYPE.Color = Color(255, 192, 128)
+TYPE.Color = Color(212, 0, 170)
 
 --[[
 Multiplier key: 

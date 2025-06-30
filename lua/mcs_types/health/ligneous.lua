@@ -13,7 +13,7 @@ TYPE.Set = "health"
 TYPE.ID = "ligneous"
 TYPE.ServerName = "Ligneous" -- the server doesn't have access to localization
 TYPE.Icon = "icons/health/ligneous.png"
-TYPE.Color = color_white
+TYPE.Color = Color(211, 141, 95)
 
 -- health-specific elements
 

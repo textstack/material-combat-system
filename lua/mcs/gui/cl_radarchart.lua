@@ -64,11 +64,12 @@ function PANEL:RegenerateDamageTypes()
 	self.DmgTypes = {}
 	self.PolyLerp = {}
 
-	for id, dmgType in pairs(MCS.GetDamageTypes()) do
+	for id, dmgType in SortedPairsByMemberValue(MCS.GetDamageTypes(), "Order") do
 		local pnl = self:Add("DImage")
 		pnl.ID = id
 
 		pnl:SetMaterial(MCS.GetIconMaterial(dmgType))
+		pnl:SetImageColor(dmgType.Color or color_white)
 		pnl:SetSize(16, 16)
 		pnl:SetMouseInputEnabled(true)
 		pnl:SetTooltipDelay(0)

@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "meat-kinetic"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Stop"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(0, 255, 60)
 
 MCS.InheritType(TYPE, "loricate-voltage")
 

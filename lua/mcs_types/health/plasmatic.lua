@@ -13,7 +13,7 @@ TYPE.Set = "health"
 TYPE.ID = "plasmatic"
 TYPE.ServerName = "Plasmatic" -- the server doesn't have access to localization
 TYPE.Icon = "icons/health/plasmatic.png"
-TYPE.Color = color_white
+TYPE.Color = Color(188, 95, 211)
 
 -- health-specific elements
 

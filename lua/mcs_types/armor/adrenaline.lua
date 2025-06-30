@@ -7,7 +7,7 @@ TYPE.Set = "armor"
 TYPE.ID = "adrenaline"
 TYPE.ServerName = "Adrenaline" -- the server doesn't have access to localization
 TYPE.Icon = "icons/armor/adrenaline.png"
-TYPE.Color = color_white
+TYPE.Color = Color(255, 127, 42)
 
 -- armor-specific elements
 

@@ -97,6 +97,7 @@ end
 --]]
 function ENTITY:MCS_AddEffect(id, amount)
 	local effectType = MCS.EffectType(id)
+	if not effectType then return end
 
 	amount = amount or 1
 	amount = math.min(amount, effectType.MaxStacks or MCS.MAX_EFFECT_COUNT, MCS.MAX_EFFECT_COUNT)

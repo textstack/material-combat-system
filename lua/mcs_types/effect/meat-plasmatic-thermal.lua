@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "meat-plasmatic-thermal"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Burning"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(255, 67, 0)
 
 TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.1

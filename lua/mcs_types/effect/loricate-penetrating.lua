@@ -4,8 +4,8 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-penetrating"
 TYPE.ServerName = "Bleed"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(0, 179, 255)
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.25

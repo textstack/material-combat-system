@@ -14,7 +14,7 @@ TYPE.Set = "armor"
 TYPE.ID = "organic"
 TYPE.ServerName = "Organic" -- the server doesn't have access to localization
 TYPE.Icon = "icons/armor/organic.png"
-TYPE.Color = color_white
+TYPE.Color = Color(141, 211, 95)
 
 -- armor-specific elements
 

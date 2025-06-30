@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-thermal"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Armor Damage"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(255, 67, 0)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.1

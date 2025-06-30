@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "mechanical-penetrating"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Explosive Death"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(0, 179, 255)
 
 TYPE.BaseTime = 10
 TYPE.InflictChance = 0.25

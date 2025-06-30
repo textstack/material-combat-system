@@ -13,7 +13,7 @@ TYPE.DoNotLoad = true
 TYPE.Set = "health"
 TYPE.ID = "example"
 TYPE.ServerName = "Example" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/star.png"
+TYPE.Icon = "icon16/page_white.png"
 TYPE.Color = color_white
 
 -- health-specific elements

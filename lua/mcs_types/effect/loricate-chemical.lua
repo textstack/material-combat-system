@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-chemical"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Death Knell"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(255, 0, 190)
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.1

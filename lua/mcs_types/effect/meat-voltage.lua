@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "meat-voltage"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Flinch"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(248, 196, 0)
 
 TYPE.BaseTime = 0
 TYPE.MaxStacks = 1

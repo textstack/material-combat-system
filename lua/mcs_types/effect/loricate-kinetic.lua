@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-kinetic"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Knockback"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(0, 255, 60)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.5

@@ -14,7 +14,7 @@ TYPE.Set = "armor"
 TYPE.ID = "hazmat"
 TYPE.ServerName = "Hazmat" -- the server doesn't have access to localization
 TYPE.Icon = "icons/armor/hazmat.png"
-TYPE.Color = color_white
+TYPE.Color = Color(200, 55, 55)
 
 -- armor-specific elements
 

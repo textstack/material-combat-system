@@ -5,7 +5,7 @@ TYPE.Set = "health"
 TYPE.ID = "meat"
 TYPE.ServerName = "Meat"
 TYPE.Icon = "icons/health/meat.png"
-TYPE.Color = Color(255, 64, 64)
+TYPE.Color = Color(255, 42, 42)
 
 --[[
 Damage key:

@@ -30,7 +30,7 @@ end
 		the material for the type's icon, or a fallback material
 --]]
 local fallbacks = {}
-local fallback1 = Material("icon16/star.png")
+local fallback1 = Material("icon16/page_white.png")
 function MCS.GetIconMaterial(_type, fallback)
 	if not _type or not _type.Icon then
 		if type(fallback) ~= "string" then return fallback1 end

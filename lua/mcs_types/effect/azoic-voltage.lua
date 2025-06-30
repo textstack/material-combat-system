@@ -3,9 +3,9 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "azoic-voltage"
-TYPE.ServerName = "Example"
-TYPE.Icon = "icon16/star.png"
-TYPE.Color = color_white
+TYPE.ServerName = "Health Conversion"
+TYPE.Icon = "icon16/page_white.png"
+TYPE.Color = Color(248, 196, 0)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.75

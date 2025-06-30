@@ -1,11 +1,3 @@
-hook.Add("HUDPaint", "MCS_EffectDraw", function()
-	local y = 20
-	for id, data in pairs(LocalPlayer():MCS_GetEffects()) do
-		draw.SimpleText(data.count .. "x " .. id, "TargetIDSmall", ScrW() / 2, ScrH() - y, color_white)
-		y = y + 20
-	end
-end)
-
 hook.Add("HUDDrawTargetID", "MCS_EffectDraw", function()
 	local tr = util.GetPlayerTrace(LocalPlayer())
 	local trace = util.TraceLine(tr)

@@ -5,7 +5,7 @@ TYPE.Set = "armor"
 TYPE.ID = "fibrous"
 TYPE.ServerName = "Fibrous"
 TYPE.Icon = "icons/armor/fibrous.png"
-TYPE.Color = Color(255, 192, 128)
+TYPE.Color = Color(200, 183, 183)
 
 --[[
 Multiplier key: 
