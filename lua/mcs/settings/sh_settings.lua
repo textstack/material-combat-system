@@ -29,4 +29,5 @@ CreateConVar("mcs_sv_default_health_type", "meat", fcvarFlags, "The default heal
 CreateConVar("mcs_sv_default_armor_type", "unarmored", fcvarFlags, "The default armor type for players.")
 CreateConVar("mcs_sv_damage_vanillaness", 0.0, fcvarFlags, "How 'close to vanilla' the damage calculations should be on a scale from 0 to 1.", 0.0, 1.0)
 CreateConVar("mcs_sv_hud_enable_by_default", 1, fcvarFlags, "Whether the MCS hud is enabled by default for users.", 0, 1)
+CreateConVar("mcs_sv_hud_show_health_armor_by_default", 1, fcvarFlags, "Whether the MCS hud shows health and armor by default.", 0, 1)
 CreateConVar("mcs_sv_viewtarget_default_mode", 2, fcvarFlags, "What viewtarget display mode should be the default for users (0 = off, 1 = minimal, 2 = normal)", 0, 2)

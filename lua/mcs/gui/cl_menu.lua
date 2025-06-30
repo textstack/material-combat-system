@@ -115,7 +115,7 @@ function setRichText(frame, text)
 	frame:AppendText(text)
 end
 
-spawnmenu.AddCreationTab("#mcs.mcs", function()
+spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	local NewFrame = vgui.Create("DPanel")
 	-- It appears the Panel acts as though set to Dock FILL in the tab window, which is good because otherwise sizing things would be messy.
 

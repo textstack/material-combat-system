@@ -1,9 +1,14 @@
-local enabledCvar = CreateClientConVar("mcs_hud_enabled", 1, false, true, "Whether the MCS hud is enabled (0 = false, 1 = let server decide, 2 = true).", 0, 2)
-local xPosCvar = CreateClientConVar("mcs_hud_pos_x", 0, false, true, "The horizontal position of the MCS hud.", 0, 1)
-local yPosCvar = CreateClientConVar("mcs_hud_pos_y", 0.875, false, true, "The vertical position of the MCS hud.", 0, 1)
+local enabledCvar = CreateClientConVar("mcs_hud_enabled", 1, true, true, "Whether the MCS hud is enabled (0 = false, 1 = let server decide, 2 = true).", 0, 2)
+local healthArmorCvar = CreateClientConVar("mcs_hud_show_health_armor", 1, true, true, "Whether the MCS hus shows health and armor (0 = false, 1 = let server decide, 2 = true).", 0, 2)
+local xPosCvar = CreateClientConVar("mcs_hud_pos_x", 0.374522, true, true, "The horizontal position of the MCS hud.", 0, 1)
+local yPosCvar = CreateClientConVar("mcs_hud_pos_y", 0.984000, true, true, "The vertical position of the MCS hud.", 0, 1)
 
 local enabledMat = Material("icon16/photo_delete.png")
 local disabledMat = Material("icon16/photo_add.png")
+local haEnabledMat = Material("icon16/heart_delete.png")
+local haDisabledMat = Material("icon16/heart_add.png")
+
+local vector_one = Vector(1, 1, 1)
 
 surface.CreateFont("MCSHud", {
 	font = "Arial",
@@ -15,16 +20,20 @@ surface.CreateFont("MCSHud", {
 	outline = true,
 })
 
+local effectData = {}
+
 local PANEL = {}
 
 function PANEL:Init()
 	self:SetSize(350, 80)
 	self:SetCursor("sizeall")
 	self:SetZPos(-1)
-	self:OnScreenSizeChanged()
+	self:FixPosition()
 	self:NoClipping(true)
+	self:SetTooltip("#mcs.ui.mcs_hud")
 
 	self.SEnabledCvar = GetConVar("mcs_sv_hud_enable_by_default")
+	self.SHealthArmorCvar = GetConVar("mcs_sv_hud_show_health_armor_by_default")
 
 	typeDisplay = self:Add("Panel")
 	self.TypeDisplay = typeDisplay
@@ -92,26 +101,75 @@ function PANEL:Init()
 			if goDown then
 				if goRight then
 					surface.DrawTexturedRect(w - 18, y + 2, 16, 16)
-					draw.SimpleText(text, "MCSHud", w - 24, y, color, TEXT_ALIGN_RIGHT)
+					statusDisplay.EffectText(id, data, text, w - 24, y + 1, color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP)
 				else
 					surface.DrawTexturedRect(2, y + 2, 16, 16)
-					draw.SimpleText(text, "MCSHud", 24, y, color)
+					statusDisplay.EffectText(id, data, text, 24, y + 1, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 				end
 
 				y = y + 20
 			else
 				if goRight then
 					surface.DrawTexturedRect(w - 18, y - 18, 16, 16)
-					draw.SimpleText(text, "MCSHud", w - 24, y, color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
+					statusDisplay.EffectText(id, data, text, w - 24, y + 1, color, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM)
 				else
 					surface.DrawTexturedRect(2, y - 18, 16, 16)
-					draw.SimpleText(text, "MCSHud", 24, y, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+					statusDisplay.EffectText(id, data, text, 24, y + 1, color, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 				end
 
 				y = y - 20
 			end
 		end
 		DisableClipping(clipping)
+	end
+
+	function statusDisplay.EffectText(id, data, text, x, y, color, alignH, alignV)
+		effectData[id] = effectData[id] or {}
+		local eData = effectData[id]
+
+		eData.textScale = eData.textScale or 1.25
+		eData.procID = eData.procID or data.procID
+
+		if not eData.lastCount or eData.lastCount <= eData.count then
+			eData.lastCount = eData.count
+
+			if eData.lastCount == eData.count and eData.procID ~= data.procID then
+				eData.textScale = 1.25
+				eData.procID = data.procID
+			end
+		else
+			eData.textScale = 1.25
+		end
+
+		surface.SetFont("MCSHud")
+		local x1, y1 = statusDisplay:LocalToScreen(0, 0)
+		local xAdd, yAdd = 0, 0
+		local w, h = surface.GetTextSize(text)
+
+		if alignH == TEXT_ALIGN_LEFT then
+			xAdd = w / 2
+		elseif alignH == TEXT_ALIGN_RIGHT then
+			xAdd = -w / 2
+		end
+
+		if alignV == TEXT_ALIGN_TOP then
+			yAdd = h / 2
+		elseif alignV == TEXT_ALIGN_BOTTOM then
+			yAdd = -h / 2
+		end
+
+		local pos = Vector(x1 + x + xAdd, y1 + y + yAdd, 0)
+
+		local m = Matrix()
+		m:Translate(pos)
+		m:Scale(vector_one * eData.textScale)
+		m:Translate(-pos)
+
+		cam.PushModelMatrix(m, true)
+		draw.SimpleText(text, "MCSHud", x + xAdd, y + yAdd, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		cam.PopModelMatrix()
+
+		eData.textScale = MCS.Dampen(10, eData.textScale, 1)
 	end
 
 	statusDisplay:Dock(FILL)
@@ -165,9 +223,62 @@ function PANEL:Init()
 		hBtn:Hide()
 	end
 
-	hook.Add("OnScreenSizeChanged", self, self.OnScreenSizeChanged)
+	haBtn = self:Add("DButton")
+	self.HealthArmorButton = haBtn
+
+	haBtn:SetSize(20, 20)
+	haBtn:InvalidateLayout()
+	haBtn:SetText("")
+	haBtn:SetTooltip(self:HAShouldBeHidden() and "#mcs.ui.mcs_hud_show_health_armor" or "#mcs.ui.mcs_hud_show_health_armor")
+
+	function haBtn.PerformLayout()
+		haBtn:AlignTop()
+		haBtn:AlignRight(20)
+	end
+
+	function haBtn.Paint(_, w, h)
+		if haBtn:IsHovered() then
+			surface.SetDrawColor(255, 255, 255, 20)
+			surface.DrawRect(0, 0, w, h)
+		end
+
+		if self:HAShouldBeHidden() then
+			surface.SetMaterial(haDisabledMat)
+		else
+			surface.SetMaterial(haEnabledMat)
+		end
+
+		surface.SetDrawColor(255, 255, 255)
+		surface.DrawTexturedRect(2, 2, 16, 16)
+	end
+
+	function haBtn.DoClick()
+		local state = self:HAShouldBeHidden()
+
+		if state then
+			RunConsoleCommand("mcs_hud_show_health_armor", "2")
+		else
+			RunConsoleCommand("mcs_hud_show_health_armor", "0")
+		end
+
+		timer.Simple(0, function()
+			if not haBtn:IsValid() then return end
+			haBtn:SetTooltip(self:HAShouldBeHidden() and "#mcs.ui.show_health_armor" or "#mcs.ui.hide_health_armor")
+		end)
+	end
+
+	if not self.InContextMenu then
+		haBtn:Hide()
+	end
+
+	hook.Add("OnScreenSizeChanged", self, self.FixPosition)
 	hook.Add("ContextMenuOpened", self, self.ContextMenuOpened)
 	hook.Add("ContextMenuClosed", self, self.ContextMenuClosed)
+end
+
+function PANEL:HAShouldBeHidden()
+	local enabledInt = healthArmorCvar:GetInt()
+	return enabledInt < 1 or enabledInt == 1 and not self.SHealthArmorCvar:GetBool()
 end
 
 function PANEL:ShouldBeHidden()
@@ -175,7 +286,7 @@ function PANEL:ShouldBeHidden()
 	return enabledInt < 1 or enabledInt == 1 and not self.SEnabledCvar:GetBool()
 end
 
-function PANEL:OnScreenSizeChanged()
+function PANEL:FixPosition()
 	local x = math.Clamp(xPosCvar:GetFloat(), 0, 1) * (ScrW() - self:GetWide())
 	local y = math.Clamp(yPosCvar:GetFloat(), 0, 1) * (ScrH() - self:GetTall())
 
@@ -185,13 +296,17 @@ end
 function PANEL:ContextMenuOpened()
 	self.InContextMenu = true
 	self:SetParent(g_ContextMenu)
+
 	self.HideButton:Show()
+	self.HealthArmorButton:Show()
 end
 
 function PANEL:ContextMenuClosed()
 	self.InContextMenu = nil
 	self:SetParent(vgui.GetWorldPanel())
+
 	self.HideButton:Hide()
+	self.HealthArmorButton:Hide()
 end
 
 function PANEL:OnMousePressed()
@@ -221,6 +336,12 @@ function PANEL:OnMouseReleased()
 end
 
 function PANEL:Think()
+	local hideTypes = self:HAShouldBeHidden()
+	if self.TypeDisplay:IsVisible() == hideTypes then
+		self.TypeDisplay:SetVisible(not hideTypes)
+		self:InvalidateLayout()
+	end
+
 	if not self.Dragging then return end
 
 	local sw = ScrW() - self:GetWide()
@@ -232,6 +353,9 @@ function PANEL:Think()
 	if input.IsKeyDown(KEY_LSHIFT) then
 		x = math.Round(x / (sw / 16)) * (sw / 16)
 		y = math.Round(y / (sh / 16)) * (sh / 16)
+	elseif input.IsKeyDown(KEY_LALT) then
+		x = math.Round(x / (sw / 64)) * (sw / 64)
+		y = math.Round(y / (sh / 64)) * (sh / 64)
 	end
 
 	self:SetPos(math.Clamp(x, 0, sw), math.Clamp(y, 0, sh))
@@ -285,6 +409,24 @@ local function hideHud()
 	end
 end
 
+local function fixPos()
+	if not IsValid(MCS.Hud) then return end
+	MCS.Hud:FixPosition()
+end
+
+cvars.AddChangeCallback("mcs_hud_pos_x", fixPos, "MCS_HudFix")
+cvars.AddChangeCallback("mcs_hud_pos_y", fixPos, "MCS_HudFix1")
+
+cvars.AddChangeCallback("cl_drawhud", function(_, _, val)
+	doDraw = val ~= "0"
+	hideHud()
+end, "MCS_HideHud1")
+
+hook.Add("PlayerSwitchWeapon", "MCS_HideHud", function(_, _, newWeapon)
+	cameraOut = newWeapon:GetClass() == "gmod_camera"
+	hideHud()
+end)
+
 local function tick()
 	if not IsValid(MCS.Hud) then return end
 
@@ -294,16 +436,6 @@ local function tick()
 		hideHud()
 	end
 end
-
-cvars.AddChangeCallback("cl_drawhud", function(_, _, val)
-	doDraw = val ~= "0"
-	hideHud()
-end, "WardenHideEntInfo")
-
-hook.Add("PlayerSwitchWeapon", "MCS_HideHud", function(_, _, newWeapon)
-	cameraOut = newWeapon:GetClass() == "gmod_camera"
-	hideHud()
-end)
 
 hook.Add("InitPostEntity", "MCS_MakeHud", function()
 	MCS.Hud = vgui.Create("mcs_hud")

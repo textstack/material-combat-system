@@ -1,1 +1,0 @@
-CreateClientConVar("mcs_viewtarget_mode", -1, false, true, "What MCS viewtarget mode to use. (-1 = let server decide, 0 = off, 1 = minimal, 2 = normal).", -1, 2)
