@@ -128,18 +128,17 @@ function PANEL:Init()
 		local eData = effectData[id]
 
 		eData.textScale = eData.textScale or 1.25
+		eData.count = eData.count or MCS.MAX_EFFECT_COUNT + 1
 		eData.procID = eData.procID or data.procID
 
-		if not eData.lastCount or eData.lastCount <= eData.count then
-			eData.lastCount = eData.count
-
-			if eData.lastCount == eData.count and eData.procID ~= data.procID then
-				eData.textScale = 1.25
-				eData.procID = data.procID
-			end
-		else
+		if data.count > eData.count or eData.procID ~= data.procID then
 			eData.textScale = 1.25
+		elseif data.count < eData.count and eData.textScale < 1.01 then
+			eData.textScale = 0.95
 		end
+
+		eData.procID = data.procID
+		eData.count = data.count
 
 		surface.SetFont("MCSHud")
 		local x1, y1 = statusDisplay:LocalToScreen(0, 0)
@@ -229,7 +228,7 @@ function PANEL:Init()
 	haBtn:SetSize(20, 20)
 	haBtn:InvalidateLayout()
 	haBtn:SetText("")
-	haBtn:SetTooltip(self:HAShouldBeHidden() and "#mcs.ui.mcs_hud_show_health_armor" or "#mcs.ui.mcs_hud_show_health_armor")
+	haBtn:SetTooltip(self:HAShouldBeHidden() and "#mcs.ui.show_health_armor" or "#mcs.ui.hide_health_armor")
 
 	function haBtn.PerformLayout()
 		haBtn:AlignTop()
