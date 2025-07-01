@@ -2,10 +2,10 @@ local TYPE = {}
 
 TYPE.Vanilla = true
 TYPE.Set = "effect"
-TYPE.ID = "mechanical-chemical-voltage"
+TYPE.ID = "mechanical-voltage"
 TYPE.ServerName = "Malfunction"
 TYPE.Icon = "icon16/page_white.png"
-TYPE.Color = color_white
+TYPE.Color = Color(248, 196, 0)
 
 TYPE.BaseTime = 2
 TYPE.MaxStacks = 1
@@ -15,7 +15,6 @@ TYPE.Reducible = true
 TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
 
 TYPE.DamageTypes = {
-	["chemical"] = true,
 	["voltage"] = true
 }
 TYPE.HealthTypes = {
@@ -23,7 +22,7 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:OnApplyEffect(_, effectType)
-	if effectType.ID == "mechanical-chemical-voltage" then return true end
+	if effectType.ID == "mechanical-voltage" or effectType.ID == "mechanical-chemical" then return true end
 end
 
 local movesVert = { IN_FORWARD, IN_BACK }
