@@ -30,7 +30,6 @@ end
 --[[
 This function adds buttons to a DIconLayout according to a table of health/armor types
 ]]--
-
 local function addButtonRow(tbl, frame, isHealth)
 	for id, _type in pairs(tbl) do
 		local name = MCS.L(string.format("mcs.%s.%s.name", _type.Set, id))
@@ -75,9 +74,7 @@ end
 --[[
 This function is used to add standalone titles/labels to DIconLayouts
 ]]--
-
 local dark = Color(0, 0, 0, 200)
-
 local function addLabel(name, frame)
 	local NewLabel = vgui.Create("DLabel", frame)
 	NewLabel:SetText(name)
@@ -93,46 +90,31 @@ end
 --[[
 This function is used to add text entries to the settings zone
 ]]--
---[[
 local function addTextEntry(name, frame, onUnfocus)
 	local NewFrame = vgui.Create("Panel")
-	NewFrame:SetSize(180, 20)
+	NewFrame:SetTall(20)
 
 	local NewLabel = vgui.Create("DLabel", NewFrame)
 	NewLabel:SetText(name)
 	NewLabel:SetColor(color_white)
-	NewLabel:SetSize(90, 20)
+	NewLabel:SizeToContents()
 	NewLabel:Dock(LEFT)
-	NewLabel:SetExpensiveShadow(2, dark)
 
 	local NewEntry = vgui.Create("DTextEntry", NewFrame)
-	NewEntry:SetSize(90, 20)
+	NewEntry:SetWide(90)
 	NewEntry:SetNumeric(true)
-	NewEntry:SetPlaceholderText("100")
 	NewEntry:Dock(RIGHT)
+
+	NewFrame:SetWide(NewLabel:GetWide() + 95)
 
 	frame:Add(NewFrame)
 
 	return NewEntry
 end
---]]
-
---[[
-This function can be used to set the text in a RichText
-]]--
-
---[[
-local function setRichText(frame, text)
-	frame:SetText("")
-	frame:InsertColorChange(255, 255, 255, 255)
-	frame:AppendText(text)
-end
---]]
 
 --[[
 This function makes all of the vgui elements to display a radar chart
 ]]--
-
 local function makeRadarPanel(panel, label, color, hookName, member)
 	local Header = vgui.Create("DLabel", panel)
 	Header:SetText(label)
@@ -163,6 +145,8 @@ local function makeRadarPanel(panel, label, color, hookName, member)
 	end)
 end
 
+local update = {}
+
 spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	local NewFrame = vgui.Create("Panel")
 	-- It appears the Panel acts as though set to Dock FILL in the tab window, which is good because otherwise sizing things would be messy.
@@ -188,11 +172,10 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	addLabel("#mcs.ui.armor", IconList)
 	addButtonRow(MCS.GetArmorTypes(), IconList, false)
 
-	--[[ this is really broken
 	-- Settings container
 	local SettingsZone = vgui.Create("Panel", NewFrame)
 	SettingsZone:Dock(TOP)
-	SettingsZone:SetHeight(200)
+	SettingsZone:SetTall(80)
 
 	local SettingsGrid = vgui.Create("DIconLayout", SettingsZone)
 	SettingsGrid:Dock(FILL)
@@ -202,27 +185,38 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 
 	addLabel("#mcs.ui.settings", SettingsGrid)
 
-	local MaxHpEntry = addTextEntry(" Max Health:", SettingsGrid) -- not localized properly
+	local MaxHpEntry = addTextEntry("#mcs.ui.set_max_health", SettingsGrid)
 	MaxHpEntry.OnLoseFocus = function()
-		-- TODO: Tell the server this client wants their max health set to MaxHpEntry:GetInt()
-		print("Max health to " .. MaxHpEntry:GetInt())
-		-- When Overriding OnLoseFocus, this function and hook call are nessecary.
-		MaxHpEntry:UpdateConvarValue()
 		hook.Call("OnTextEntryLoseFocus", nil, MaxHpEntry)
+
+		local hp = tonumber(MaxHpEntry:GetText())
+		if not hp then return end
+
+		MCS.SetMax(hp)
 	end
 
-	local MaxArmorEntry = addTextEntry(" Max Armor:", SettingsGrid) -- not localized properly
+	table.insert(update, function()
+		if not IsValid(MaxHpEntry) then return end
+		MaxHpEntry:SetText(LocalPlayer():GetMaxHealth())
+	end)
+
+	local MaxArmorEntry = addTextEntry("#mcs.ui.set_max_armor", SettingsGrid)
 	MaxArmorEntry.OnLoseFocus = function()
-		-- TODO: Tell the server this client wants their max armor set to MaxArmorEntry:GetInt()
-		print("Max armor to " .. MaxArmorEntry:GetInt())
-
-		MaxArmorEntry:UpdateConvarValue()
 		hook.Call("OnTextEntryLoseFocus", nil, MaxArmorEntry)
+
+		local ap = tonumber(MaxArmorEntry:GetText())
+		if not ap then return end
+
+		MCS.SetMax(ap, true)
 	end
-	--]]
+
+	table.insert(update, function()
+		if not IsValid(MaxArmorEntry) then return end
+		MaxArmorEntry:SetText(LocalPlayer():GetMaxArmor())
+	end)
 
 	-- Equip button container
-	local ButtonZone = vgui.Create("Panel", NewFrame)
+	local ButtonZone = vgui.Create("Panel", LeftZone)
 	ButtonZone:Dock(BOTTOM)
 	ButtonZone:DockPadding(8, 8, 8, 8)
 	ButtonZone:SetHeight(60)
@@ -328,49 +322,6 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		ArmorInfo:SetText(string.format("#mcs.armor.%s.desc", _type.ID))
 	end)
 
-	--[[
-	-- Health page
-	local HealthPanel = vgui.Create("Panel", InfoSheets)
-	InfoSheets:AddSheet("#mcs.ui.health", HealthPanel, "icon16/heart.png")
-
-	local HealthRadarPanel = vgui.Create("Panel", HealthPanel)
-	HealthRadarPanel:SetHeight(ScreenScale(120))
-	HealthRadarPanel:Dock(TOP)
-
-	local HealthRadar = vgui.Create("MCS_RadarChart", HealthRadarPanel)
-	HealthRadar:SetSize(ScreenScale(120), ScreenScale(120))
-	HealthRadar:SetPos(ScreenScale(60), 0)
-
-	local HealthInfoPanel = vgui.Create("Panel", HealthPanel)
-	HealthInfoPanel:Dock(FILL)
-	HealthInfoPanel:DockPadding(8, 4, 8, 4)
-
-	local HealthInfo = vgui.Create("RichText", HealthInfoPanel)
-	HealthInfo:Dock(FILL)
-	HealthInfo:InsertColorChange(0, 0, 0, 255)
-	setRichText(HealthInfo, "Select a Health type to see\ninformation about it.")
-
-	-- Armor info page
-	local ArmorPanel = vgui.Create("Panel", InfoSheets)
-	InfoSheets:AddSheet("#mcs.ui.armor", ArmorPanel, "icon16/shield.png")
-
-	local ArmorRadarPanel = vgui.Create("Panel", ArmorPanel)
-	ArmorRadarPanel:SetHeight(ScreenScale(120))
-	ArmorRadarPanel:Dock(TOP)
-
-	local ArmorRadar = vgui.Create("MCS_RadarChart", ArmorRadarPanel)
-	ArmorRadar:SetSize(ScreenScale(120), ScreenScale(120))
-	ArmorRadar:SetPos(ScreenScale(60), 0)
-
-	local ArmorInfoPanel = vgui.Create("Panel", ArmorPanel)
-	ArmorInfoPanel:Dock(FILL)
-	ArmorInfoPanel:DockPadding(8, 4, 8, 4)
-
-	local ArmorInfo = vgui.Create("RichText", ArmorInfoPanel)
-	ArmorInfo:Dock(FILL)
-	setRichText(ArmorInfo, "Select an Armor type to see\ninformation about it.")
-	--]]
-
 	-- Augment page, largely unfinished.
 	local AugmentPanel = vgui.Create("Panel", InfoSheets)
 	InfoSheets:AddSheet("#mcs.ui.augments", AugmentPanel, "icon16/gun.png")
@@ -419,3 +370,9 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 
 	return NewFrame
 end, "icon16/heart.png", 2000)
+
+hook.Add("SpawnMenuOpen", "MCS_OpenMenu", function()
+	for _, v in ipairs(update) do
+		v()
+	end
+end)

@@ -1,4 +1,5 @@
 MCS.NOTIFY_FORMAT_NET_SIZE = 6
+MCS.SET_MAX_NET_SIZE = 22
 
 vector_one = Vector(1, 1, 1)
 

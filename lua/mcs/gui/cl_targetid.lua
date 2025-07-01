@@ -118,7 +118,6 @@ local function drawEffects(ent, pos, w)
 	local x = (count - 1) * 14
 	for id, data in SortedPairs(effectList) do
 		drawEffect(ent, data, id, pos.x + x, pos.y + 26)
-
 		x = x - 28
 	end
 end
