@@ -41,7 +41,7 @@ local function entVisible(ent, ply)
 		return canSee
 	end
 
-	local trEndpos = ent:EyePos()
+	local trEndpos = ent:EyePos() - vector_up * 10
 	local target = ent
 
 	if ent:IsPlayer() and ent:InVehicle() then
