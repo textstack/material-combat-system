@@ -23,7 +23,7 @@ TYPE.Color = Color(141, 211, 95)
 -- this is supposed to represent any flesh-adjacent or derivative material
 -- hard plastic, cardboard, deceased meat,
 
-TYPE.Symbols = { "⛊", "⛉" }
+TYPE.Symbols = { "◙", "●" }
 --[[
 Multiplier key: 
     1.0: doesn't block at all (x-rays against cardboard)

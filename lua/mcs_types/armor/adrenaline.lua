@@ -11,7 +11,7 @@ TYPE.Color = Color(255, 127, 42)
 
 -- armor-specific elements
 
-TYPE.Symbols = { "⛊", "⛉" }
+TYPE.Symbols = { "⏸", "⏵" }
 
 --[[
 Multiplier key: 

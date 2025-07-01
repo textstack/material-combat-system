@@ -28,7 +28,7 @@ Multiplier key:
     0.25: industrial grade protection against (voltage against kevlar)
 ]]--
 
-TYPE.Symbols = { "⛊", "⛉" }
+TYPE.Symbols = { "⛨", "☣" }
 TYPE.DamageMultipliers = {
 	["splitting"] = 1,
 	["kinetic"] = 0.75,
