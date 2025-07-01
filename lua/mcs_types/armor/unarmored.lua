@@ -8,6 +8,7 @@ TYPE.Icon = "icons/armor/unarmored.png"
 TYPE.Color = Color(128, 128, 128)
 
 --TYPE.HideOnHud = true
+TYPE.HideOnTargetID = true
 
 if SERVER then
 	local noArmorEnts = {}

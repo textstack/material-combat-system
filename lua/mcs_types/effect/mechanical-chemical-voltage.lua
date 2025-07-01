@@ -3,7 +3,7 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "mechanical-chemical-voltage"
-TYPE.ServerName = "Movement Error"
+TYPE.ServerName = "Malfunction"
 TYPE.Icon = "icon16/page_white.png"
 TYPE.Color = color_white
 

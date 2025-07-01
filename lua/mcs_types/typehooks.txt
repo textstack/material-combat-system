@@ -204,3 +204,19 @@ OnHealthChanged(prevHealth, health) SERVER
     arguments:
         prevHealth - the health last tick
         health - the health this tick
+
+CanBeSeenBy(ply) CLIENT
+    description:
+        Called to determine if the ply looking at this entity can see their target id
+    arguments:
+        ply - the player looking at the entity
+    return:
+        true to force-allow, false to force-reject
+
+CanSee(ent) CLIENT
+    description:
+        Called to determine if the entity a player is looking at can see that entity's target id
+    arguments:
+        ent - the entity the player is looking at
+    return:
+        true to force-allow, false to force-reject

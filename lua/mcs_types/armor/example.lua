@@ -71,6 +71,9 @@ TYPE.HealthTypeBlacklist = {
 	["example"] = true
 }
 
+TYPE.HideOnHud = false
+TYPE.HideOnTargetID = false
+
 -- hooks (self = player this typeset is applied to)
 
 function TYPE:OnTakeDamage(dmg)

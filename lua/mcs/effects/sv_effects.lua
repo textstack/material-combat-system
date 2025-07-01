@@ -14,6 +14,7 @@ function MCS.SendEffects()
 		for effectID, data in pairs(effectList) do
 			net.WriteString(effectID)
 			net.WriteUInt(data.count, MCS.EFFECT_COUNT_NET_SIZE)
+			net.WriteUInt(data.procID or 0, MCS.EFFECT_PROC_ID_NET_SIZE)
 		end
 	end
 
@@ -45,6 +46,7 @@ function ENTITY:MCS_BumpEffects()
 			for effectID, data in pairs(effectList) do
 				net.WriteString(effectID)
 				net.WriteUInt(data.count, MCS.EFFECT_COUNT_NET_SIZE)
+				net.WriteUInt(data.procID or 0, MCS.EFFECT_PROC_ID_NET_SIZE)
 			end
 		end
 
@@ -130,6 +132,7 @@ function ENTITY:MCS_AddEffect(id, amount)
 		runningTime = effectType.BaseTime or MCS.EFFECT_DEFAULT_TIME
 	}
 
+	effectList[id].procID = math.random(0, MCS.MAX_PROC_ID)
 	effectList[id].count = math.min(effectList[id].count + amount, effectType.MaxStacks or MCS.MAX_EFFECT_COUNT, MCS.MAX_EFFECT_COUNT)
 	effectList[id].speed = math.max(effectList[id].speed - amount * MCS.GetConVar("mcs_sv_effect_speed_falloff"):GetFloat(), effectList[id].count)
 

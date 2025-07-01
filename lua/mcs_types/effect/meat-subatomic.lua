@@ -7,7 +7,7 @@ TYPE.ServerName = "Radiation Sickness"
 TYPE.Icon = "icon16/page_white.png"
 TYPE.Color = Color(255, 93, 255)
 
-TYPE.BaseTime = 60 * 4
+TYPE.BaseTime = 240
 TYPE.MaxStacks = 100
 TYPE.InflictChance = 0.05
 TYPE.Reducible = true

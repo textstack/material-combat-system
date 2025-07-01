@@ -1,5 +1,7 @@
 MCS.NOTIFY_FORMAT_NET_SIZE = 6
 
+vector_one = Vector(1, 1, 1)
+
 local ENTITY = FindMetaTable("Entity")
 
 --- Returns whether the entity has the combat system enabled

@@ -8,14 +8,10 @@ local disabledMat = Material("icon16/photo_add.png")
 local haEnabledMat = Material("icon16/heart_delete.png")
 local haDisabledMat = Material("icon16/heart_add.png")
 
-local vector_one = Vector(1, 1, 1)
-
 surface.CreateFont("MCSHud", {
 	font = "Arial",
 	size = 20,
 	weight = 500,
-	blursize = 0,
-	scanlines = 0,
 	antialias = false,
 	outline = true,
 })
@@ -88,7 +84,7 @@ function PANEL:Init()
 
 		local clipping = DisableClipping(true)
 		local y = goDown and 2 or h - 2
-		for id, data in pairs(effectList) do
+		for id, data in SortedPairs(effectList) do
 			local countStr = data.count > 1 and string.format("%s x ", data.count) or ""
 			local text = string.format("%s%s", countStr, MCS.L(string.format("mcs.effect.%s.name", id)))
 
