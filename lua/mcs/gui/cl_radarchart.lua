@@ -17,11 +17,14 @@ local startAng = -math.pi / 2
 		this panel correctly changes its values if you set a new table, and will live-update with damagetype code changes
 --]]
 function PANEL:SetValues(values)
-	if type(values) ~= "table" then return end
-
-	self.Values = values
+	if type(values) == "table" then
+		self.Values = values
+	else
+		self.Values = {}
+	end
 
 	self:FixTooltips()
+	self:InvalidateLayout()
 end
 
 --[[ Sets the color of the chart display
@@ -32,7 +35,7 @@ function PANEL:SetColor(color)
 	if not IsColor(color) then return end
 
 	self.Color = color
-	self.BackColor = ColorAlpha(self.Color, self.Color.a / 4)
+	self.BackColor = ColorAlpha(self.Color, self.Color.a / 2)
 end
 
 --- everything below is internal stuff!
@@ -174,7 +177,7 @@ function PANEL:Paint(w, h)
 	local count = table.Count(dmgPnls)
 	local ang = math.rad(360 / count)
 
-	surface.SetDrawColor(192, 192, 192, 192)
+	surface.SetDrawColor(255, 255, 255, 192)
 
 	local polyPoints = {}
 	local curAng = startAng
@@ -216,7 +219,7 @@ function PANEL:Paint(w, h)
 	end)
 end
 
-vgui.Register("mcs_radarchart", PANEL, "Panel")
+vgui.Register("MCS_RadarChart", PANEL, "Panel")
 
 hook.Add("MCS_LateLoadType", "FixType", function(_type)
 	if _type.Set == "damage" then
@@ -232,7 +235,7 @@ if MCS_LOADED then
 	frame:Center()
 	frame:SetSizable(true)
 
-	local chart = frame:Add("mcs_radarchart")
+	local chart = frame:Add("MCS_RadarChart")
 	chart:Dock(FILL)
 	chart:SetValues(MCS.HealthType("meat").DamageMultipliers)
 	chart:SetColor(Color(255, 64, 64))

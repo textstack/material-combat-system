@@ -12,7 +12,7 @@ local AugmentSelImg
 This function creates an image which is overlaid over the client's selected armor & health types.
 The image is yellow initially, but both should be turned green on successful application.
 ]]--
-function addSelIndicator(frame, isCircle)
+local function addSelIndicator(frame, isCircle)
 	local NewImage = vgui.Create("DImage", frame)
 
 	if isCircle then
@@ -31,7 +31,7 @@ end
 This function adds buttons to a DIconLayout according to a table of health/armor types
 ]]--
 
-function addButtonRow(tbl, frame, isHealth)
+local function addButtonRow(tbl, frame, isHealth)
 	for id, _type in pairs(tbl) do
 		local name = MCS.L(string.format("mcs.%s.%s.name", _type.Set, id))
 		local newButton = vgui.Create("DImageButton")
@@ -40,7 +40,8 @@ function addButtonRow(tbl, frame, isHealth)
 		newButton:SetMaterial(MCS.GetIconMaterial(_type, "icons/armor/unarmored.png"))
 		newButton.m_Image:SetImageColor(_type.Color or color_white)
 		newButton:SetSize(80, 80)
-		newButton:SetTooltip(_type.Set .. ": " .. name) -- not localized properly
+		newButton:SetTooltip(name)
+		newButton:SetTooltipDelay(0)
 		newButton.DoClick = function()
 			-- TODO: On selection, update HealthInfo and ArmorInfo to show descriptions for each
 			-- TODO: On selection, update HealthRadar and ArmorRadar
@@ -53,6 +54,8 @@ function addButtonRow(tbl, frame, isHealth)
 				end
 
 				HealthSelImg = addSelIndicator(newButton, true)
+
+				hook.Run("MCS_SelectedHealth", MCS.HealthType(id))
 			else
 				if ArmorSel == id then return end
 
@@ -62,6 +65,8 @@ function addButtonRow(tbl, frame, isHealth)
 				end
 
 				ArmorSelImg = addSelIndicator(newButton, true)
+
+				hook.Run("MCS_SelectedArmor", MCS.ArmorType(id))
 			end
 		end
 	end
@@ -71,28 +76,34 @@ end
 This function is used to add standalone titles/labels to DIconLayouts
 ]]--
 
-function addLabel(name, frame)
+local dark = Color(0, 0, 0, 200)
+
+local function addLabel(name, frame)
 	local NewLabel = vgui.Create("DLabel", frame)
 	NewLabel:SetText(name)
-	NewLabel:SetColor(Color(30, 30, 30))
+	NewLabel:SetColor(color_white)
 	NewLabel:SetSize(320, 40)
 	NewLabel:SetFont("CloseCaption_Bold")
+	NewLabel:SetExpensiveShadow(2, dark)
 	NewLabel.OwnLine = true -- Magic undocumented variable that lets it have it's own line
+
+	return NewLabel
 end
 
 --[[
 This function is used to add text entries to the settings zone
 ]]--
-
-function addTextEntry(name, frame, onUnfocus)
-	local NewFrame = vgui.Create("DPanel")
+--[[
+local function addTextEntry(name, frame, onUnfocus)
+	local NewFrame = vgui.Create("Panel")
 	NewFrame:SetSize(180, 20)
 
 	local NewLabel = vgui.Create("DLabel", NewFrame)
 	NewLabel:SetText(name)
-	NewLabel:SetColor(Color(30, 30, 30))
+	NewLabel:SetColor(color_white)
 	NewLabel:SetSize(90, 20)
 	NewLabel:Dock(LEFT)
+	NewLabel:SetExpensiveShadow(2, dark)
 
 	local NewEntry = vgui.Create("DTextEntry", NewFrame)
 	NewEntry:SetSize(90, 20)
@@ -104,23 +115,61 @@ function addTextEntry(name, frame, onUnfocus)
 
 	return NewEntry
 end
+--]]
 
 --[[
 This function can be used to set the text in a RichText
 ]]--
 
-function setRichText(frame, text)
+--[[
+local function setRichText(frame, text)
 	frame:SetText("")
-	frame:InsertColorChange(0, 0, 0, 255)
+	frame:InsertColorChange(255, 255, 255, 255)
 	frame:AppendText(text)
+end
+--]]
+
+--[[
+This function makes all of the vgui elements to display a radar chart
+]]--
+
+local function makeRadarPanel(panel, label, color, hookName, member)
+	local Header = vgui.Create("DLabel", panel)
+	Header:SetText(label)
+	Header:SetColor(color_white)
+	Header:SetTall(30)
+	Header:SetFont("CreditsText")
+	Header:SetContentAlignment(5)
+	Header:Dock(TOP)
+
+	local RadarHolder = vgui.Create("Panel", panel)
+	RadarHolder:Dock(FILL)
+	RadarHolder:DockMargin(0, 0, 0, 3)
+
+	local RadarChart = vgui.Create("MCS_RadarChart", RadarHolder)
+	local oldLayout = RadarChart.PerformLayout
+	function RadarChart.PerformLayout(_, w, h)
+		local size = math.min(RadarHolder:GetSize())
+		RadarChart:SetSize(size, size)
+		RadarChart:Center()
+
+		oldLayout(RadarChart, w, h)
+	end
+
+	RadarChart:SetColor(color)
+
+	hook.Add(hookName, label, function(_type)
+		RadarChart:SetValues(_type[member])
+	end)
 end
 
 spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
-	local NewFrame = vgui.Create("DPanel")
+	local NewFrame = vgui.Create("Panel")
 	-- It appears the Panel acts as though set to Dock FILL in the tab window, which is good because otherwise sizing things would be messy.
+	-- ^^ https://github.com/Facepunch/garrysmod/blob/2303e61a5ea696dba22140cdda0549bb6a1a2487/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/creationmenu.lua#L50
 
 	-- Health and Armor selection container
-	local LeftZone = vgui.Create("DPanel", NewFrame)
+	local LeftZone = vgui.Create("Panel", NewFrame)
 	LeftZone:Dock(LEFT)
 	LeftZone:SetWide(ScreenScale(160)) -- 1/4 screen width
 
@@ -133,14 +182,15 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	IconList:SetSpaceY(8)
 	IconList:SetBorder(16)
 
-	addLabel("Health", IconList) -- not localized properly
+	addLabel("#mcs.ui.health", IconList)
 	addButtonRow(MCS.GetHealthTypes(), IconList, true)
 
-	addLabel("Armor", IconList) -- not localized properly
+	addLabel("#mcs.ui.armor", IconList)
 	addButtonRow(MCS.GetArmorTypes(), IconList, false)
 
+	--[[ this is really broken
 	-- Settings container
-	local SettingsZone = vgui.Create("DPanel", NewFrame)
+	local SettingsZone = vgui.Create("Panel", NewFrame)
 	SettingsZone:Dock(TOP)
 	SettingsZone:SetHeight(200)
 
@@ -150,7 +200,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	SettingsGrid:SetSpaceY(8)
 	SettingsGrid:SetBorder(16)
 
-	addLabel("Settings", SettingsGrid) -- not localized properly
+	addLabel("#mcs.ui.settings", SettingsGrid)
 
 	local MaxHpEntry = addTextEntry(" Max Health:", SettingsGrid) -- not localized properly
 	MaxHpEntry.OnLoseFocus = function()
@@ -169,16 +219,17 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		MaxArmorEntry:UpdateConvarValue()
 		hook.Call("OnTextEntryLoseFocus", nil, MaxArmorEntry)
 	end
+	--]]
 
 	-- Equip button container
-	local ButtonZone = vgui.Create("DPanel", NewFrame)
+	local ButtonZone = vgui.Create("Panel", NewFrame)
 	ButtonZone:Dock(BOTTOM)
 	ButtonZone:DockPadding(8, 8, 8, 8)
 	ButtonZone:SetHeight(60)
 
 	local EquipButton = vgui.Create("DButton", ButtonZone)
 	EquipButton:Dock(RIGHT)
-	EquipButton:SetText("Equip Health & Armor")
+	EquipButton:SetText("#mcs.ui.equip_health_armor")
 	EquipButton:SetSize(180, 60)
 	EquipButton.DoClick = function()
 		-- MSC_SetHealthType and MCS_SetArmorType do not pass false if rejected for having already chosen
@@ -209,26 +260,88 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	end
 
 	-- Information zone container
-	local InfoZone = vgui.Create("DPanel", NewFrame)
+	local InfoZone = vgui.Create("Panel", NewFrame)
 	InfoZone:Dock(FILL)
 	InfoZone:DockPadding(8, 16, 8, 8)
 
 	local InfoSheets = vgui.Create("DPropertySheet", InfoZone)
 	InfoSheets:Dock(FILL)
 
-	-- Health page
-	local HealthPanel = vgui.Create("DPanel", InfoSheets)
-	InfoSheets:AddSheet("Health", HealthPanel, "icon16/heart.png") -- not localized properly
+	-- Health and armor page
+	local HAPanel = vgui.Create("Panel", InfoSheets)
+	InfoSheets:AddSheet("#mcs.ui.health_armor", HAPanel, "icon16/heart.png")
 
-	local HealthRadarPanel = vgui.Create("DPanel", HealthPanel)
+	local RadarPanel = vgui.Create("Panel", HAPanel)
+	RadarPanel:SetHeight(240)
+	RadarPanel:Dock(TOP)
+
+	local HealthSection = vgui.Create("Panel", RadarPanel)
+	HealthSection:Dock(LEFT)
+	function HealthSection.PerformLayout(panel)
+		panel:SetWide(RadarPanel:GetWide() / 3)
+	end
+
+	makeRadarPanel(HealthSection, "#mcs.ui.health_dmg_mult", Color(255, 128, 128), "MCS_SelectedHealth", "DamageMultipliers")
+
+	local ArmorSection1 = vgui.Create("Panel", RadarPanel)
+	ArmorSection1:Dock(LEFT)
+	ArmorSection1.PerformLayout = HealthSection.PerformLayout
+
+	makeRadarPanel(ArmorSection1, "#mcs.ui.armor_dmg_mult", Color(192, 96, 255), "MCS_SelectedArmor", "DamageMultipliers")
+
+	local ArmorSection2 = vgui.Create("Panel", RadarPanel)
+	ArmorSection2:Dock(FILL)
+
+	makeRadarPanel(ArmorSection2, "#mcs.ui.armor_drain_rate", Color(128, 128, 255), "MCS_SelectedArmor", "DrainRate")
+
+	local HealthLabel = addLabel("#mcs.ui.health", HAPanel)
+	HealthLabel:Dock(TOP)
+
+	local HealthInfo = vgui.Create("DLabel", HAPanel)
+	HealthInfo:Dock(TOP)
+	HealthInfo:SetText("#mcs.ui.health_select_to_read")
+	HealthInfo:SetColor(color_white)
+	HealthInfo:SetFont("CreditsText")
+	HealthInfo:SetWrap(true)
+	HealthInfo:SetAutoStretchVertical(true)
+
+	hook.Add("MCS_SelectedHealth", "MCS_SetHealthInfo", function(_type)
+		HealthLabel:SetColor(_type.Color or color_white)
+		HealthLabel:SetText(string.format("#mcs.health.%s.name", _type.ID))
+		HealthInfo:SetText(string.format("#mcs.health.%s.desc", _type.ID))
+	end)
+
+	local ArmorLabel = addLabel("#mcs.ui.armor", HAPanel)
+	ArmorLabel:Dock(TOP)
+
+	local ArmorInfo = vgui.Create("DLabel", HAPanel)
+	ArmorInfo:Dock(TOP)
+	ArmorInfo:SetText("#mcs.ui.armor_select_to_read")
+	ArmorInfo:SetColor(color_white)
+	ArmorInfo:SetFont("CreditsText")
+	ArmorInfo:SetWrap(true)
+	ArmorInfo:SetAutoStretchVertical(true)
+
+	hook.Add("MCS_SelectedArmor", "MCS_SetArmorInfo", function(_type)
+		ArmorLabel:SetColor(_type.Color or color_white)
+		ArmorLabel:SetText(string.format("#mcs.armor.%s.name", _type.ID))
+		ArmorInfo:SetText(string.format("#mcs.armor.%s.desc", _type.ID))
+	end)
+
+	--[[
+	-- Health page
+	local HealthPanel = vgui.Create("Panel", InfoSheets)
+	InfoSheets:AddSheet("#mcs.ui.health", HealthPanel, "icon16/heart.png")
+
+	local HealthRadarPanel = vgui.Create("Panel", HealthPanel)
 	HealthRadarPanel:SetHeight(ScreenScale(120))
 	HealthRadarPanel:Dock(TOP)
 
-	local HealthRadar = vgui.Create("mcs_radarchart", HealthRadarPanel)
+	local HealthRadar = vgui.Create("MCS_RadarChart", HealthRadarPanel)
 	HealthRadar:SetSize(ScreenScale(120), ScreenScale(120))
 	HealthRadar:SetPos(ScreenScale(60), 0)
 
-	local HealthInfoPanel = vgui.Create("DPanel", HealthPanel)
+	local HealthInfoPanel = vgui.Create("Panel", HealthPanel)
 	HealthInfoPanel:Dock(FILL)
 	HealthInfoPanel:DockPadding(8, 4, 8, 4)
 
@@ -238,30 +351,31 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	setRichText(HealthInfo, "Select a Health type to see\ninformation about it.")
 
 	-- Armor info page
-	local ArmorPanel = vgui.Create("DPanel", InfoSheets)
-	InfoSheets:AddSheet("Armor", ArmorPanel, "icon16/shield.png") -- not localized properly
+	local ArmorPanel = vgui.Create("Panel", InfoSheets)
+	InfoSheets:AddSheet("#mcs.ui.armor", ArmorPanel, "icon16/shield.png")
 
-	local ArmorRadarPanel = vgui.Create("DPanel", ArmorPanel)
+	local ArmorRadarPanel = vgui.Create("Panel", ArmorPanel)
 	ArmorRadarPanel:SetHeight(ScreenScale(120))
 	ArmorRadarPanel:Dock(TOP)
 
-	local ArmorRadar = vgui.Create("mcs_radarchart", ArmorRadarPanel)
+	local ArmorRadar = vgui.Create("MCS_RadarChart", ArmorRadarPanel)
 	ArmorRadar:SetSize(ScreenScale(120), ScreenScale(120))
 	ArmorRadar:SetPos(ScreenScale(60), 0)
 
-	local ArmorInfoPanel = vgui.Create("DPanel", ArmorPanel)
+	local ArmorInfoPanel = vgui.Create("Panel", ArmorPanel)
 	ArmorInfoPanel:Dock(FILL)
 	ArmorInfoPanel:DockPadding(8, 4, 8, 4)
 
 	local ArmorInfo = vgui.Create("RichText", ArmorInfoPanel)
 	ArmorInfo:Dock(FILL)
 	setRichText(ArmorInfo, "Select an Armor type to see\ninformation about it.")
+	--]]
 
 	-- Augment page, largely unfinished.
-	local AugmentPanel = vgui.Create("DPanel", InfoSheets)
-	InfoSheets:AddSheet("Augment", AugmentPanel, "icon16/gun.png") -- not localized properly
+	local AugmentPanel = vgui.Create("Panel", InfoSheets)
+	InfoSheets:AddSheet("#mcs.ui.augments", AugmentPanel, "icon16/gun.png")
 
-	local WeaponListPanel = vgui.Create("DPanel", AugmentPanel)
+	local WeaponListPanel = vgui.Create("Panel", AugmentPanel)
 	WeaponListPanel:SetHeight(ScreenScale(120))
 	WeaponListPanel:Dock(TOP)
 
@@ -275,7 +389,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	WeaponGrid:SetSpaceY(8)
 	WeaponGrid:SetBorder(8)
 
-	local DamageListPanel = vgui.Create("DPanel", AugmentPanel)
+	local DamageListPanel = vgui.Create("Panel", AugmentPanel)
 	DamageListPanel:Dock(FILL)
 
 	local DamageGrid = vgui.Create("DIconLayout", DamageListPanel)
