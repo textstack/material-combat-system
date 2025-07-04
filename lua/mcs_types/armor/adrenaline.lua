@@ -12,6 +12,7 @@ TYPE.Color = Color(255, 127, 42)
 -- armor-specific elements
 
 TYPE.Symbols = { "⏸", "⏵" }
+TYPE.NoArmorOnSpawn = true
 
 --[[
 Multiplier key: 
@@ -116,7 +117,5 @@ TYPE.OnSwitchFrom = disable
 TYPE.OnSwitchTo = enable
 TYPE.OnEnabled = enable
 TYPE.OnPlayerSpawn = enable
-
-TYPE.NoArmorOnSpawn = true
 
 MCS.RegisterType(TYPE)

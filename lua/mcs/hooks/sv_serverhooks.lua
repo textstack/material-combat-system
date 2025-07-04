@@ -28,15 +28,22 @@ end)
 --[[
 	On spawn, set a player's max health and armor to what they have selected or 100 if it has not been set.
 ]]--
-hook.Add("PlayerSpawn","MCS_PlayerSpawnHpArmor", function(player, transition) 
-	if player:MCS_GetEnabled() then
-		-- Because player_manager.lua sets the player's max health on spawn (and I don't see any way to change it), this jank works around it.
-		timer.Simple( 0.1, function() 
-			player:SetMaxHealth(player.MCS_MaxHealth or 100) -- TODO: server setting for default max health?
-			player:SetHealth(player.MCS_MaxHealth or 100)
-			player:SetMaxArmor(player.MCS_MaxArmor or 100)
-			player:SetArmor(player.MCS_MaxArmor or 100)  -- TODO: If Armor has TYPE.NoArmorOnSpawn, do not set.
-		end )
-	end
+hook.Add("PlayerSpawn", "MCS_PlayerSpawnHpArmor", function(ply)
+	timer.Simple(0, function()
+		if not ply:IsValid() or not ply:MCS_GetEnabled() then return end
+
+		if ply.MCS_MaxHealth then
+			ply:SetMaxHealth(ply.MCS_MaxHealth) -- TODO: server setting for default max health?
+			ply:SetHealth(ply.MCS_MaxHealth)
+		end
+
+		if ply.MCS_MaxArmor then
+			ply:SetMaxArmor(ply.MCS_MaxArmor)
+		end
+
+		if not ply:MCS_GetArmorTypeValue("NoArmorOnSpawn") then
+			ply:SetArmor(ply:GetMaxArmor())
+		end
+	end)
 end
 )

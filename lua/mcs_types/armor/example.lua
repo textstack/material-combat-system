@@ -21,6 +21,9 @@ TYPE.Color = color_white
 
 TYPE.Symbols = { "⛊", "⛉" }
 
+-- set to true to make the player spawn with 0 armor
+TYPE.NoArmorOnSpawn = true
+
 --[[
 Multiplier key: 
 	3.0: 100% critical hits
