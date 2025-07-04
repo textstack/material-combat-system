@@ -46,6 +46,7 @@ function ENTITY:MCS_SetHealthType(id, force)
 
 	if CLIENT then
 		if self ~= LocalPlayer() then return false, "mcs.error.self_only" end
+		if not force and self:GetNWBool("MCS_HasSetHealthType") then return false, "mcs.error.already_set_health_type" end
 
 		net.Start("mcs_healtharmor")
 		net.WriteBool(true)
@@ -56,8 +57,8 @@ function ENTITY:MCS_SetHealthType(id, force)
 	end
 
 	if self:IsPlayer() then
-		if not force and self.MCS_HasSetHealthType then return false, "mcs.error.already_set_health_type" end
-		self.MCS_HasSetHealthType = true
+		if not force and self:GetNWBool("MCS_HasSetHealthType") then return false, "mcs.error.already_set_health_type" end
+		self:SetNWBool("MCS_HasSetHealthType", true)
 	end
 
 	self:MCS_LocalTypeHook(self:MCS_GetHealthType(), "OnSwitchFrom")
@@ -121,6 +122,7 @@ function ENTITY:MCS_SetArmorType(id, force)
 
 	if CLIENT then
 		if self ~= LocalPlayer() then return false, "mcs.error.self_only" end
+		if not force and self:GetNWBool("MCS_HasSetArmorType") then return false, "mcs.error.already_set_armor_type" end
 
 		net.Start("mcs_healtharmor")
 		net.WriteBool(false)
@@ -131,8 +133,8 @@ function ENTITY:MCS_SetArmorType(id, force)
 	end
 
 	if self:IsPlayer() then
-		if not force and self.MCS_HasSetArmorType then return false, "mcs.error.already_set_armor_type" end
-		self.MCS_HasSetArmorType = true
+		if not force and self:GetNWBool("MCS_HasSetArmorType") then return false, "mcs.error.already_set_armor_type" end
+		self:SetNWBool("MCS_HasSetArmorType", true)
 	end
 
 	self:MCS_LocalTypeHook(self:MCS_GetArmorType(), "OnSwitchFrom")

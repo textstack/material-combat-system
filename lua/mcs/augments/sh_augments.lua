@@ -50,6 +50,10 @@ function ENTITY:MCS_SetAugment(id, swep, force)
 	if CLIENT then
 		if self ~= LocalPlayer() then return false, "mcs.error.self_only" end
 
+		if not force and self.MCS_HasSetAugments and self.MCS_HasSetAugments[swep] then
+			return false, "mcs.error.already_set_augment"
+		end
+
 		net.Start("mcs_augments")
 		net.WriteString(swep)
 		net.WriteString(id or "")
@@ -65,15 +69,15 @@ function ENTITY:MCS_SetAugment(id, swep, force)
 
 		self.MCS_HasSetAugments = self.MCS_HasSetAugments or {}
 		self.MCS_HasSetAugments[swep] = true
+
+		net.Start("mcs_augments")
+		net.WriteString(swep)
+		net.WriteString(id or "")
+		net.Send(self)
 	end
 
 	self.MCS_Augments = self.MCS_Augments or {}
 	self.MCS_Augments[swep] = id
-
-	net.Start("mcs_augments")
-	net.WriteString(swep)
-	net.WriteString(id or "")
-	net.Send(self)
 
 	return true
 end

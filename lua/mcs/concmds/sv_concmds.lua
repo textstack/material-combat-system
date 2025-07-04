@@ -22,8 +22,8 @@ timer.Create("MCS_CheckUserInfo", 1, 0, function()
 end)
 
 hook.Add("PlayerSpawn", "MCS_ResetRestrictions", function(ply)
-	ply.MCS_HasSetHealthType = nil
-	ply.MCS_HasSetArmorType = nil
+	ply:SetNWBool("MCS_HasSetHealthType")
+	ply:SetNWBool("MCS_HasSetArmorType")
 	ply.MCS_HasSetAugments = nil
 end)
 
