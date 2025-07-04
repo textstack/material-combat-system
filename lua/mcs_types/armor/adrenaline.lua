@@ -117,4 +117,6 @@ TYPE.OnSwitchTo = enable
 TYPE.OnEnabled = enable
 TYPE.OnPlayerSpawn = enable
 
+TYPE.NoArmorOnSpawn = true
+
 MCS.RegisterType(TYPE)
