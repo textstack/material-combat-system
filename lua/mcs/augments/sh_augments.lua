@@ -17,6 +17,18 @@ function ENTITY:MCS_GetCurrentAugment(inflictor)
 	return MCS.DamageType(self.MCS_Augments[inflictor:GetClass()])
 end
 
+--[[ Remove an augment from an entity or its weapon
+	inputs:
+		swep - class name of the weapon (if the entity is a player)
+		force - serverside, set to true to bypass the one-per-life restriction for players
+	outputs:
+		whether the operation was successful
+		the tag for the error message if failed
+--]]
+function ENTITY:MCS_ClearAugment(swep, force)
+	return self:MCS_SetAugment(nil, swep, force)
+end
+
 --[[ Set the augment of an entity or its weapon
 	inputs:
 		id - id of the damage type for the augment

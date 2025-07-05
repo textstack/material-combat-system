@@ -1,5 +1,6 @@
 CreateClientConVar("mcs_enabled", 1, false, true, "Whether MCS is enabled (0 = false, 1 = let server decide, 2 = true).", 0, 2)
 
-hook.Add("PlayerSpawn", "MCS_ResetRestrictions", function(ply)
-	ply.MCS_HasSetAugments = nil
+gameevent.Listen("player_spawn")
+hook.Add("player_spawn", "MCS_ResetRestrictions", function(data)
+	Player(data.userid).MCS_HasSetAugments = nil
 end)

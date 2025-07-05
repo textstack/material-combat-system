@@ -22,8 +22,8 @@ timer.Create("MCS_CheckUserInfo", 1, 0, function()
 end)
 
 hook.Add("PlayerSpawn", "MCS_ResetRestrictions", function(ply)
-	ply:SetNWBool("MCS_HasSetHealthType")
-	ply:SetNWBool("MCS_HasSetArmorType")
+	ply:SetNWBool("MCS_HasSetHealthType", false)
+	ply:SetNWBool("MCS_HasSetArmorType", false)
 	ply.MCS_HasSetAugments = nil
 end)
 
@@ -99,7 +99,10 @@ end, function(cmd, arg, args)
 	local cmpArg = string.Trim(args[1] or "")
 	local add = args[2] and " " .. args[2] or ""
 
-	for id, dmgType in pairs(MCS.GetDamageTypes()) do
+	local dmgTypes = MCS.GetDamageTypes()
+	dmgTypes["none"] = {}
+
+	for id, dmgType in pairs() do
 		if dmgType.Hidden then continue end
 		if not dmgType.AugmentDamage then continue end
 

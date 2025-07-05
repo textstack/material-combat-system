@@ -4,10 +4,6 @@ local ArmorSelImg
 local HealthSel
 local ArmorSel
 
-local AugmentDict = {}
-local AugmentSelImg
---local AugmentSel
-
 --[[
 This function creates an image which is overlaid over the client's selected armor & health types.
 The image is yellow initially, but both should be turned green on successful application.
@@ -143,6 +139,59 @@ local function makeRadarPanel(panel, label, color, hookName, member)
 	hook.Add(hookName, label, function(_type)
 		RadarChart:SetValues(_type[member])
 	end)
+end
+
+local function makeAugmentMenu(panel, swep, swepEnt)
+	local ply = LocalPlayer()
+
+	local _menu = DermaMenu()
+
+	if ply.MCS_Augments[swep] ~= nil then
+		local reset = _menu:AddOption("#mcs.none", function()
+			local pass, message = ply:MCS_ClearAugment(swep)
+
+			if pass then
+				panel:SetText(swepEnt:GetPrintName())
+				panel:SizeToContentsX(20)
+				panel:SetEnabled(false)
+
+				local parent = panel:GetParent()
+				parent:Layout()
+				parent:InvalidateLayout()
+			else
+				ply:MCS_Notify(message)
+			end
+		end)
+
+		reset:SetMaterial("icon16/cross.png")
+	end
+
+	for id, dmgType in pairs(MCS.GetDamageTypes()) do
+		if dmgType.Hidden then continue end
+		if not dmgType.AugmentDamage then continue end
+		if ply.MCS_Augments[swep] == id then continue end
+
+		local opt = _menu:AddOption(string.format("#mcs.damage.%s.name", id), function()
+			local pass, message = ply:MCS_SetAugment(id, swep)
+
+			if pass then
+				panel:SetText(MCS.L(string.format("mcs.damage.%s.augment", id), swepEnt:GetPrintName()))
+				panel:SizeToContentsX(20)
+				panel:SetEnabled(false)
+
+				local parent = panel:GetParent()
+				parent:Layout()
+				parent:InvalidateLayout()
+			else
+				ply:MCS_Notify(message)
+			end
+		end)
+
+		opt:SetMaterial(MCS.GetIconMaterial(dmgType))
+		opt.m_Image:SetImageColor(dmgType.Color or color_white)
+	end
+
+	_menu:Open()
 end
 
 local update = {}
@@ -327,45 +376,69 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	InfoSheets:AddSheet("#mcs.ui.augments", AugmentPanel, "icon16/gun.png")
 
 	local WeaponListPanel = vgui.Create("Panel", AugmentPanel)
-	WeaponListPanel:SetHeight(ScreenScale(120))
-	WeaponListPanel:Dock(TOP)
+	WeaponListPanel:Dock(FILL)
 
 	local WeaponScrollPanel = vgui.Create("DScrollPanel", WeaponListPanel)
 	WeaponScrollPanel:Dock(FILL)
 
-	-- TODO: Why is this not working? additional weapons do not wrap??
 	local WeaponGrid = vgui.Create("DIconLayout", WeaponScrollPanel)
 	WeaponGrid:Dock(FILL)
 	WeaponGrid:SetSpaceX(8)
 	WeaponGrid:SetSpaceY(8)
 	WeaponGrid:SetBorder(8)
 
-	local DamageListPanel = vgui.Create("Panel", AugmentPanel)
-	DamageListPanel:Dock(FILL)
-
-	local DamageGrid = vgui.Create("DIconLayout", DamageListPanel)
-	DamageGrid:Dock(FILL)
-	-- TODO: Add all damage types available to augment weapons with into the DamageGrid, apply to AugmentSel when pressed.
-
 	-- Add new weapons to the dictionary, making an icon in WeaponGrid for each.
-	hook.Add("SpawnMenuOpen", "SpawnMenuWhitelist", function()
-		local CurrentWeapons = LocalPlayer():GetWeapons()
-		for I = 1, #CurrentWeapons do
-			if AugmentDict[CurrentWeapons[I]:GetClass()] then continue end
+	table.insert(update, function()
+		if not IsValid(WeaponGrid) then return end
 
-			AugmentDict[CurrentWeapons[I]:GetClass()] = "none"
+		local ply = LocalPlayer()
 
-			local NewButton = vgui.Create("DButton")
-			NewButton:SetSize(80, 80)
-			NewButton:SetText(CurrentWeapons[I]:GetPrintName())
-			NewButton.DoClick = function()
-				AugmentSel = CurrentWeapons[I]:GetClass()
-				if AugmentSelImg then AugmentSelImg:Remove() end
-				AugmentSelImg = addSelIndicator(NewButton, false)
+		ply.MCS_HasSetAugments = ply.MCS_HasSetAugments or {}
+		ply.MCS_Augments = ply.MCS_Augments or {}
+		WeaponGrid.Weapons = WeaponGrid.Weapons or {}
+
+		for _, swepEnt in ipairs(LocalPlayer():GetWeapons()) do
+			local swep = swepEnt:GetClass()
+
+			local NewButton
+			if WeaponGrid.Weapons[swep] then
+				NewButton = WeaponGrid.Weapons[swep]
+			else
+				NewButton = vgui.Create("DButton")
+				NewButton:SetSize(120, 40)
+
+				function NewButton.PaintOver(_, w, h)
+					local dmgID = ply.MCS_Augments[swep]
+					if not dmgID then return end
+
+					local dmgType = MCS.DamageType(dmgID)
+					if not dmgType then return end
+
+					surface.SetDrawColor(dmgType.Color or color_white)
+					surface.DrawOutlinedRect(0, 0, w, h)
+				end
+
+				WeaponGrid:Add(NewButton)
+				WeaponGrid.Weapons[swep] = NewButton
 			end
 
-			WeaponGrid:Add(NewButton)
+			if ply.MCS_Augments[swep] then
+				NewButton:SetText(MCS.L(string.format("mcs.damage.%s.augment", ply.MCS_Augments[swep]), swepEnt:GetPrintName()))
+			else
+				NewButton:SetText(swepEnt:GetPrintName())
+			end
+
+			function NewButton.DoClick()
+				makeAugmentMenu(NewButton, swep, swepEnt)
+			end
+			NewButton.DoRightClick = NewButton.DoClick
+
+			NewButton:SizeToContentsX(20)
+			NewButton:SetEnabled(not ply.MCS_HasSetAugments[swep])
 		end
+
+		WeaponGrid:Layout()
+		WeaponGrid:InvalidateLayout()
 	end)
 
 	return NewFrame
