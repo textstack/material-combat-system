@@ -199,6 +199,8 @@ end
 local update = {}
 
 spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
+	update = {}
+
 	local NewFrame = vgui.Create("Panel")
 	-- It appears the Panel acts as though set to Dock FILL in the tab window, which is good because otherwise sizing things would be messy.
 	-- ^^ https://github.com/Facepunch/garrysmod/blob/2303e61a5ea696dba22140cdda0549bb6a1a2487/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/creationmenu.lua#L50
@@ -373,21 +375,18 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		ArmorInfo:SetText(string.format("#mcs.armor.%s.desc", _type.ID))
 	end)
 
-	-- Augment page, largely unfinished.
 	local AugmentPanel = vgui.Create("Panel", InfoSheets)
 	InfoSheets:AddSheet("#mcs.ui.augments", AugmentPanel, "icon16/gun.png")
 
-	local WeaponListPanel = vgui.Create("Panel", AugmentPanel)
-	WeaponListPanel:Dock(FILL)
-
-	local WeaponScrollPanel = vgui.Create("DScrollPanel", WeaponListPanel)
+	local WeaponScrollPanel = vgui.Create("DScrollPanel", AugmentPanel)
 	WeaponScrollPanel:Dock(FILL)
 
 	local WeaponGrid = vgui.Create("DIconLayout", WeaponScrollPanel)
-	WeaponGrid:Dock(FILL)
+	WeaponGrid:Dock(TOP)
 	WeaponGrid:SetSpaceX(8)
 	WeaponGrid:SetSpaceY(8)
 	WeaponGrid:SetBorder(8)
+	WeaponGrid:SetStretchHeight(true)
 
 	-- Add new weapons to the dictionary, making an icon in WeaponGrid for each.
 	table.insert(update, function()
