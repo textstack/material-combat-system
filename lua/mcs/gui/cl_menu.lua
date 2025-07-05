@@ -154,6 +154,7 @@ local function makeAugmentMenu(panel, swep, swepEnt)
 				panel:SetText(swepEnt:GetPrintName())
 				panel:SizeToContentsX(20)
 				panel:SetEnabled(false)
+				panel:SetTooltip()
 
 				local parent = panel:GetParent()
 				parent:Layout()
@@ -178,6 +179,7 @@ local function makeAugmentMenu(panel, swep, swepEnt)
 				panel:SetText(MCS.L(string.format("mcs.damage.%s.augment", id), swepEnt:GetPrintName()))
 				panel:SizeToContentsX(20)
 				panel:SetEnabled(false)
+				panel:SetTooltip(string.format("#mcs.damage.%s.name", id))
 
 				local parent = panel:GetParent()
 				parent:Layout()
@@ -424,8 +426,10 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 
 			if ply.MCS_Augments[swep] then
 				NewButton:SetText(MCS.L(string.format("mcs.damage.%s.augment", ply.MCS_Augments[swep]), swepEnt:GetPrintName()))
+				NewButton:SetTooltip(string.format("#mcs.damage.%s.name", ply.MCS_Augments[swep]))
 			else
 				NewButton:SetText(swepEnt:GetPrintName())
+				NewButton:SetTooltip()
 			end
 
 			function NewButton.DoClick()
