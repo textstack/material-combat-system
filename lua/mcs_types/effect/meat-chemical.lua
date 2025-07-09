@@ -22,10 +22,12 @@ TYPE.HealthTypes = {
 
 function TYPE:EffectFirstApplied()
 	self:EmitSound("player/breathe1.wav")
+	self:MCS_SetCanHeal(false)
 end
 
 function TYPE:EffectExpired()
 	self:StopSound("player/breathe1.wav")
+	self:MCS_SetCanHeal(true)
 end
 
 MCS.RegisterType(TYPE)
