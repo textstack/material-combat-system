@@ -59,9 +59,15 @@ concommand.Add("mcs_set_augment", function(ply, _, args)
 	local pass, message = ply:MCS_SetAugment(args[1], args[2])
 
 	if pass then
+		local swep = "#" .. (args[2] or ply:GetActiveWeapon():GetClass())
+
+		if args[1] == "none" then
+			ply:MCS_Notify("mcs.system.remove_augment", swep)
+			return
+		end
+
 		local dmgType = MCS.DamageType(args[1])
 		local augment = dmgType and ("mcs.damage." .. args[1] .. ".name") or "mcs.nothing"
-		local swep = "#" .. (args[2] or ply:GetActiveWeapon():GetClass())
 
 		ply:MCS_Notify("mcs.system.set_augment", swep, augment)
 	else
@@ -74,9 +80,9 @@ end, function(cmd, arg, args)
 	local add = args[2] and " " .. args[2] or ""
 
 	local dmgTypes = MCS.GetDamageTypes()
-	dmgTypes["none"] = {}
+	dmgTypes["none"] = { AugmentDamage = true }
 
-	for id, dmgType in pairs() do
+	for id, dmgType in pairs(dmgTypes) do
 		if dmgType.Hidden then continue end
 		if not dmgType.AugmentDamage then continue end
 
