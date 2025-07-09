@@ -83,10 +83,10 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	local attacker = dmg:GetAttacker()
 
-	if IsValid(attacker) and attacker:IsPlayer() then
+	if IsValid(attacker) then
 		local augment = attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
 
-		if not augment then
+		if not augment and attacker:IsPlayer() then
 			augment = attacker:MCS_GetCurrentAugment(attacker:GetActiveWeapon())
 		end
 
