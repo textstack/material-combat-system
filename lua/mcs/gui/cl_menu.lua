@@ -269,7 +269,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	end)
 
 	-- Equip button container
-	local ButtonZone = vgui.Create("Panel", LeftZone)
+	local ButtonZone = vgui.Create("Panel", NewFrame)
 	ButtonZone:Dock(BOTTOM)
 	ButtonZone:DockPadding(8, 8, 8, 8)
 	ButtonZone:SetHeight(60)
