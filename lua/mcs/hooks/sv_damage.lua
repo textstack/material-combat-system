@@ -81,6 +81,8 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	if bit.band(dmg:GetDamageType(), DMG_DIRECT) == DMG_DIRECT then return end
 
+	local attacker = dmg:GetAttacker()
+
 	local augment = IsValid(attacker) and attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
 	if augment and augment.AugmentDamage then
 		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.AugmentDamage))

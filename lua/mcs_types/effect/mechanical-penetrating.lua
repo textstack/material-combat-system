@@ -21,7 +21,7 @@ TYPE.HealthTypes = {
 
 function TYPE:OnDeath(count)
 	self:EmitSound("ambient/explosions/explode_1.wav")
-	util.BlastDamage(nil, self, self:WorldSpaceCenter(), count * 59, self:GetMaxHealth() * 0.05 * count)
+	util.BlastDamage(self, self, self:WorldSpaceCenter(), count * 59, self:GetMaxHealth() * 0.05 * count)
 end
 
 MCS.RegisterType(TYPE)

@@ -141,7 +141,7 @@ local function makeRadarPanel(panel, label, color, hookName, member)
 	end)
 end
 
-local function makeAugmentMenu(panel, swep, swepEnt)
+local function makeAugmentMenu(panel, swep, printName)
 	local ply = LocalPlayer()
 
 	local _menu = DermaMenu()
@@ -151,7 +151,7 @@ local function makeAugmentMenu(panel, swep, swepEnt)
 			local pass, message = ply:MCS_ClearAugment(swep)
 
 			if pass then
-				panel:SetText(swepEnt:GetPrintName())
+				panel:SetText(printName)
 				panel:SizeToContentsX(20)
 				panel:SetEnabled(false)
 				panel:SetTooltip()
@@ -176,7 +176,7 @@ local function makeAugmentMenu(panel, swep, swepEnt)
 			local pass, message = ply:MCS_SetAugment(id, swep)
 
 			if pass then
-				panel:SetText(MCS.L(string.format("mcs.damage.%s.augment", id), swepEnt:GetPrintName()))
+				panel:SetText(MCS.L(string.format("mcs.damage.%s.augment", id), printName))
 				panel:SizeToContentsX(20)
 				panel:SetEnabled(false)
 				panel:SetTooltip(string.format("#mcs.damage.%s.name", id))
@@ -398,8 +398,15 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		ply.MCS_Augments = ply.MCS_Augments or {}
 		WeaponGrid.Weapons = WeaponGrid.Weapons or {}
 
-		for _, swepEnt in ipairs(LocalPlayer():GetWeapons()) do
+		for swep, panel in pairs(WeaponGrid.Weapons) do
+			if not ply:HasWeapon(swep) then
+				panel:Remove()
+			end
+		end
+
+		for _, swepEnt in ipairs(ply:GetWeapons()) do
 			local swep = swepEnt:GetClass()
+			local printName = swepEnt:GetPrintName()
 
 			local NewButton
 			if WeaponGrid.Weapons[swep] then
@@ -427,12 +434,12 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 				NewButton:SetText(MCS.L(string.format("mcs.damage.%s.augment", ply.MCS_Augments[swep]), swepEnt:GetPrintName()))
 				NewButton:SetTooltip(string.format("#mcs.damage.%s.name", ply.MCS_Augments[swep]))
 			else
-				NewButton:SetText(swepEnt:GetPrintName())
+				NewButton:SetText(printName)
 				NewButton:SetTooltip()
 			end
 
 			function NewButton.DoClick()
-				makeAugmentMenu(NewButton, swep, swepEnt)
+				makeAugmentMenu(NewButton, swep, printName)
 			end
 			NewButton.DoRightClick = NewButton.DoClick
 
