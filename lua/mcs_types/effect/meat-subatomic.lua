@@ -29,7 +29,8 @@ function TYPE:OnEffectProc(count)
 
 	self.MCS_MeatSub = not self.MCS_MeatSub
 	if self.MCS_MeatSub then return end
-	if math.random() < count * 0.01 then return end
+
+	if math.random() > count * 0.01 then return end
 
 	self:MCS_TypelessDamage(self:GetMaxHealth() * 0.05)
 end

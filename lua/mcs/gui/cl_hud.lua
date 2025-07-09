@@ -422,7 +422,7 @@ hook.Add("PlayerSwitchWeapon", "MCS_HideHud", function(_, _, newWeapon)
 	hideHud()
 end)
 
-local function tick()
+hook.Add("Tick", "MCS_CheckMCSEnabled", function()
 	if not IsValid(MCS.Hud) then return end
 
 	local curEnabled = LocalPlayer():MCS_GetEnabled()
@@ -430,16 +430,16 @@ local function tick()
 		mcsEnabled = curEnabled
 		hideHud()
 	end
-end
+end)
 
-hook.Add("InitPostEntity", "MCS_MakeHud", function()
-	MCS.Hud = vgui.Create("mcs_hud")
-	hook.Add("Tick", "MCS_CheckMCSEnabled", tick)
+timer.Create("MCS_MakeHud", 5, 0, function()
+	if not IsValid(MCS.Hud) then
+		MCS.Hud = vgui.Create("mcs_hud")
+	end
 end)
 
 -- hotload support
 if IsValid(MCS.Hud) then
 	MCS.Hud:Remove()
 	MCS.Hud = vgui.Create("mcs_hud")
-	hook.Add("Tick", "MCS_CheckMCSEnabled", tick)
 end

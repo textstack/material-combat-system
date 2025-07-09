@@ -83,9 +83,16 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	local attacker = dmg:GetAttacker()
 
-	local augment = IsValid(attacker) and attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
-	if augment and augment.AugmentDamage then
-		dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.AugmentDamage))
+	if IsValid(attacker) then
+		local augment = attacker:MCS_GetCurrentAugment(dmg:GetInflictor())
+
+		if not augment then
+			augment = attacker:MCS_GetCurrentAugment(attacker:GetActiveWeapon())
+		end
+
+		if augment and augment.AugmentDamage then
+			dmg:SetDamageType(bit.bor(dmg:GetDamageType(), augment.AugmentDamage))
+		end
 	end
 
 	local attResult = IsValid(attacker) and attacker:MCS_TypeHook("OnDealDamage", dmg)
