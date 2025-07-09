@@ -411,7 +411,9 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 			local NewButton
 			if WeaponGrid.Weapons[swep] then
 				NewButton = WeaponGrid.Weapons[swep]
-			else
+			end
+
+			if not IsValid(NewButton) then
 				NewButton = vgui.Create("DButton")
 				NewButton:SetSize(120, 40)
 
