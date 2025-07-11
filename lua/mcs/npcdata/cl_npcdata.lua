@@ -175,6 +175,7 @@ end
 
 hook.Add("SpawnmenuIconMenuOpen", "MCS_NPCClassSetting", function(dMenu, icon, contentType)
 	if contentType ~= "npc" then return end
+	if not LocalPlayer():IsSuperAdmin() then return end
 
 	local class = icon:GetSpawnName()
 
