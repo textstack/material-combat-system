@@ -12,6 +12,7 @@ TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.5
 TYPE.Reducible = true
 TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.NoTimerResets = true
 
 TYPE.DamageTypes = {
 	["thermal"] = true
@@ -20,8 +21,13 @@ TYPE.HealthTypes = {
 	["azoic"] = true
 }
 
-function TYPE:OnEffectProc()
-	self:MCS_TypelessDamage(2)
+function TYPE:EffectFirstApplied(count)
+	self:MCS_CreateTimer("azoic-thermal", 0, 1, function()
+		for _, ent in pairs(ents.FindInSphere(self:WorldSpaceCenter(), 400)) do
+			if ent == self or not ent:MCS_GetEnabled() then continue end
+			ent:MCS_AddTypedEffects("thermal", count)
+		end
+	end)
 end
 
 MCS.RegisterType(TYPE)

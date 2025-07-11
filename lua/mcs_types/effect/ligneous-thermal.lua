@@ -7,7 +7,7 @@ TYPE.ServerName = "Burning"
 TYPE.Icon = "icon16/page_white.png"
 TYPE.Color = Color(255, 67, 0)
 
-MCS.InheritType(TYPE, "plasmatic-thermal")
+MCS.InheritType(TYPE, "meat-plasmatic-thermal")
 
 TYPE.DamageTypes = {
 	["thermal"] = true
