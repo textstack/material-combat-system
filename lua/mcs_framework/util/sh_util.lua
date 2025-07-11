@@ -28,12 +28,13 @@ function ENTITY:MCS_GetArmor()
 		return self:Armor()
 	end
 
-	if self:GetMaxHealth() <= 0 then return 0 end
+	local maxHealth = self:GetMaxHealth()
+	if maxHealth <= 0 then return 0 end
 
 	local result = self:MCS_TypeHook("EntityGetArmor")
 	if result ~= nil then return result end
 
-	return self:GetNWFloat("MCS_Armor", 0)
+	return self:GetNWFloat("MCS_Armor", maxHealth)
 end
 
 --- Get the max armor of an entity
@@ -42,12 +43,13 @@ function ENTITY:MCS_GetMaxArmor()
 		return self:GetMaxArmor()
 	end
 
-	if self:GetMaxHealth() <= 0 then return 0 end
+	local maxHealth = self:GetMaxHealth()
+	if maxHealth <= 0 then return 0 end
 
 	local result = self:MCS_TypeHook("EntityGetMaxArmor")
 	if result ~= nil then return result end
 
-	return self:GetNWFloat("MCS_MaxArmor", 100)
+	return self:GetNWFloat("MCS_MaxArmor", maxHealth)
 end
 
 --[[ Creates a timer unique to an entity, checks if the entity is valid and supplies the entity

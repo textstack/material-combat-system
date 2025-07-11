@@ -1,5 +1,9 @@
 local ENTITY = FindMetaTable("Entity")
 
+local function defaultAug(ent)
+	return MCS.GetNPCData(ent:GetClass())[3]
+end
+
 --[[ Gives an entity's augment for the current damage instance
 	inputs:
 		inflictor - the weapon used to deal the damage, or nil if no weapon was used
@@ -7,11 +11,16 @@ local ENTITY = FindMetaTable("Entity")
 		the damage type for the augment, or nil if there is none
 --]]
 function ENTITY:MCS_GetCurrentAugment(inflictor)
-	if not self:IsPlayer() then return self.MCS_Augment end
-	if not self.MCS_Augments then return end
-	if not IsValid(inflictor) then return end
+	if self.MCS_Augment then return self.MCS_Augment end
 
-	return MCS.DamageType(self.MCS_Augments[inflictor:GetClass()])
+	if not self:IsPlayer() then return defaultAug(self) end
+	if not self.MCS_Augments then return defaultAug(self) end
+	if not IsValid(inflictor) then return defaultAug(self) end
+
+	local dType = MCS.DamageType(self.MCS_Augments[inflictor:GetClass()])
+	if not dType then return defaultAug(self) end
+
+	return dType
 end
 
 --[[ Remove an augment from an entity or its weapon

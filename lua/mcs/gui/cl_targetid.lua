@@ -41,13 +41,20 @@ local function entVisible(ent, ply)
 		return canSee
 	end
 
-	local trEndpos = ent:EyePos() - vector_up * 10
+	local trEndpos
 	local target = ent
-
 	if ent:IsPlayer() and ent:InVehicle() then
 		local vehicle = ent:GetVehicle()
 		target = vehicle
-		trEndpos = target:GetPos()
+		trEndpos = target:WorldSpaceCenter()
+	else
+		local head = target:LookupBone("ValveBiped.Bip01_Head1")
+		if head then
+			local pos = target:GetBoneMatrix(head):GetTranslation()
+			trEndpos = pos
+		else
+			trEndpos = target:WorldSpaceCenter()
+		end
 	end
 
 	local tr = util.TraceLine({
@@ -131,7 +138,7 @@ local function drawNametag(ent, ply, pos)
 
 	local name = "Unnamed"
 	local color = nameColor
-	if ply:IsPlayer() then
+	if ent:IsPlayer() then
 		name = ent:GetName()
 		color = team.GetColor(ent:Team())
 	else
@@ -207,7 +214,16 @@ local function drawEnt(ent, ply, onMouse)
 
 	local mins, maxs = ent:OBBMins(), ent:OBBMaxs()
 	local hullHeight = maxs[3] - mins[3]
-	local pos = (ent:GetPos() + vector_up * hullHeight * 1.05):ToScreen()
+	local pos1 = (ent:GetPos() + vector_up * hullHeight * 1.05)
+	local pos2 = ent:EyePos() + vector_up * 12
+
+	local pos
+	if pos2.z > pos1.z then
+		pos = pos2:ToScreen()
+	else
+		pos = pos1:ToScreen()
+	end
+
 	pos.y = pos.y - 10
 
 	if not pos.visible then return end
@@ -242,7 +258,6 @@ hook.Add("HUDPaint", "MCS_OverheadID", function()
 	local ply = LocalPlayer()
 	if not ply:MCS_GetEnabled() or getMode() < 2 then return end
 
-	-- TODO: npc support (requires networking the mcs entities list)
 	local targets = player.GetAll()
 	local lp = ply:GetPos()
 	table.sort(targets, function(a, b)
@@ -267,9 +282,8 @@ hook.Add("HUDDrawTargetID", "MCS_TargetID", function()
 	if not trace.HitNonWorld then return end
 
 	local ent = trace.Entity
-	if not ent:MCS_GetEnabled() then return end
-
-	if mode >= 2 then return true end
+	if not IsValid(ent) or not ent:MCS_GetEnabled() then return end
+	if ent:IsPlayer() and mode >= 2 then return true end
 
 	surface.SetDrawColor(255, 255, 255)
 	surface.DrawRect(ScrW() / 2, ScrH() / 2, 2, 2)
@@ -279,7 +293,12 @@ hook.Add("HUDDrawTargetID", "MCS_TargetID", function()
 
 	local alpha = 1 - math.Clamp((dist - targetIDStartFade) * (targetIDEndFade - targetIDStartFade), 0, 1)
 
-	local pos = { x = ScrW() / 2, y = ScrH() / 2 + 50 }
+	local mouseX, mouseY = input.GetCursorPos()
+	if mouseX == 0 and mouseY == 0 or not vgui.CursorVisible() then
+		mouseX, mouseY = ScrW() / 2, ScrH() / 2
+	end
+
+	local pos = { x = mouseX, y = mouseY + 50 }
 	mVec.x = pos.x
 	mVec.y = pos.y
 

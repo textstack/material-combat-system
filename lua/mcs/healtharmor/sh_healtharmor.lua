@@ -23,7 +23,12 @@ end
 function ENTITY:MCS_GetHealthType()
 	local healthTypeID = self:GetNWString("MCS_HealthType", -1)
 	if healthTypeID == -1 then
-		healthTypeID = MCS.GetConVar("mcs_sv_default_health_type"):GetString()
+		local data = MCS.GetNPCData(self:GetClass())
+		if data[1] then
+			healthTypeID = data[1]
+		else
+			healthTypeID = MCS.GetConVar("mcs_sv_default_health_type"):GetString()
+		end
 	end
 
 	return MCS.HealthType(healthTypeID)
@@ -92,7 +97,12 @@ end
 function ENTITY:MCS_GetArmorType()
 	local armorTypeID = self:GetNWString("MCS_ArmorType", -1)
 	if armorTypeID == -1 then
-		armorTypeID = MCS.GetConVar("mcs_sv_default_armor_type"):GetString()
+		local data = MCS.GetNPCData(self:GetClass())
+		if data[2] then
+			armorTypeID = data[2]
+		else
+			armorTypeID = MCS.GetConVar("mcs_sv_default_armor_type"):GetString()
+		end
 	end
 
 	return MCS.ArmorType(armorTypeID)
