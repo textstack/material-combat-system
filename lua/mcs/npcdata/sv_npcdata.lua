@@ -4,15 +4,15 @@ if not file.Exists("mcs", "DATA") then
 	file.CreateDir("mcs")
 end
 
-MCS.DEFAULT_NPC_DATA_PATH = "mcs/default_npc_data.lua"
+MCS.DEFAULT_NPC_DATA_PATH = "mcs_data/default_npc_data.lua"
 MCS.NPC_DATA_PATH = "mcs/npc_data.txt"
 
 -- initialize the data table for NPC health and armor types
 local function initNPCData()
 	if file.Exists(MCS.NPC_DATA_PATH, "DATA") then
 		MCS.NPCData = util.JSONToTable(file.Read(MCS.NPC_DATA_PATH, "DATA"))
-	elseif file.Exists(MCS.DEFAULT_NPC_DATA_PATH, "DATA") then
-		MCS.NPCData = util.JSONToTable(file.Read(MCS.DEFAULT_NPC_DATA_PATH, "DATA"))
+	elseif file.Exists(MCS.DEFAULT_NPC_DATA_PATH, "LUA") then
+		MCS.NPCData = util.JSONToTable(file.Read(MCS.DEFAULT_NPC_DATA_PATH, "LUA"))
 	else
 		MCS.NPCData = {}
 	end
