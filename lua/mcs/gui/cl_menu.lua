@@ -570,7 +570,6 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	end
 
 	table.insert(update, doNPCPanel)
-	doNPCPanel()
 
 	return NewFrame
 end, "icon16/heart.png", 2000)
