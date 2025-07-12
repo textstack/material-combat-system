@@ -197,13 +197,50 @@ local function makeAugmentMenu(panel, swep, printName)
 	_menu:Open()
 end
 
---TODO: better indicators for what's set per spawnname
 local function makeNPCMenu(panel, spawnName)
 	local _menu = DermaMenu()
-
 	MCS.ShowNPCMenus(spawnName, _menu)
-
 	_menu:Open()
+end
+
+local function drawNPCButton(panel, spawnName, w, h)
+	local data = MCS.GetNPCData(spawnName)
+
+	if data[1] then
+		local healthType = MCS.HealthType(data[1])
+		if healthType then
+			surface.SetMaterial(MCS.GetIconMaterial(healthType))
+
+			local color = healthType.Color or color_white
+			surface.SetDrawColor(color:Unpack())
+
+			surface.DrawTexturedRect(2, 2, 16, 16)
+		end
+	end
+
+	if data[2] then
+		local armorType = MCS.ArmorType(data[2])
+		if armorType then
+			surface.SetMaterial(MCS.GetIconMaterial(armorType))
+
+			local color = armorType.Color or color_white
+			surface.SetDrawColor(color:Unpack())
+
+			surface.DrawTexturedRect(w - 18, 2, 16, 16)
+		end
+	end
+
+	if data[3] then
+		local dmgType = MCS.DamageType(data[3])
+		if dmgType then
+			surface.SetMaterial(MCS.GetIconMaterial(dmgType))
+
+			local color = dmgType.Color or color_white
+			surface.SetDrawColor(color:Unpack())
+
+			surface.DrawTexturedRect(w - 18, h - 18, 16, 16)
+		end
+	end
 end
 
 local update = {}
@@ -476,8 +513,8 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 
 	local NPCEntryPanel = vgui.Create("Panel", NPCPanel)
 	NPCEntryPanel:Dock(TOP)
-	NPCEntryPanel:SetTall(38)
-	NPCEntryPanel:DockPadding(8, 8, 8, 4)
+	NPCEntryPanel:SetTall(58)
+	NPCEntryPanel:DockPadding(8, 8, 8, 12)
 
 	local NPCEntry = vgui.Create("DTextEntry", NPCEntryPanel)
 	NPCEntry:Dock(LEFT)
@@ -489,18 +526,23 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	local NPCButton = vgui.Create("DButton", NPCEntryPanel)
 	NPCButton:Dock(LEFT)
 	NPCButton:SetText("#mcs.ui.set_npc_data")
-	NPCButton:SizeToContentsX(20)
+	NPCButton:SizeToContentsX(30)
 	NPCButton:SetEnabled(false)
 
 	function NPCButton.DoClick()
 		local text = string.Trim(NPCEntry:GetText())
 		if text == "" then return end
 
-		local _menu = DermaMenu()
-		MCS.ShowNPCMenus(text, _menu)
-		_menu:Open()
+		makeNPCMenu(NPCButton, text)
 	end
 	NPCButton.DoRightClick = NPCButton.DoClick
+
+	function NPCButton.PaintOver(_, w, h)
+		local text = string.Trim(NPCEntry:GetText())
+		if text == "" then return end
+
+		drawNPCButton(NPCButton, text, w, h)
+	end
 
 	function NPCEntry.OnValueChange(_, value)
 		NPCButton:SetEnabled(string.Trim(value) ~= "")
@@ -537,7 +579,11 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 				NewButton = vgui.Create("DButton")
 				NewButton:SetSize(120, 40)
 				NewButton:SetText(spawnName)
-				NewButton:SizeToContentsX(20)
+				NewButton:SizeToContentsX(30)
+
+				function NewButton.PaintOver(_, w, h)
+					drawNPCButton(NewButton, spawnName, w, h)
+				end
 
 				NPCGrid:Add(NewButton)
 				NPCGrid.NPCs[spawnName] = NewButton
