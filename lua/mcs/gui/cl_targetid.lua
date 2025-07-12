@@ -49,7 +49,7 @@ local function entVisible(ent, ply)
 		trEndpos = target:WorldSpaceCenter()
 	else
 		local head = target:LookupBone("ValveBiped.Bip01_Head1")
-		if head then
+		if head and target:GetBoneMatrix(head) then
 			local pos = target:GetBoneMatrix(head):GetTranslation()
 			trEndpos = pos
 		else
