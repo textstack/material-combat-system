@@ -173,8 +173,14 @@ end
 
 hook.Add("OnEntityCreated", "MCS_FindMCSEnts", function(ent)
 	timer.Simple(0, function()
-		if IsValid(ent) and ent:MCS_GetEnabled() then
-			mcsEntities[ent:EntIndex()] = ent
+		if IsValid(ent) then
+			if ent.NPCName then
+				ent:SetNWString("NPCName", ent.NPCName)
+			end
+
+			if ent:MCS_GetEnabled() then
+				mcsEntities[ent:EntIndex()] = ent
+			end
 		end
 	end)
 end)

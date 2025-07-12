@@ -22,6 +22,16 @@ function ENTITY:MCS_GetEnabled()
 	return enabled or false
 end
 
+--- get the spawn name of an entity, or the class if they don't have one
+function ENTITY:MCS_GetSpawnName()
+	local spawnName = self:GetNWString("NPCName", -1)
+	if spawnName == -1 then
+		spawnName = self:GetClass()
+	end
+
+	return spawnName
+end
+
 --- Get the armor of an entity
 function ENTITY:MCS_GetArmor()
 	if self:IsPlayer() then

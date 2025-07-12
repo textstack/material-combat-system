@@ -23,7 +23,7 @@ end
 function ENTITY:MCS_GetHealthType()
 	local healthTypeID = self:GetNWString("MCS_HealthType", -1)
 	if healthTypeID == -1 then
-		local data = MCS.GetNPCData(self:GetClass())
+		local data = MCS.GetNPCData(self:MCS_GetSpawnName())
 		if data[1] then
 			healthTypeID = data[1]
 		else
@@ -104,7 +104,7 @@ end
 function ENTITY:MCS_GetArmorType()
 	local armorTypeID = self:GetNWString("MCS_ArmorType", -1)
 	if armorTypeID == -1 then
-		local data = MCS.GetNPCData(self:GetClass())
+		local data = MCS.GetNPCData(self:MCS_GetSpawnName())
 		if data[2] then
 			armorTypeID = data[2]
 		else

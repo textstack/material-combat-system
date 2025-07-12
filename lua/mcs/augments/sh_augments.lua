@@ -1,7 +1,7 @@
 local ENTITY = FindMetaTable("Entity")
 
 local function defaultAug(ent)
-	return MCS.GetNPCData(ent:GetClass())[3]
+	return MCS.GetNPCData(ent:MCS_GetSpawnName())[3]
 end
 
 --[[ Gives an entity's augment for the current damage instance
