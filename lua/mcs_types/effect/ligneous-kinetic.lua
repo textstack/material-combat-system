@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "ligneous-kinetic"
 TYPE.ServerName = "Armor Repair"
 TYPE.Icon = "icon16/asterisk_orange.png"
-TYPE.Color = Color(0, 255, 60)
+TYPE.Color = Color(255,255,255)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.1

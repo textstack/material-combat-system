@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "azoic-chemical"
 TYPE.ServerName = "Armor Conversion"
 TYPE.Icon = "icon16/water.png"
-TYPE.Color = Color(255, 0, 190)
+TYPE.Color = Color(255,255,255)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.75

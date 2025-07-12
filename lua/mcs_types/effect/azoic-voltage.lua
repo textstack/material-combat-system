@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "azoic-voltage"
 TYPE.ServerName = "Health Conversion"
 TYPE.Icon = "icon16/shield_go.png"
-TYPE.Color = Color(248, 196, 0)
+TYPE.Color = Color(255,255,255)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.75

@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "ligneous-chemical"
 TYPE.ServerName = "Anti-heal"
 TYPE.Icon = "icon16/water.png"
-TYPE.Color = Color(255, 0, 190)
+TYPE.Color = Color(255,255,255)
 
 TYPE.MaxStacks = 1
 TYPE.BaseTime = 5

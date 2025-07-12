@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "mechanical-penetrating"
 TYPE.ServerName = "Explosive Death"
 TYPE.Icon = "icon16/bomb.png"
-TYPE.Color = Color(0, 179, 255)
+TYPE.Color = Color(255,255,255)
 
 TYPE.BaseTime = 10
 TYPE.InflictChance = 0.25

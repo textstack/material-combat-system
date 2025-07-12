@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "plasmatic-splitting"
 TYPE.ServerName = "Weak Regeneration"
 TYPE.Icon = "icon16/cut_red.png"
-TYPE.Color = Color(0, 250, 255)
+TYPE.Color = Color(255,255,255)
 
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true

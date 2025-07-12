@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "meat-plasmatic-thermal"
 TYPE.ServerName = "Burning"
 TYPE.Icon = "icon16/fire.png"
-TYPE.Color = Color(255, 67, 0)
+TYPE.Color = Color(255,255,255)
 
 TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.1

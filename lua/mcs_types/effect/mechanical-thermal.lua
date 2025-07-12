@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "mechanical-thermal"
 TYPE.ServerName = "Strong Knockback"
 TYPE.Icon = "icon16/fire.png"
-TYPE.Color = Color(255, 67, 0)
+TYPE.Color = Color(255,255,255)
 
 TYPE.BaseTime = 10
 TYPE.MaxStacks = 10

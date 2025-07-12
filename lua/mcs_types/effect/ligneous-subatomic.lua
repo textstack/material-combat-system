@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "ligneous-subatomic"
 TYPE.ServerName = "Healing"
 TYPE.Icon = "icon16/heart_add.png"
-TYPE.Color = Color(255, 93, 255)
+TYPE.Color = Color(255,255,255)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.1

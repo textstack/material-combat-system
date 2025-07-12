@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "plasmatic-penetrating"
 TYPE.ServerName = "Regeneration"
 TYPE.Icon = "icon16/shield_delete.png"
-TYPE.Color = Color(0, 179, 255)
+TYPE.Color = Color(255,255,255)
 TYPE.InflictSound = "physics/flesh/flesh_impact_bullet2.wav"
 
 TYPE.InflictChance = 1
