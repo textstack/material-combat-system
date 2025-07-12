@@ -4,8 +4,8 @@ TYPE.Vanilla = true
 TYPE.Set = "damage"
 TYPE.ID = "splitting"
 TYPE.ServerName = "Splitting" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/page_white.png"
-TYPE.Color = Color(0, 250, 255)
+TYPE.Icon = "icon16/cut_red.png"
+TYPE.Color = Color(255,255,255)
 
 TYPE.Order = 1
 

@@ -4,8 +4,8 @@ TYPE.Vanilla = true
 TYPE.Set = "damage"
 TYPE.ID = "chemical"
 TYPE.ServerName = "Chemical" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/page_white.png"
-TYPE.Color = Color(255, 0, 190)
+TYPE.Icon = "icon16/water.png"
+TYPE.Color = Color(255,255,255)
 
 TYPE.Order = 4
 

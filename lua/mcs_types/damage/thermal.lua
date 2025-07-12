@@ -4,8 +4,8 @@ TYPE.Vanilla = true
 TYPE.Set = "damage"
 TYPE.ID = "thermal"
 TYPE.ServerName = "Thermal" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/page_white.png"
-TYPE.Color = Color(255, 67, 0)
+TYPE.Icon = "icon16/fire.png"
+TYPE.Color = Color(255,255,255)
 
 TYPE.Order = 5
 

@@ -4,8 +4,8 @@ TYPE.Vanilla = true
 TYPE.Set = "damage"
 TYPE.ID = "kinetic"
 TYPE.ServerName = "Kinetic" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/page_white.png"
-TYPE.Color = Color(0, 255, 60)
+TYPE.Icon = "icon16/asterisk_orange.png"
+TYPE.Color = Color(255,255,255)
 
 TYPE.Order = 0
 

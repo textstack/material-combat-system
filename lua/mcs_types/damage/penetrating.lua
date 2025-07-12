@@ -4,8 +4,8 @@ TYPE.Vanilla = true
 TYPE.Set = "damage"
 TYPE.ID = "penetrating"
 TYPE.ServerName = "Penetrating" -- the server doesn't have access to localization
-TYPE.Icon = "icon16/page_white.png"
-TYPE.Color = Color(0, 179, 255)
+TYPE.Icon = "icon16/shield_delete.png"
+TYPE.Color = Color(255,255,255)
 
 TYPE.Order = 2
 
