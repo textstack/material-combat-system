@@ -17,12 +17,23 @@ function ENTITY:MCS_SetEnabled(enabled)
 		self:SetNWBool("MCS_Enabled", true)
 		self:MCS_TypeHook("OnEnabled")
 		mcsEntities[self:EntIndex()] = self
+
+		if self:IsPlayer() then
+			local color = self:MCS_GetHealthTypeValue("BloodColor")
+			if color then
+				self:SetBloodColor(color)
+			end
+		end
 	else
 		if not self:GetNWBool("MCS_Enabled") then return end
 
 		self:MCS_TypeHook("OnDisabled")
 		self:SetNWBool("MCS_Enabled")
 		mcsEntities[self:EntIndex()] = nil
+
+		if self:IsPlayer() then
+			self:SetBloodColor(BLOOD_COLOR_RED)
+		end
 	end
 end
 

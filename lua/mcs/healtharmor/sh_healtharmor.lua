@@ -77,6 +77,13 @@ function ENTITY:MCS_SetHealthType(id, force)
 		self:MCS_SetArmorType(MCS.GetConVar("mcs_sv_default_armor_type"):GetString(), true)
 	end
 
+	if self:IsPlayer() then
+		local color = self:MCS_GetHealthTypeValue("BloodColor")
+		if color then
+			self:SetBloodColor(color)
+		end
+	end
+
 	return true
 end
 
