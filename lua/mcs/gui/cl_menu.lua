@@ -168,7 +168,7 @@ local function makeAugmentMenu(panel, swep, printName)
 		reset:SetMaterial("icon16/cross.png")
 	end
 
-	for id, dmgType in pairs(MCS.GetDamageTypes()) do
+	for id, dmgType in SortedPairsByMemberValue(MCS.GetDamageTypes(), "Order") do
 		if dmgType.Hidden then continue end
 		if not dmgType.AugmentDamage then continue end
 		if ply.MCS_Augments[swep] == id then continue end
@@ -193,6 +193,15 @@ local function makeAugmentMenu(panel, swep, printName)
 		opt:SetMaterial(MCS.GetIconMaterial(dmgType))
 		opt.m_Image:SetImageColor(dmgType.Color or color_white)
 	end
+
+	_menu:Open()
+end
+
+--TODO: better indicators for what's set per spawnname
+local function makeNPCMenu(panel, spawnName)
+	local _menu = DermaMenu()
+
+	MCS.ShowNPCMenus(spawnName, _menu)
 
 	_menu:Open()
 end
@@ -257,6 +266,8 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		MaxHpEntry:SetText(LocalPlayer():GetMaxHealth())
 	end)
 
+	MaxHpEntry:SetText(LocalPlayer():GetMaxHealth())
+
 	local MaxArmorEntry = addTextEntry("#mcs.ui.set_max_armor", SettingsGrid)
 	MaxArmorEntry.OnLoseFocus = function()
 		hook.Call("OnTextEntryLoseFocus", nil, MaxArmorEntry)
@@ -271,6 +282,8 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		if not IsValid(MaxArmorEntry) then return end
 		MaxArmorEntry:SetText(LocalPlayer():GetMaxArmor())
 	end)
+
+	MaxArmorEntry:SetText(LocalPlayer():GetMaxArmor())
 
 	-- Equip button container
 	local ButtonZone = vgui.Create("Panel", NewFrame)
@@ -343,7 +356,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	local ArmorSection2 = vgui.Create("Panel", RadarPanel)
 	ArmorSection2:Dock(FILL)
 
-	makeRadarPanel(ArmorSection2, "#mcs.ui.armor_drain_rate", Color(128, 128, 255), "MCS_SelectedArmor", "DrainRate")
+	makeRadarPanel(ArmorSection2, "#mcs.ui.armor_drain_rate", Color(128, 128, 255), "MCS_SelectedArmor", "DrainRates")
 
 	function RadarPanel.PerformLayout()
 		HealthSection:InvalidateChildren(true)
@@ -397,6 +410,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	WeaponGrid:SetSpaceY(8)
 	WeaponGrid:SetBorder(8)
 	WeaponGrid:SetStretchHeight(true)
+	WeaponGrid.Weapons = {}
 
 	-- Add new weapons to the dictionary, making an icon in WeaponGrid for each.
 	table.insert(update, function()
@@ -406,7 +420,6 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 
 		ply.MCS_HasSetAugments = ply.MCS_HasSetAugments or {}
 		ply.MCS_Augments = ply.MCS_Augments or {}
-		WeaponGrid.Weapons = WeaponGrid.Weapons or {}
 
 		for swep, panel in pairs(WeaponGrid.Weapons) do
 			if not ply:HasWeapon(swep) then
@@ -462,6 +475,106 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		WeaponGrid:Layout()
 		WeaponGrid:InvalidateLayout()
 	end)
+
+	local NPCPanel = vgui.Create("Panel", InfoSheets)
+
+	local NPCEntryPanel = vgui.Create("Panel", NPCPanel)
+	NPCEntryPanel:Dock(TOP)
+	NPCEntryPanel:SetTall(38)
+	NPCEntryPanel:DockPadding(8, 8, 8, 4)
+
+	local NPCEntry = vgui.Create("DTextEntry", NPCEntryPanel)
+	NPCEntry:Dock(LEFT)
+	NPCEntry:DockMargin(0, 0, 8, 0)
+	NPCEntry:SetWide(250)
+	NPCEntry:SetUpdateOnType(true)
+	NPCEntry:SetPlaceholderText("#mcs.ui.class_or_spawn_name")
+
+	local NPCButton = vgui.Create("DButton", NPCEntryPanel)
+	NPCButton:Dock(LEFT)
+	NPCButton:SetText("#mcs.ui.set_npc_data")
+	NPCButton:SizeToContentsX(20)
+	NPCButton:SetEnabled(false)
+
+	function NPCButton.DoClick()
+		local text = string.Trim(NPCEntry:GetText())
+		if text == "" then return end
+
+		local _menu = DermaMenu()
+		MCS.ShowNPCMenus(text, _menu)
+		_menu:Open()
+	end
+	NPCButton.DoRightClick = NPCButton.DoClick
+
+	function NPCEntry.OnValueChange(_, value)
+		NPCButton:SetEnabled(string.Trim(value) ~= "")
+	end
+
+	local NPCScrollPanel = vgui.Create("DScrollPanel", NPCPanel)
+	NPCScrollPanel:Dock(FILL)
+
+	local NPCGrid = vgui.Create("DIconLayout", NPCScrollPanel)
+	NPCGrid:Dock(TOP)
+	NPCGrid:SetSpaceX(8)
+	NPCGrid:SetSpaceY(8)
+	NPCGrid:SetBorder(8)
+	NPCGrid:SetStretchHeight(true)
+	NPCGrid.NPCs = {}
+
+	table.insert(update, function()
+		if not IsValid(NPCGrid) then return end
+		if not LocalPlayer():IsSuperAdmin() then return end
+
+		for spawnName, panel in pairs(NPCGrid.NPCs) do
+			if not MCS.NPCData[spawnName] then
+				panel:Remove()
+			end
+		end
+
+		for spawnName, data in pairs(MCS.NPCData) do
+			local NewButton
+			if NPCGrid.NPCs[spawnName] then
+				NewButton = NPCGrid.NPCs[spawnName]
+			end
+
+			if not IsValid(NewButton) then
+				NewButton = vgui.Create("DButton")
+				NewButton:SetSize(120, 40)
+				NewButton:SetText(spawnName)
+				NewButton:SizeToContentsX(20)
+
+				NPCGrid:Add(NewButton)
+				NPCGrid.NPCs[spawnName] = NewButton
+			end
+
+			function NewButton.DoClick()
+				makeNPCMenu(NewButton, spawnName)
+			end
+			NewButton.DoRightClick = NewButton.DoClick
+		end
+	end)
+
+	local function doNPCPanel()
+		if not IsValid(NPCPanel) then return end
+
+		if LocalPlayer():IsSuperAdmin() then
+			NPCPanel:Show()
+
+			if NPCPanel.Tab then return end
+
+			NPCPanel.Tab = InfoSheets:AddSheet("#mcs.ui.npcs", NPCPanel, "icon16/monkey.png").Tab
+		else
+			NPCPanel:Hide()
+
+			if not NPCPanel.Tab then return end
+
+			InfoSheets:CloseTab(NPCPanel.Tab, false)
+			NPCPanel.Tab = nil
+		end
+	end
+
+	table.insert(update, doNPCPanel)
+	doNPCPanel()
 
 	return NewFrame
 end, "icon16/heart.png", 2000)

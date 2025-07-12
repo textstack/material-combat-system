@@ -49,7 +49,7 @@ Drain key:
     0.25: certified for 1000 hours of continuous operation against this hazard (steel against splitting)
 ]]--
 
-TYPE.DrainRate = {
+TYPE.DrainRates = {
 	["splitting"] = 3,
 	["kinetic"] = 0.5,
 	["penetrating"] = 3,

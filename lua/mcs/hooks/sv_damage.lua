@@ -64,7 +64,7 @@ local function armorHandling(ent, dmg)
 
 	local dmgAmt = dmg:GetDamage()
 	local newDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DamageMultipliers, 0.2)
-	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRate, 0.8)
+	local armorDmgAmt = dmgAmt * multiplyStat(dmgTypes, armorType.DrainRates, 0.8)
 
 	ent:MCS_SetArmor(math.max(armorAmt - armorDmgAmt, 0))
 	dmg:SetDamage(newDmgAmt)

@@ -161,7 +161,7 @@ function MCS.ShowAugmentMenu(spawnName, dMenu)
 		none:SetIcon("icon16/cross.png")
 	end
 
-	for id, _type in pairs(MCS.GetDamageTypes()) do
+	for id, _type in SortedPairsByMemberValue(MCS.GetDamageTypes(), "Order") do
 		if id == data[3] then continue end
 
 		local opt = dMenu:AddOption(string.format("#mcs.damage.%s.name", id), function()
@@ -189,11 +189,12 @@ local function setIcon(opt, datum, typeName, fallback)
 	opt.m_Image:SetImageColor(_type.Color or color_white)
 end
 
-hook.Add("SpawnmenuIconMenuOpen", "MCS_NPCspawnNameSetting", function(dMenu, icon, contentType)
-	if contentType ~= "npc" then return end
-	if not LocalPlayer():IsSuperAdmin() then return end
-
-	local spawnName = icon:GetSpawnName()
+--[[ Adds 3 options to a DMenu for setting health/armor/augment
+	inputs:
+		spawnName - the spawnName to set the data for (usually the class)
+		menu - the menu to add the elements to
+--]]
+function MCS.ShowNPCMenus(spawnName, dMenu)
 	local data = MCS.GetNPCData(spawnName)
 
 	local hpMenu, hpParent = dMenu:AddSubMenu("#mcs.ui.set_class_health")
@@ -207,4 +208,11 @@ hook.Add("SpawnmenuIconMenuOpen", "MCS_NPCspawnNameSetting", function(dMenu, ico
 	local augMenu, augParent = dMenu:AddSubMenu("#mcs.ui.set_class_augment")
 	MCS.ShowAugmentMenu(spawnName, augMenu)
 	setIcon(augParent, data[3], "Damage", "icon16/gun.png")
+end
+
+hook.Add("SpawnmenuIconMenuOpen", "MCS_NPCspawnNameSetting", function(dMenu, icon, contentType)
+	if contentType ~= "npc" then return end
+	if not LocalPlayer():IsSuperAdmin() then return end
+
+	MCS.ShowNPCMenus(icon:GetSpawnName(), dMenu)
 end)

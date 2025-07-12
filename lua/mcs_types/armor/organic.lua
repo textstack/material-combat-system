@@ -40,7 +40,7 @@ TYPE.DamageMultipliers = {
 	["voltage"] = 0.25,
 	["subatomic"] = 1.0
 }
-TYPE.DrainRate = {
+TYPE.DrainRates = {
 	["splitting"] = 1.50,--meat is cut very easily, so is cardboard. plastic is not.
 	["kinetic"] = 0.5,
 	["penetrating"] = 1.25,
