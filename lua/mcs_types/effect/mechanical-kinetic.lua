@@ -7,7 +7,8 @@ TYPE.ServerName = "Knocking"
 TYPE.Icon = "icon16/asterisk_orange.png"
 TYPE.Color = Color(255,255,255)
 
-TYPE.BaseTime = 0
+TYPE.BaseTime = 0.25
+TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.75
 TYPE.Reducible = true
 TYPE.InflictSound = "physics/metal/metal_sheet_impact_hard7.wav"
