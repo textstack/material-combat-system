@@ -98,6 +98,8 @@ end
 		true if the effect applied, false otherwise
 --]]
 function ENTITY:MCS_AddEffect(id, amount)
+	if not self:Alive() then return end
+
 	local effectType = MCS.EffectType(id)
 	if not effectType then return end
 
