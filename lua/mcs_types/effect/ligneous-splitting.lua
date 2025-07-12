@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "ligneous-splitting"
 TYPE.ServerName = "Effect Guarantee"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/cut_red.png"
 TYPE.Color = Color(0, 250, 255)
 
 TYPE.BaseTime = 10
@@ -13,7 +13,7 @@ TYPE.InflictChance = 0.25
 TYPE.FullStackTimer = true
 TYPE.NoTimerResets = true
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "physics/wood/wood_strain4.wav"
 
 TYPE.DamageTypes = {
 	["splitting"] = true

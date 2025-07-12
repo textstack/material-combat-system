@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "ligneous-voltage"
 TYPE.ServerName = "Armor Bypass"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/lightning.png"
 TYPE.Color = Color(248, 196, 0)
 
 TYPE.MaxStacks = 1
@@ -13,7 +13,7 @@ TYPE.InflictChance = 0.1
 TYPE.Reducible = true
 TYPE.FullStackTimer = true
 TYPE.NoTimerResets = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "physics/wood/wood_strain3.wav"
 
 TYPE.DamageTypes = {
 	["voltage"] = true

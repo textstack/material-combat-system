@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "meat-plasmatic-thermal"
 TYPE.ServerName = "Burning"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/fire.png"
 TYPE.Color = Color(255, 67, 0)
 
 TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.1
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "ambient/fire/mtov_flame2.wav"
 
 TYPE.DamageTypes = {
 	["thermal"] = true

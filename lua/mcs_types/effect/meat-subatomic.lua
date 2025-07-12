@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "meat-subatomic"
 TYPE.ServerName = "Radiation Sickness"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/bricks.png"
 TYPE.Color = Color(255, 93, 255)
 
 TYPE.BaseTime = 240
@@ -12,7 +12,7 @@ TYPE.MaxStacks = 100
 TYPE.InflictChance = 0.05
 TYPE.Reducible = true
 TYPE.FullStackTimer = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "player/geiger3.wav"
 
 TYPE.DamageTypes = {
 	["subatomic"] = true

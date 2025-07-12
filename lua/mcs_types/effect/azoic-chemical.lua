@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "azoic-chemical"
 TYPE.ServerName = "Armor Conversion"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/water.png"
 TYPE.Color = Color(255, 0, 190)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.75
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "ambient/levels/canals/toxic_slime_sizzle3.wav"
 
 TYPE.DamageTypes = {
 	["chemical"] = true

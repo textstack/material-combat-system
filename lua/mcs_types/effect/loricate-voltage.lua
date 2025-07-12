@@ -4,14 +4,14 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-voltage"
 TYPE.ServerName = "Stop"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/lightning.png"
 TYPE.Color = Color(248, 196, 0)
 
 TYPE.BaseTime = 0
 TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet2.wav"
 
 TYPE.DamageTypes = {
 	["voltage"] = true

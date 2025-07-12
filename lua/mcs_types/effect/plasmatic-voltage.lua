@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "plasmatic-voltage"
 TYPE.ServerName = "Inertia"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/lightning.png"
 TYPE.Color = Color(248, 196, 0)
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.15
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "ambient/levels/canals/shore1.wav"
 
 TYPE.DamageTypes = {
 	["voltage"] = true

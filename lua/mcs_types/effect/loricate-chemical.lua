@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-chemical"
 TYPE.ServerName = "Death Knell"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/water.png"
 TYPE.Color = Color(255, 0, 190)
 
 TYPE.BaseTime = 5
@@ -13,7 +13,7 @@ TYPE.MaxStacks = 20
 TYPE.FullStackTimer = true
 TYPE.NoTimerResets = true
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "physics/flesh/flesh_bloody_impact_hard1.wav"
 
 TYPE.DamageTypes = {
 	["chemical"] = true

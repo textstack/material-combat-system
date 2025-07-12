@@ -3,15 +3,15 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "azoic-thermal"
-TYPE.ServerName = "Burning"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.ServerName = "Glowing"
+TYPE.Icon = "icon16/weather_sun.png"
 TYPE.Color = Color(255, 67, 0)
 
 TYPE.BaseTime = 5
 TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.5
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "weapons/crossbow/bolt_load1.wav"
 TYPE.NoTimerResets = true
 
 TYPE.DamageTypes = {

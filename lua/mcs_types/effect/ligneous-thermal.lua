@@ -4,10 +4,11 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "ligneous-thermal"
 TYPE.ServerName = "Burning"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/fire.png"
 TYPE.Color = Color(255, 67, 0)
 
 MCS.InheritType(TYPE, "meat-plasmatic-thermal")
+TYPE.InflictSound = "ambient/fire/ignite.wav"
 
 TYPE.DamageTypes = {
 	["thermal"] = true

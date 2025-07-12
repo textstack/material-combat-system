@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "mechanical-subatomic"
 TYPE.ServerName = "Interference"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/transmit_error.png"
 TYPE.Color = Color(255, 93, 255)
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "npc/scanner/scanner_electric2.wav"
 
 TYPE.DamageTypes = {
 	["subatomic"] = true

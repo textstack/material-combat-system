@@ -4,12 +4,12 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "plasmatic-splitting"
 TYPE.ServerName = "Weak Regeneration"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/cut_red.png"
 TYPE.Color = Color(0, 250, 255)
 
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "ambient/machines/slicer4.wav"
 
 TYPE.DamageTypes = {
 	["splitting"] = true

@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-thermal"
 TYPE.ServerName = "Armor Damage"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/fire.png"
 TYPE.Color = Color(255, 67, 0)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.1
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "weapons/debris1.wav"
 
 TYPE.DamageTypes = {
 	["thermal"] = true

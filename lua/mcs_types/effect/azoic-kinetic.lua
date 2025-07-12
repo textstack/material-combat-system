@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "azoic-kinetic"
 TYPE.ServerName = "Splash"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/asterisk_orange.png"
 TYPE.Color = Color(0, 255, 60)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.5
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "weapons/fx/rics/ric4.wav"
 
 TYPE.DamageTypes = {
 	["kinetic"] = true

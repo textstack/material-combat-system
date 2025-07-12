@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "mechanical-penetrating"
 TYPE.ServerName = "Explosive Death"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/bomb.png"
 TYPE.Color = Color(0, 179, 255)
 
 TYPE.BaseTime = 10
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "npc/roller/mine/rmine_predetonate.wav"
 
 TYPE.DamageTypes = {
 	["penetrating"] = true

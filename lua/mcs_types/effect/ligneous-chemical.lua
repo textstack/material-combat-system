@@ -4,14 +4,14 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "ligneous-chemical"
 TYPE.ServerName = "Anti-heal"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/water.png"
 TYPE.Color = Color(255, 0, 190)
 
 TYPE.MaxStacks = 1
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.1
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "physics/wood/wood_strain2.wav"
 
 TYPE.DamageTypes = {
 	["chemical"] = true
@@ -26,7 +26,7 @@ function TYPE:EffectFirstApplied()
 	self:MCS_SetCanRepairArmor(false)
 end
 
-function TYPE:OnApplyEffect(_, effect)
+function TYPE:OnApplyEffect(effect)
 	if effect.ID == "ligneous-thermal" then return true end
 end
 

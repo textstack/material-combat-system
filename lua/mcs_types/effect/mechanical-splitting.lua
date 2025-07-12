@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "mechanical-splitting"
 TYPE.ServerName = "Internal Fire"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/cut_red.png"
 TYPE.Color = Color(0, 250, 255)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "hl1/ambience/steamburst1.wav"
 
 TYPE.DamageTypes = {
 	["splitting"] = true

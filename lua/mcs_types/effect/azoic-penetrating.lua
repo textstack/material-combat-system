@@ -3,14 +3,14 @@ local TYPE = {}
 TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "azoic-penetrating"
-TYPE.ServerName = "Jiggle"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.ServerName = "Shockwave"
+TYPE.Icon = "icon16/shield_delete.png"
 TYPE.Color = Color(0, 179, 255)
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.5
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "physics/concrete/boulder_impact_hard1.wav"
 
 TYPE.DamageTypes = {
 	["penetrating"] = true

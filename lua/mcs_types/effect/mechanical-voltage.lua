@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "mechanical-voltage"
 TYPE.ServerName = "Malfunction"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/cog_delete.png"
 TYPE.Color = Color(248, 196, 0)
 
 TYPE.BaseTime = 2
@@ -12,7 +12,7 @@ TYPE.MaxStacks = 1
 TYPE.NoTimerResets = true
 TYPE.InflictChance = 0.05
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "npc/manhack/bat_away.wav"
 
 TYPE.DamageTypes = {
 	["voltage"] = true

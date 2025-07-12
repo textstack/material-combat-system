@@ -4,13 +4,13 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-penetrating"
 TYPE.ServerName = "Bleed"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/shield_delete.png"
 TYPE.Color = Color(0, 179, 255)
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.25
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "physics/flesh/flesh_bloody_break.wav"
 
 TYPE.DamageTypes = {
 	["penetrating"] = true

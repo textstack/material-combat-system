@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "loricate-kinetic"
 TYPE.ServerName = "Knockback"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/asterisk_orange.png"
 TYPE.Color = Color(0, 255, 60)
 
 TYPE.BaseTime = 0

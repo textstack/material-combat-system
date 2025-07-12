@@ -4,14 +4,14 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "meat-chemical"
 TYPE.ServerName = "Heavy Breathing"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/water.png"
 TYPE.Color = Color(255, 0, 190)
 
 TYPE.BaseTime = 20
 TYPE.MaxStacks = 1
 TYPE.InflictChance = 0.1
 TYPE.Reducible = true
-TYPE.InflictSound = "physics/flesh/flesh_strider_impact_bullet1.wav"
+TYPE.InflictSound = "ambient/voices/cough2.wav"
 
 TYPE.DamageTypes = {
 	["chemical"] = true

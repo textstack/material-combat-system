@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "effect"
 TYPE.ID = "azoic-subatomic"
 TYPE.ServerName = "Relay"
-TYPE.Icon = "icon16/page_white.png"
+TYPE.Icon = "icon16/weather_sun.png"
 TYPE.Color = Color(255, 93, 255)
 
 TYPE.BaseTime = 0
