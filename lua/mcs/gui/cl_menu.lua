@@ -266,8 +266,6 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		MaxHpEntry:SetText(LocalPlayer():GetMaxHealth())
 	end)
 
-	MaxHpEntry:SetText(LocalPlayer():GetMaxHealth())
-
 	local MaxArmorEntry = addTextEntry("#mcs.ui.set_max_armor", SettingsGrid)
 	MaxArmorEntry.OnLoseFocus = function()
 		hook.Call("OnTextEntryLoseFocus", nil, MaxArmorEntry)
@@ -282,8 +280,6 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		if not IsValid(MaxArmorEntry) then return end
 		MaxArmorEntry:SetText(LocalPlayer():GetMaxArmor())
 	end)
-
-	MaxArmorEntry:SetText(LocalPlayer():GetMaxArmor())
 
 	-- Equip button container
 	local ButtonZone = vgui.Create("Panel", NewFrame)
