@@ -115,9 +115,10 @@ local function makeRadarPanel(panel, label, color, hookName, member)
 	local Header = vgui.Create("DLabel", panel)
 	Header:SetText(label)
 	Header:SetColor(color_white)
-	Header:SetTall(30)
+	Header:SetTall(40)
 	Header:SetFont("CreditsText")
 	Header:SetContentAlignment(5)
+	Header:SetWrap(true)
 	Header:Dock(TOP)
 
 	local RadarHolder = vgui.Create("Panel", panel)
@@ -208,7 +209,10 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	-- Health and Armor selection container
 	local LeftZone = vgui.Create("Panel", NewFrame)
 	LeftZone:Dock(LEFT)
-	LeftZone:SetWide(ScreenScale(160)) -- 1/4 screen width
+
+	function LeftZone.PerformLayout()
+		LeftZone:SetWide(ScreenScale(160)) -- 1/4 screen width
+	end
 
 	local ScrollZone = vgui.Create("DScrollPanel", LeftZone)
 	ScrollZone:Dock(FILL)
@@ -340,6 +344,12 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	ArmorSection2:Dock(FILL)
 
 	makeRadarPanel(ArmorSection2, "#mcs.ui.armor_drain_rate", Color(128, 128, 255), "MCS_SelectedArmor", "DrainRate")
+
+	function RadarPanel.PerformLayout()
+		HealthSection:InvalidateChildren(true)
+		ArmorSection1:InvalidateChildren(true)
+		ArmorSection2:InvalidateChildren(true)
+	end
 
 	local HealthLabel = addLabel("#mcs.ui.health", HAPanel)
 	HealthLabel:Dock(TOP)
