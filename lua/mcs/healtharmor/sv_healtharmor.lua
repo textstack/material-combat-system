@@ -29,6 +29,8 @@ net.Receive("mcs_setmax", function(_, ply)
 		local cur = ply:Armor()
 
 		local givenArmor = net.ReadUInt(MCS.SET_MAX_NET_SIZE)
+		givenArmor = math.Clamp(givenArmor, 0, math.pow(2, MCS.SET_MAX_NET_SIZE) - 1)
+
 		ply:SetMaxArmor(givenArmor)
 		ply:SetArmor((cur / prevMax) * givenArmor)
 		ply.MCS_MaxArmor = givenArmor
@@ -40,6 +42,8 @@ net.Receive("mcs_setmax", function(_, ply)
 		local cur = ply:Health()
 
 		local givenHealth = net.ReadUInt(MCS.SET_MAX_NET_SIZE)
+		givenHealth = math.Clamp(givenHealth, 0, math.pow(2, MCS.SET_MAX_NET_SIZE) - 1)
+
 		ply:SetMaxHealth(givenHealth)
 		ply:SetHealth((cur / prevMax) * givenHealth)
 		ply.MCS_MaxHealth = givenHealth
