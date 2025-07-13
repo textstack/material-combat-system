@@ -115,7 +115,7 @@ function ENTITY:MCS_AddEffect(id, amount)
 	if self:MCS_TypeHook("OnApplyEffect", effectType, amount) ~= nil then return false end
 
 	if effectType.InflictSound then
-		self:EmitSound(effectType.InflictSound, nil, nil, 0.75, CHAN_BODY)
+		self:EmitSound(effectType.InflictSound, nil, nil, 1, CHAN_BODY)
 	end
 
 	if effectType.BaseTime and effectType.BaseTime <= 0 then
