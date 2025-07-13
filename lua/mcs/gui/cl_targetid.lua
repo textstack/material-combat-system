@@ -291,6 +291,12 @@ hook.Add("HUDDrawTargetID", "MCS_TargetID", function()
 	local dist = math.pow(ent:WorldSpaceCenter():Distance(ply:WorldSpaceCenter()) * ply:GetFOV(), targetIDPow) * targetIDMult
 	if dist > targetIDEndFade then return true end
 
+	local canSee = ent:MCS_TypeHook("CanBeSeenBy", ply)
+	if canSee == false then return end
+
+	canSee = ply:MCS_TypeHook("CanSee", ent)
+	if canSee == false then return end
+
 	local alpha = 1 - math.Clamp((dist - targetIDStartFade) * (targetIDEndFade - targetIDStartFade), 0, 1)
 
 	local mouseX, mouseY = input.GetCursorPos()
