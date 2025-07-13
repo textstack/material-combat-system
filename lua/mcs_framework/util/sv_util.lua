@@ -200,6 +200,12 @@ hook.Add("Think", "MCS_AntiHeal", function()
 
 		local armorAmt = ent:MCS_GetArmor()
 
+		-- hack: clear off negative armor if it somehow happens
+		if armorAmt < 0 then
+			armorAmt = 0
+			ent:MCS_SetArmor(0)
+		end
+
 		if ent.MCS_PrevArmor and ent.MCS_PrevArmor ~= armorAmt then
 			if ent.MCS_AntiArmor and ent.MCS_PrevArmor < armorAmt then
 				ent:MCS_SetArmor(ent.MCS_PrevArmor)

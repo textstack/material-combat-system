@@ -25,6 +25,7 @@ hook.Add("OnEntityCreated", "MCS_OnEntityCreated", function(ent)
 		end
 	end)
 end)
+
 --[[
 	On spawn, set a player's max health and armor to what they have selected or 100 if it has not been set.
 ]]--
@@ -47,3 +48,55 @@ hook.Add("PlayerSpawn", "MCS_PlayerSpawnHpArmor", function(ply)
 	end)
 end
 )
+
+MCS.ANTI_HEAL_CLASS_RESTRICT = {
+	["item_healthvial"] = true,
+	["item_healthkit"] = true,
+	["item_healthcharger"] = true
+}
+
+MCS.ANTI_ARMOR_CLASS_RESTRICT = {
+	["item_battery"] = true,
+	["item_suitcharger"] = true,
+	["item_suit"] = true
+}
+
+local function pickupRestrict(ply, item)
+	local itemClass = item:GetClass()
+
+	if ply.MCS_AntiHeal and (MCS.ANTI_HEAL_CLASS_RESTRICT[itemClass] or string.find(itemClass, "health")) then
+		return false
+	end
+
+	if ply.MCS_AntiArmor and (MCS.ANTI_ARMOR_CLASS_RESTRICT[itemClass] or string.find(itemClass, "armor") or string.find(itemClass, "suit")) then
+		return false
+	end
+end
+
+local pickupCvar = GetConVar("sv_playerpickupallowed")
+
+hook.Add("PlayerCanPickupItem", "MCS_PreventPickups", pickupRestrict)
+hook.Add("PlayerUse", "MCS_PreventPickups", function(ply, item)
+	local result = pickupRestrict(ply, item)
+
+	if result ~= false then return result end
+	if item:IsPlayerHolding() then return result end
+	if not pickupCvar:GetBool() then return result end
+	if item.MCS_LastPickup and CurTime() - item.MCS_LastPickup < 0.5 then return result end
+
+	local phys = item:GetPhysicsObject()
+	if not IsValid(phys) then return result end
+	if phys:GetMass() > 35 then return result end
+	if not phys:IsMoveable() then return result end
+
+	if hook.Run("AllowPlayerPickup", ply, item) == false then return result end
+
+	ply:PickupObject(item)
+	return result
+end)
+
+hook.Add("OnPlayerPhysicsDrop", "MCS_PreventPickups", function(ply, item)
+	if not ply.MCS_AntiHeal and not ply.MCS_AntiArmor then return end
+
+	item.MCS_LastPickup = CurTime()
+end)

@@ -32,7 +32,13 @@ net.Receive("mcs_setmax", function(_, ply)
 		givenArmor = math.Clamp(givenArmor, 0, math.pow(2, MCS.SET_MAX_NET_SIZE) - 1)
 
 		ply:SetMaxArmor(givenArmor)
-		ply:SetArmor((cur / prevMax) * givenArmor)
+
+		if prevMax == 0 then
+			ply:SetArmor(0)
+		else
+			ply:SetArmor((cur / prevMax) * givenArmor)
+		end
+
 		ply.MCS_MaxArmor = givenArmor
 	else
 		if ply.MCS_SetHealthCool and CurTime() - ply.MCS_SetHealthCool < 1 then return end
@@ -45,7 +51,13 @@ net.Receive("mcs_setmax", function(_, ply)
 		givenHealth = math.Clamp(givenHealth, 0, math.pow(2, MCS.SET_MAX_NET_SIZE) - 1)
 
 		ply:SetMaxHealth(givenHealth)
-		ply:SetHealth((cur / prevMax) * givenHealth)
+
+		if prevMax == 0 then
+			ply:SetHealth(0)
+		else
+			ply:SetHealth((cur / prevMax) * givenHealth)
+		end
+
 		ply.MCS_MaxHealth = givenHealth
 	end
 end)

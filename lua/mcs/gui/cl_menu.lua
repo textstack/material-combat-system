@@ -600,10 +600,9 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		if not IsValid(NPCPanel) then return end
 
 		if LocalPlayer():IsSuperAdmin() then
-			NPCPanel:Show()
-
 			if NPCPanel.Tab then return end
 
+			NPCPanel:Show()
 			NPCPanel.Tab = InfoSheets:AddSheet("#mcs.ui.npcs", NPCPanel, "icon16/monkey.png").Tab
 		else
 			NPCPanel:Hide()
