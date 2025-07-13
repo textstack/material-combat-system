@@ -20,20 +20,11 @@ TYPE.HealthTypes = {
 	["loricate"] = true
 }
 
+local vector_hori = Vector(1, 1, 0)
+
 function TYPE:EffectFirstApplied()
 	if self:IsPlayer() then
-		if not self:IsOnGround() then
-			self:SetVelocity(-self:GetVelocity())
-			return
-		end
-
-		if self:IsFrozen() then return end
-
-		self:Freeze(true)
-		self:MCS_CreateTimer("loricate-voltage", 0.1, 1, function()
-			self:Freeze(false)
-		end)
-
+		self:SetVelocity(-self:GetVelocity() * vector_hori)
 		return
 	end
 
