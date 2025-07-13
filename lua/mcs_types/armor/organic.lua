@@ -13,7 +13,7 @@ TYPE.Vanilla = true
 TYPE.Set = "armor"
 TYPE.ID = "organic"
 TYPE.ServerName = "Organic" -- the server doesn't have access to localization
-TYPE.Icon = "icons/armor/organic.png"
+TYPE.Icon = "mcs_icons/armor/organic.png"
 TYPE.Color = Color(141, 211, 95)
 
 -- armor-specific elements

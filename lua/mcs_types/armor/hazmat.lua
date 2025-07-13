@@ -13,7 +13,7 @@ TYPE.Vanilla = true
 TYPE.Set = "armor"
 TYPE.ID = "hazmat"
 TYPE.ServerName = "Hazmat" -- the server doesn't have access to localization
-TYPE.Icon = "icons/armor/hazmat.png"
+TYPE.Icon = "mcs_icons/armor/hazmat.png"
 TYPE.Color = Color(200, 55, 55)
 
 -- armor-specific elements

@@ -12,7 +12,7 @@ TYPE.Vanilla = true
 TYPE.Set = "health"
 TYPE.ID = "azoic"
 TYPE.ServerName = "Azoic" -- the server doesn't have access to localization
-TYPE.Icon = "icons/health/azoic.png"
+TYPE.Icon = "mcs_icons/health/azoic.png"
 TYPE.Color = Color(145, 111, 111)
 
 -- health-specific elements

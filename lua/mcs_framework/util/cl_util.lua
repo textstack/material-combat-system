@@ -22,7 +22,7 @@ function MCS.L(key, ...)
 	return string.format(lang, unpack(format)), lang ~= key
 end
 
-MCS.ICON_FALLBACK = Material("icons/armor/unarmored.png")
+MCS.ICON_FALLBACK = Material("mcs_icons/armor/unarmored.png")
 
 --[[ Gets the icon material for a type
 	inputs:

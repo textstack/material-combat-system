@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "health"
 TYPE.ID = "meat"
 TYPE.ServerName = "Meat"
-TYPE.Icon = "icons/health/meat.png"
+TYPE.Icon = "mcs_icons/health/meat.png"
 TYPE.Color = Color(255, 42, 42)
 
 --[[

@@ -4,7 +4,7 @@ TYPE.Vanilla = true
 TYPE.Set = "armor"
 TYPE.ID = "fibrous"
 TYPE.ServerName = "Fibrous"
-TYPE.Icon = "icons/armor/fibrous.png"
+TYPE.Icon = "mcs_icons/armor/fibrous.png"
 TYPE.Color = Color(200, 183, 183)
 
 --[[
