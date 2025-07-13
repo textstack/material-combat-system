@@ -359,7 +359,7 @@ end
 function PANEL:DrawHealthType(healthType, w, h)
 	local color = healthType.Color or color_white
 	surface.SetDrawColor(color:Unpack())
-	surface.SetMaterial(MCS.GetIconMaterial(healthType), "icons/armor/unarmored.png")
+	surface.SetMaterial(MCS.GetIconMaterial(healthType))
 
 	local drawW = h - 8
 	surface.DrawTexturedRect(4, 4, drawW, drawW)
@@ -370,7 +370,7 @@ function PANEL:DrawArmorType(armorType, w, h)
 
 	local color = armorType.Color or color_white
 	surface.SetDrawColor(color:Unpack())
-	surface.SetMaterial(MCS.GetIconMaterial(armorType), "icons/armor/unarmored.png")
+	surface.SetMaterial(MCS.GetIconMaterial(armorType))
 
 	local drawW = h / 2 - 8
 	surface.DrawTexturedRect(h * 0.8, h / 2 + 4, drawW, drawW)

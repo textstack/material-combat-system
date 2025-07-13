@@ -22,6 +22,8 @@ function MCS.L(key, ...)
 	return string.format(lang, unpack(format)), lang ~= key
 end
 
+MCS.ICON_FALLBACK = Material("icons/armor/unarmored.png")
+
 --[[ Gets the icon material for a type
 	inputs:
 		_type - the type object to get the icon from
@@ -30,17 +32,16 @@ end
 		the material for the type's icon, or a fallback material
 --]]
 local fallbacks = {}
-local fallback1 = Material("icon16/page_white.png")
 function MCS.GetIconMaterial(_type, fallback)
 	if not _type or not _type.Icon then
-		if type(fallback) ~= "string" then return fallback1 end
+		if type(fallback) ~= "string" then return MCS.ICON_FALLBACK end
 
 		if not fallbacks[fallback] then
 			fallbacks[fallback] = Material(fallback)
 		end
 
 		if fallbacks[fallback]:IsError() then
-			fallbacks[fallback] = fallback1
+			fallbacks[fallback] = MCS.ICON_FALLBACK
 		end
 
 		return fallbacks[fallback]
@@ -58,7 +59,7 @@ function MCS.GetIconMaterial(_type, fallback)
 	end
 
 	if not setMat or _type.Material:IsError() then
-		_type.Material = fallback1
+		_type.Material = MCS.ICON_FALLBACK
 	end
 
 	return _type.Material

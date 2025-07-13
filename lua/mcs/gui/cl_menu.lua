@@ -32,7 +32,7 @@ local function addButtonRow(tbl, frame, isHealth)
 		local newButton = vgui.Create("DImageButton")
 
 		frame:Add(newButton)
-		newButton:SetMaterial(MCS.GetIconMaterial(_type, "icons/armor/unarmored.png"))
+		newButton:SetMaterial(MCS.GetIconMaterial(_type))
 		newButton.m_Image:SetImageColor(_type.Color or color_white)
 		newButton:SetSize(80, 80)
 		newButton:SetTooltip(name)

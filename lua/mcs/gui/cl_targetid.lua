@@ -164,11 +164,8 @@ local function drawNametag(ent, ply, pos)
 		surface.SetDrawColor(healthColor:Unpack())
 		surface.DrawRect(pos.x - w / 2, pos.y, w * math.min(1, hp / maxHp), 12)
 
-		surface.SetMaterial(MCS.GetIconMaterial(healthType, "icons/armor/unarmored.png"))
+		surface.SetMaterial(MCS.GetIconMaterial(healthType))
 		surface.DrawTexturedRect(pos.x - w / 2 - 28, pos.y - 6, 24, 24)
-
-		--local hpAbbr = MCS.L(string.format("mcs.health.%s.abbr", healthType.ID))
-		--draw.SimpleTextOutlined(hpAbbr, "MCSTargetID2", pos.x - w / 2 - 17, pos.y + 12, healthColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, color_black)
 
 		if hp > ent.MCS_PrevHealth then
 			ent.MCS_PrevHealth = hp
@@ -178,7 +175,7 @@ local function drawNametag(ent, ply, pos)
 	end
 
 	local ap, maxAp = ent:MCS_GetArmor(), ent:MCS_GetMaxArmor()
-	if maxAp > 0 then
+	if maxAp > 0 and not armorType.HideOnTargetID then
 		local armorColor = armorType.Color or color_white
 		ent.MCS_PrevArmor = ent.MCS_PrevArmor or ap
 
@@ -188,13 +185,8 @@ local function drawNametag(ent, ply, pos)
 		surface.SetDrawColor(armorColor:Unpack())
 		surface.DrawRect(pos.x - w / 2, pos.y + 8, w * math.min(1, ap / maxAp), 4)
 
-		if not armorType.HideOnTargetID then
-			surface.SetMaterial(MCS.GetIconMaterial(armorType, "icons/armor/unarmored.png"))
-			surface.DrawTexturedRect(pos.x + w / 2 + 4, pos.y - 6, 24, 24)
-
-			--local apAbbr = MCS.L(string.format("mcs.armor.%s.abbr", armorType.ID))
-			--draw.SimpleTextOutlined(apAbbr, "MCSTargetID2", pos.x + w / 2 + 15, pos.y + 12, armorColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, color_black)
-		end
+		surface.SetMaterial(MCS.GetIconMaterial(armorType))
+		surface.DrawTexturedRect(pos.x + w / 2 + 4, pos.y - 6, 24, 24)
 
 		if ap > ent.MCS_PrevArmor then
 			ent.MCS_PrevArmor = ap
