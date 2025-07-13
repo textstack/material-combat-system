@@ -285,9 +285,6 @@ hook.Add("HUDDrawTargetID", "MCS_TargetID", function()
 	if not IsValid(ent) or not ent:MCS_GetEnabled() then return end
 	if ent:IsPlayer() and mode >= 2 then return true end
 
-	surface.SetDrawColor(255, 255, 255)
-	surface.DrawRect(ScrW() / 2, ScrH() / 2, 2, 2)
-
 	local dist = math.pow(ent:WorldSpaceCenter():Distance(ply:WorldSpaceCenter()) * ply:GetFOV(), targetIDPow) * targetIDMult
 	if dist > targetIDEndFade then return true end
 
