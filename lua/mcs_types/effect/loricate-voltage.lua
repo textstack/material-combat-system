@@ -34,7 +34,6 @@ function TYPE:EffectFirstApplied()
 			self:Freeze(false)
 		end)
 
-
 		return
 	end
 
