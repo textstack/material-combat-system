@@ -190,6 +190,8 @@ EffectCanApply(amount) SERVER LOCALIZED
         Called on an effect to determine if an incoming application is allowed
     arguments:
         amount - the amount of stacks to be applied
+    return:
+        false to prevent applying
 
 OnArmorChanged(prevArmor, armor) SERVER
     description:
