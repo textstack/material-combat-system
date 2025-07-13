@@ -21,7 +21,22 @@ TYPE.HealthTypes = {
 
 function TYPE:EffectInstantDamage(count, dmg)
 	if not IsValid(dmg) or not IsValid(dmg:GetDamageForce()) then return end
-	dmg:SetDamageForce(dmg:GetDamageForce() * 10 * count)
+
+	local knockback = dmg:GetDamageForce() * 10 * count
+	dmg:SetDamageForce(knockback)
+
+	local move = self:GetMoveType()
+	if move == MOVETYPE_VPHYSICS or move == MOVETYPE_WALK or move == MOVETYPE_STEP then return end
+
+	if self:IsPlayer() then
+		self:SetVelocity(knockback)
+		return
+	end
+
+	local phys = self:GetPhysicsObject()
+	if not IsValid(phys) then return end
+
+	phys:AddVelocity(knockback)
 end
 
 MCS.RegisterType(TYPE)

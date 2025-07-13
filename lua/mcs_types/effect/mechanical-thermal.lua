@@ -26,6 +26,19 @@ function TYPE:OnTakeDamage(count, dmg)
 	local knockback = dmg:GetDamageForce()
 	knockback = knockback + knockback * hori * count
 	dmg:SetDamageForce(knockback)
+
+	local move = self:GetMoveType()
+	if move == MOVETYPE_VPHYSICS or move == MOVETYPE_WALK or move == MOVETYPE_STEP then return end
+
+	if self:IsPlayer() then
+		self:SetVelocity(knockback)
+		return
+	end
+
+	local phys = self:GetPhysicsObject()
+	if not IsValid(phys) then return end
+
+	phys:AddVelocity(knockback)
 end
 
 MCS.RegisterType(TYPE)

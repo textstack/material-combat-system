@@ -21,19 +21,27 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:EffectFirstApplied()
-	local phys = self:GetPhysicsObject()
-	if not IsValid(phys) then return end
-
-	phys:SetVelocityInstantaneous(vector_origin)
-
-	--[[
 	if self:IsPlayer() then
-		self:SetVelocity(-self:GetVelocity())
+		if not self:IsOnGround() then
+			self:SetVelocity(-self:GetVelocity())
+			return
+		end
+
+		if self:IsFrozen() then return end
+
+		self:Freeze(true)
+		self:MCS_CreateTimer("loricate-voltage", 0.1, 1, function()
+			self:Freeze(false)
+		end)
+
+
 		return
 	end
 
-	self:SetVelocity(vector_origin)
-	--]]
+	local phys = self:GetPhysicsObject()
+	if not IsValid(phys) then return end
+
+	phys:SetVelocity(vector_origin)
 end
 
 MCS.RegisterType(TYPE)
