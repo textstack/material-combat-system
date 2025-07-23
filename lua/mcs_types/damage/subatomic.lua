@@ -15,4 +15,4 @@ TYPE.AugmentDamage = DMG_DISSOLVE
 -- the game damage types that this type maps to
 TYPE.GameDamage = DMG_ENERGYBEAM + DMG_RADIATION + DMG_PHYSGUN + DMG_DISSOLVE
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

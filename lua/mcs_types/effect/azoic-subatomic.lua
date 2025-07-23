@@ -29,4 +29,4 @@ function TYPE:EffectFirstApplied(count)
 	end)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

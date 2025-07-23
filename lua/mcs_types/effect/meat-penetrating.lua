@@ -25,4 +25,4 @@ function TYPE:EffectInstantDamage(_, dmg)
 	dmg:ScaleDamage(3)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

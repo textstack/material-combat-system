@@ -18,4 +18,4 @@ TYPE.GameDamage = DMG_CRUSH + DMG_VEHICLE + DMG_FALL + DMG_BLAST + DMG_CLUB + DM
 -- generic damage only applies when damage has *no* other type
 TYPE.Generic = true
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

@@ -29,4 +29,4 @@ function TYPE:OnEffectProc()
 	self:MCS_TypelessDamage(2)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

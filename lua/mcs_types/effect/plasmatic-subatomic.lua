@@ -23,4 +23,4 @@ function TYPE:EffectFirstApplied()
 	self:MCS_TypelessDamage(self:GetMaxHealth() / 1000)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

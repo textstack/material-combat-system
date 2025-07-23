@@ -88,4 +88,4 @@ TYPE.OnSwitchTo = initShield
 TYPE.OnPlayerSpawn = initShield
 TYPE.OnEnabled = initShield
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

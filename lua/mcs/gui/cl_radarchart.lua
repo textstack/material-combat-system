@@ -67,11 +67,11 @@ function PANEL:RegenerateDamageTypes()
 	self.DmgTypes = {}
 	self.PolyLerp = {}
 
-	for id, dmgType in SortedPairsByMemberValue(MCS.GetDamageTypes(), "Order") do
+	for id, dmgType in SortedPairsByMemberValue(MCS1.GetDamageTypes(), "Order") do
 		local pnl = self:Add("DImage")
 		pnl.ID = id
 
-		pnl:SetMaterial(MCS.GetIconMaterial(dmgType))
+		pnl:SetMaterial(MCS1.GetIconMaterial(dmgType))
 		pnl:SetImageColor(dmgType.Color or color_white)
 		pnl:SetSize(16, 16)
 		pnl:SetMouseInputEnabled(true)
@@ -96,7 +96,7 @@ function PANEL:RegenerateDamageTypes()
 end
 
 local function setTooltip(pnl, values)
-	local name = MCS.L(string.format("mcs.damage.%s.name", pnl.ID))
+	local name = MCS1.L(string.format("mcs.damage.%s.name", pnl.ID))
 	local mult = values[pnl.ID] or 1
 
 	pnl:SetTooltip(string.format("%s\nx %s", name, mult))
@@ -192,7 +192,7 @@ function PANEL:Paint(w, h)
 		local mul = self.Values[pnl.ID] or 1
 		local oldR = self.PolyLerp[i] or 0
 		local newR = getChartScale(mul) * radius
-		local r = MCS.Dampen(dampSpeed, oldR, newR)
+		local r = MCS1.Dampen(dampSpeed, oldR, newR)
 		self.PolyLerp[i] = r
 
 		local mX = math.cos(curAng) * w * r + w * 0.5
@@ -237,7 +237,7 @@ if MCS_LOADED then
 
 	local chart = frame:Add("MCS_RadarChart")
 	chart:Dock(FILL)
-	chart:SetValues(MCS.HealthType("meat").DamageMultipliers)
+	chart:SetValues(MCS1.HealthType("meat").DamageMultipliers)
 	chart:SetColor(Color(255, 64, 64))
 end
 --]]

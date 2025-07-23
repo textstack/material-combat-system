@@ -34,4 +34,4 @@ function TYPE:EffectFirstApplied()
 	phys:SetVelocity(vector_origin)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

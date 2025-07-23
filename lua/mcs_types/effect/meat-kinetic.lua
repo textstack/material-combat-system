@@ -7,7 +7,7 @@ TYPE.ServerName = "Stop"
 TYPE.Icon = "icon16/asterisk_orange.png"
 TYPE.Color = Color(255,255,255)
 
-MCS.InheritType(TYPE, "loricate-voltage")
+MCS1.InheritType(TYPE, "loricate-voltage")
 TYPE.InflictSound = "physics/body/body_medium_impact_hard6.wav"
 
 TYPE.DamageTypes = {
@@ -17,4 +17,4 @@ TYPE.HealthTypes = {
 	["meat"] = true
 }
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

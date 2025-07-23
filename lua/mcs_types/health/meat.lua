@@ -30,4 +30,4 @@ TYPE.DamageMultipliers = {
 	["subatomic"] = 0.25 --this will just kill you later
 }
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

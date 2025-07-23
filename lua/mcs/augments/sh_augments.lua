@@ -1,7 +1,7 @@
 local ENTITY = FindMetaTable("Entity")
 
 local function defaultAug(ent)
-	return MCS.GetNPCData(ent:MCS_GetSpawnName())[3]
+	return MCS1.GetNPCData(ent:MCS_GetSpawnName())[3]
 end
 
 --[[ Gives an entity's augment for the current damage instance
@@ -17,7 +17,7 @@ function ENTITY:MCS_GetCurrentAugment(inflictor)
 	if not self.MCS_Augments then return defaultAug(self) end
 	if not IsValid(inflictor) then return defaultAug(self) end
 
-	local dType = MCS.DamageType(self.MCS_Augments[inflictor:GetClass()])
+	local dType = MCS1.DamageType(self.MCS_Augments[inflictor:GetClass()])
 	if not dType then return defaultAug(self) end
 
 	return dType
@@ -48,7 +48,7 @@ end
 		serverside, use this for npcs and stuff and forcing augments on players
 --]]
 function ENTITY:MCS_SetAugment(id, swep, force)
-	local damageType = MCS.DamageType(id)
+	local damageType = MCS1.DamageType(id)
 	if not damageType or not damageType.AugmentDamage or (not force and damageType.Hidden) then
 		id = nil
 	end

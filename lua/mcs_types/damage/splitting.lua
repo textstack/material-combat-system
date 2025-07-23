@@ -15,4 +15,4 @@ TYPE.AugmentDamage = DMG_SLASH
 -- the game damage types that this type maps to
 TYPE.GameDamage = DMG_BUCKSHOT + DMG_SLASH
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

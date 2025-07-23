@@ -2,21 +2,21 @@
 	inputs:
 		dmg - the CTakeDamageInfo to check
 	output:
-		the MCS damage types that the damageinfo has
+		the MCS1 damage types that the damageinfo has
 --]]
-function MCS.CalculateDamageTypes(dmg)
+function MCS1.CalculateDamageTypes(dmg)
 	local gameDamageType = dmg:GetDamageType()
 
 	local dmgTypes = {}
 
 	if gameDamageType == 0 then -- generic damage
-		for dmgID, dmgType in pairs(MCS.GetDamageTypes()) do
+		for dmgID, dmgType in pairs(MCS1.GetDamageTypes()) do
 			if dmgType.Generic then
 				dmgTypes[dmgID] = dmgType
 			end
 		end
 	else
-		for dmgID, dmgType in pairs(MCS.GetDamageTypes()) do
+		for dmgID, dmgType in pairs(MCS1.GetDamageTypes()) do
 			if dmgType.GameDamage and bit.band(gameDamageType, dmgType.GameDamage) ~= 0 then
 				dmgTypes[dmgID] = dmgType
 			end
@@ -30,12 +30,12 @@ end
 local function multiplyStat(dmgTypes, mults, center)
 	if not mults or table.IsEmpty(mults) then return 1 end
 
-	local mag = 1 - MCS.GetConVar("mcs_sv_damage_vanillaness"):GetFloat()
+	local mag = 1 - MCS1.GetConVar("mcs_sv_damage_vanillaness"):GetFloat()
 	local totalMult = 1
 	local count = 0
 	for _, dmgType in pairs(dmgTypes) do
 		if mults[dmgType.ID] then
-			totalMult = totalMult * MCS.Magnitude(mults[dmgType.ID], mag, center)
+			totalMult = totalMult * MCS1.Magnitude(mults[dmgType.ID], mag, center)
 			count = count + 1
 		end
 	end
@@ -59,7 +59,7 @@ local function armorHandling(ent, dmg)
 	local armorType = ent:MCS_GetArmorType()
 	if not armorType then return false end
 
-	local dmgTypes = MCS.CalculateDamageTypes(dmg)
+	local dmgTypes = MCS1.CalculateDamageTypes(dmg)
 	if table.IsEmpty(dmgTypes) then return false end
 
 	local dmgAmt = dmg:GetDamage()
@@ -104,7 +104,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 	local healthType = ent:MCS_GetHealthType()
 	if not healthType then return end
 
-	local dmgTypes = MCS.CalculateDamageTypes(dmg)
+	local dmgTypes = MCS1.CalculateDamageTypes(dmg)
 	local mult, reduce = multiplyStat(dmgTypes, healthType.DamageMultipliers, 1)
 	local newDmgAmt = dmg:GetDamage() * mult
 
@@ -112,7 +112,7 @@ hook.Add("EntityTakeDamage", "MCS_Damage", function(ent, dmg)
 
 	armorHandling(ent, dmg)
 
-	for effectID, effectType in pairs(MCS.GetEffectTypes()) do
+	for effectID, effectType in pairs(MCS1.GetEffectTypes()) do
 		if not effectType.InflictChance then continue end
 		if ent.MCS_StatusGuarantee or math.random() > effectType.InflictChance then continue end
 		if effectType.Reducible and math.random() > reduce then continue end

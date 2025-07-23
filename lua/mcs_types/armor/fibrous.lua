@@ -48,4 +48,4 @@ TYPE.DrainRates = {
 	["subatomic"] = 0.25
 }
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

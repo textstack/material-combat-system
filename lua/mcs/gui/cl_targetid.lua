@@ -1,4 +1,4 @@
-local modeCvar = CreateClientConVar("mcs_targetid_mode", -1, true, true, "What MCS targetid mode to use. (-1 = let server decide, 0 = off, 1 = minimal, 2 = normal).", -1, 2)
+local modeCvar = CreateClientConVar("mcs_targetid_mode", -1, true, true, "What MCS1 targetid mode to use. (-1 = let server decide, 0 = off, 1 = minimal, 2 = normal).", -1, 2)
 local sModeCvar
 
 local targetIDMult = 0.008
@@ -7,7 +7,7 @@ local targetIDStartFade = 2
 local targetIDEndFade = 3
 local healthBarScale = 150
 
-surface.CreateFont("MCSTargetID", {
+surface.CreateFont("MCS1TargetID", {
 	font = "Arial",
 	size = 30,
 	weight = 500,
@@ -15,7 +15,7 @@ surface.CreateFont("MCSTargetID", {
 	--outline = true,
 })
 
-surface.CreateFont("MCSTargetID2", {
+surface.CreateFont("MCS1TargetID2", {
 	font = "Arial",
 	size = 12,
 	weight = 500,
@@ -77,7 +77,7 @@ local function drawEffect(ent, data, id, x, y)
 	local eData = effectData[eID][id]
 
 	eData.scale = eData.scale or 1.25
-	eData.count = eData.count or MCS.MAX_EFFECT_COUNT + 1
+	eData.count = eData.count or MCS1.MAX_EFFECT_COUNT + 1
 	eData.procID = eData.procID or data.procID
 
 	if data.count > eData.count or eData.procID ~= data.procID then
@@ -98,22 +98,22 @@ local function drawEffect(ent, data, id, x, y)
 	m:Translate(-mVec)
 
 	local w = 20
-	local effect = MCS.EffectType(id)
+	local effect = MCS1.EffectType(id)
 	local color = effect.Color or color_white
 	surface.SetDrawColor(color:Unpack())
-	surface.SetMaterial(MCS.GetIconMaterial(effect))
+	surface.SetMaterial(MCS1.GetIconMaterial(effect))
 
 	cam.PushModelMatrix(m, true)
 
 	surface.DrawTexturedRect(x - w / 2, y - w / 2, w, w)
 
 	if data.count > 1 then
-		draw.SimpleTextOutlined(string.format("%s x", data.count), "MCSTargetID2", x + 5, y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, color_black)
+		draw.SimpleTextOutlined(string.format("%s x", data.count), "MCS1TargetID2", x + 5, y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, color_black)
 	end
 
 	cam.PopModelMatrix()
 
-	eData.scale = MCS.Dampen(10, eData.scale, 1)
+	eData.scale = MCS1.Dampen(10, eData.scale, 1)
 end
 
 local function drawEffects(ent, pos, w)
@@ -145,7 +145,7 @@ local function drawNametag(ent, ply, pos)
 		name = ent.PrintName or string.format("#%s", ent:GetClass())
 	end
 
-	draw.SimpleTextOutlined(name, "MCSTargetID", pos.x, pos.y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM, 2, color_black)
+	draw.SimpleTextOutlined(name, "MCS1TargetID", pos.x, pos.y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM, 2, color_black)
 
 	local healthScale = math.Clamp(math.log(ent:GetMaxHealth() / 1000, 10) / 5 + 1, 0.75, 2)
 	local w = healthScale * healthBarScale
@@ -164,13 +164,13 @@ local function drawNametag(ent, ply, pos)
 		surface.SetDrawColor(healthColor:Unpack())
 		surface.DrawRect(pos.x - w / 2, pos.y, w * math.min(1, hp / maxHp), 12)
 
-		surface.SetMaterial(MCS.GetIconMaterial(healthType))
+		surface.SetMaterial(MCS1.GetIconMaterial(healthType))
 		surface.DrawTexturedRect(pos.x - w / 2 - 28, pos.y - 6, 24, 24)
 
 		if hp > ent.MCS_PrevHealth then
 			ent.MCS_PrevHealth = hp
 		else
-			ent.MCS_PrevHealth = MCS.Dampen(4, ent.MCS_PrevHealth, hp)
+			ent.MCS_PrevHealth = MCS1.Dampen(4, ent.MCS_PrevHealth, hp)
 		end
 	end
 
@@ -185,13 +185,13 @@ local function drawNametag(ent, ply, pos)
 		surface.SetDrawColor(armorColor:Unpack())
 		surface.DrawRect(pos.x - w / 2, pos.y + 8, w * math.min(1, ap / maxAp), 4)
 
-		surface.SetMaterial(MCS.GetIconMaterial(armorType))
+		surface.SetMaterial(MCS1.GetIconMaterial(armorType))
 		surface.DrawTexturedRect(pos.x + w / 2 + 4, pos.y - 6, 24, 24)
 
 		if ap > ent.MCS_PrevArmor then
 			ent.MCS_PrevArmor = ap
 		else
-			ent.MCS_PrevArmor = MCS.Dampen(4, ent.MCS_PrevArmor, ap)
+			ent.MCS_PrevArmor = MCS1.Dampen(4, ent.MCS_PrevArmor, ap)
 		end
 	end
 

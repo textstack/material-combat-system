@@ -5,7 +5,7 @@
     usage:
         settings ui for superadmins
 --]]
-function MCS.RequestSetting(setting, value)
+function MCS1.RequestSetting(setting, value)
     if not LocalPlayer():IsSuperAdmin() then
         LocalPlayer():MCS_Notify("mcs.error.settings_superadmin_only")
         return

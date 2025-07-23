@@ -35,4 +35,4 @@ function TYPE:EffectExpired()
 	self:MCS_SetCanRepairArmor(true)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

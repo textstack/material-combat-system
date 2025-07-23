@@ -4,30 +4,30 @@ if not file.Exists("mcs", "DATA") then
 	file.CreateDir("mcs")
 end
 
-MCS.DEFAULT_NPC_DATA_PATH = "mcs_data/default_npc_data.lua"
-MCS.NPC_DATA_PATH = "mcs/npc_data.txt"
+MCS1.DEFAULT_NPC_DATA_PATH = "mcs_data/default_npc_data.lua"
+MCS1.NPC_DATA_PATH = "mcs/npc_data.txt"
 
 -- initialize the data table for NPC health and armor types
 local function initNPCData()
-	if file.Exists(MCS.NPC_DATA_PATH, "DATA") then
-		MCS.NPCData = util.JSONToTable(file.Read(MCS.NPC_DATA_PATH, "DATA"))
-	elseif file.Exists(MCS.DEFAULT_NPC_DATA_PATH, "LUA") then
-		MCS.NPCData = util.JSONToTable(file.Read(MCS.DEFAULT_NPC_DATA_PATH, "LUA"))
+	if file.Exists(MCS1.NPC_DATA_PATH, "DATA") then
+		MCS1.NPCData = util.JSONToTable(file.Read(MCS1.NPC_DATA_PATH, "DATA"))
+	elseif file.Exists(MCS1.DEFAULT_NPC_DATA_PATH, "LUA") then
+		MCS1.NPCData = util.JSONToTable(file.Read(MCS1.DEFAULT_NPC_DATA_PATH, "LUA"))
 	else
-		MCS.NPCData = {}
+		MCS1.NPCData = {}
 	end
 end
 
 local function writeNPCData()
-	file.Write(MCS.NPC_DATA_PATH, util.TableToJSON(MCS.NPCData))
+	file.Write(MCS1.NPC_DATA_PATH, util.TableToJSON(MCS1.NPCData))
 end
 
 local function bumpNPCData(class)
-	local data = MCS.GetNPCData(class)
+	local data = MCS1.GetNPCData(class)
 
 	net.Start("mcs_npcdata")
 	net.WriteBool(false)
-	net.WriteUInt(1, MCS.NPC_DATA_COUNT_NET_SIZE)
+	net.WriteUInt(1, MCS1.NPC_DATA_COUNT_NET_SIZE)
 	net.WriteString(class)
 	net.WriteString(data[1] or "")
 	net.WriteString(data[2] or "")
@@ -39,8 +39,8 @@ local function sendNPCData(ply)
 	net.Start("mcs_npcdata")
 	net.WriteBool(true)
 
-	net.WriteUInt(table.Count(MCS.NPCData), MCS.NPC_DATA_COUNT_NET_SIZE)
-	for class, data in pairs(MCS.NPCData) do
+	net.WriteUInt(table.Count(MCS1.NPCData), MCS1.NPC_DATA_COUNT_NET_SIZE)
+	for class, data in pairs(MCS1.NPCData) do
 		net.WriteString(class)
 		net.WriteString(data[1] or "")
 		net.WriteString(data[2] or "")
@@ -69,9 +69,9 @@ end)
 	notes:
 		Set healthtype/armortype to an *empty string* to remove.
 --]]
-function MCS.SetNPCData(class, healthID, armorID, augmentID)
-	MCS.NPCData[class] = MCS.NPCData[class] or {}
-	local data = MCS.NPCData[class]
+function MCS1.SetNPCData(class, healthID, armorID, augmentID)
+	MCS1.NPCData[class] = MCS1.NPCData[class] or {}
+	local data = MCS1.NPCData[class]
 
 	if healthID then
 		if healthID == "" then
@@ -98,11 +98,10 @@ function MCS.SetNPCData(class, healthID, armorID, augmentID)
 	end
 
 	if table.IsEmpty(data) then
-		MCS.NPCData[class] = nil
+		MCS1.NPCData[class] = nil
 	end
 
-	local armorType = MCS.ArmorType(data[2] or "")
-	if armorType and ((armorType.HealthTypes and not armorType.HealthTypes[data[1]]) or (armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[data[1]])) then
+	if not MCS1.IsEquippableArmor(MCS1.ArmorType(data[2] or ""), data[1]) then
 		data[2] = nil
 	end
 
@@ -126,5 +125,5 @@ net.Receive("mcs_npcdata", function(_, ply)
 	local armorType = net.ReadString()
 	local augment = net.ReadString()
 
-	MCS.SetNPCData(class, healthType, armorType, augment)
+	MCS1.SetNPCData(class, healthType, armorType, augment)
 end)

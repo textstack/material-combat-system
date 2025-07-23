@@ -83,4 +83,4 @@ function TYPE:OnTakeDamage(dmg)
 	self:Kill()
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

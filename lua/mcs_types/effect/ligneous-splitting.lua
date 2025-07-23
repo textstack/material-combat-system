@@ -39,4 +39,4 @@ function TYPE:EffectExpired(_, force)
 	self.MCS_StatusGuarantee = nil
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

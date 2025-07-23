@@ -16,14 +16,14 @@ end, function(cmd, arg)
 
 	arg = string.Trim(arg)
 
-	for id, _ in pairs(MCS.GetHealthTypes()) do
+	for id, _ in pairs(MCS1.GetHealthTypes()) do
 		if string.StartsWith(id, arg) then
 			table.insert(autoCompletes, string.format("%s %s", cmd, id))
 		end
 	end
 
 	return autoCompletes
-end, "Set your MCS health type.", FCVAR_NONE)
+end, "Set your MCS1 health type.", FCVAR_NONE)
 
 concommand.Add("mcs_set_armor_type", function(ply, _, args)
 	if CLIENT then return end
@@ -43,14 +43,14 @@ end, function(cmd, arg)
 
 	arg = string.Trim(arg)
 
-	for id, _ in pairs(MCS.GetArmorTypes()) do
+	for id, _ in pairs(MCS1.GetArmorTypes()) do
 		if string.StartsWith(id, arg) then
 			table.insert(autoCompletes, string.format("%s %s", cmd, id))
 		end
 	end
 
 	return autoCompletes
-end, "Set your MCS armor type.", FCVAR_NONE)
+end, "Set your MCS1 armor type.", FCVAR_NONE)
 
 concommand.Add("mcs_set_augment", function(ply, _, args)
 	if CLIENT then return end
@@ -66,7 +66,7 @@ concommand.Add("mcs_set_augment", function(ply, _, args)
 			return
 		end
 
-		local dmgType = MCS.DamageType(args[1])
+		local dmgType = MCS1.DamageType(args[1])
 		local augment = dmgType and ("mcs.damage." .. args[1] .. ".name") or "mcs.nothing"
 
 		ply:MCS_Notify("mcs.system.set_augment", swep, augment)
@@ -79,7 +79,7 @@ end, function(cmd, arg, args)
 	local cmpArg = string.Trim(args[1] or "")
 	local add = args[2] and " " .. args[2] or ""
 
-	local dmgTypes = MCS.GetDamageTypes()
+	local dmgTypes = MCS1.GetDamageTypes()
 	dmgTypes["none"] = { AugmentDamage = true }
 
 	for id, dmgType in pairs(dmgTypes) do

@@ -1,4 +1,4 @@
-MCS.Types = MCS.Types or {}
+MCS1.Types = MCS1.Types or {}
 
 local ENTITY = FindMetaTable("Entity")
 
@@ -39,7 +39,7 @@ function ENTITY:MCS_TypeHook(eventName, ...)
 	if armorResult ~= nil then return armorResult end
 
 	for id, data in pairs(self:MCS_GetEffects()) do
-		local effectResult = lTypeHook(self, MCS.EffectType(id), eventName, data.count, ...)
+		local effectResult = lTypeHook(self, MCS1.EffectType(id), eventName, data.count, ...)
 		if effectResult ~= nil then return effectResult end
 	end
 end
@@ -66,7 +66,7 @@ function ENTITY:MCS_LocalTypeHook(set, id, eventName, ...)
 	if type(set) == "string" then
 		if not set then return end
 
-		local tbl = MCS.Types[set]
+		local tbl = MCS1.Types[set]
 		if not tbl then return end
 
 		local _type = tbl[id]
@@ -88,7 +88,7 @@ end
 		hookName - name of the game hook
 		typeHookName - name of the new type hook
 --]]
-function MCS.CreateGameTypeHook(hookName, typeHookName)
+function MCS1.CreateGameTypeHook(hookName, typeHookName)
 	hook.Add(hookName, "MCS_" .. typeHookName, function(ent, ...)
 		if ent:MCS_GetEnabled() then
 			return ent:MCS_TypeHook(typeHookName, ...)
@@ -102,7 +102,7 @@ end
 		typeHookName - name of the new type hook
 --]]
 if CLIENT then
-	function MCS.CreateClientTypeHook(hookName, typeHookName)
+	function MCS1.CreateClientTypeHook(hookName, typeHookName)
 		hook.Add(hookName, "MCS_" .. typeHookName, function(...)
 			if IsValid(LocalPlayer()) and LocalPlayer():MCS_GetEnabled() then
 				return LocalPlayer():MCS_TypeHook(typeHookName, ...)
@@ -119,7 +119,7 @@ local inheritTypes = {}
 	usage:
 		put at the end of your file that's defining a type
 --]]
-function MCS.RegisterType(TYPE)
+function MCS1.RegisterType(TYPE)
 	if type(TYPE) ~= "table" then
 		error("Expected a table but received " .. type(TYPE), 2)
 	end
@@ -136,7 +136,7 @@ function MCS.RegisterType(TYPE)
 		error("Types must include a server name! (in 'ServerName')", 2)
 	end
 
-	local typeSet = MCS.Types[TYPE.Set]
+	local typeSet = MCS1.Types[TYPE.Set]
 	if not typeSet then
 		error("Invalid typeSet!", 2)
 	end
@@ -162,6 +162,9 @@ function MCS.RegisterType(TYPE)
 	end
 end
 
+--HACK: ensure mods that use the old global name can still register
+MCS.RegisterType = MCS1.RegisterType
+
 --[[ Make a type object inherit values from a different type
 	inputs:
 		id - id of the type to inherit from
@@ -169,18 +172,18 @@ end
 		you have a type that's similar to another
 		this doesn't work with chains of inheritance!
 --]]
-function MCS.InheritType(TYPE, id)
+function MCS1.InheritType(TYPE, id)
 	TYPE._InheritedType = id
 end
 
 --[[
 	For each type set:
 		there is a function to get the type from id
-			ie. MCS.HealthType(id)
+			ie. MCS1.HealthType(id)
 		there is a function to get a value from id
-			ie. MCS.HealthTypeValue(id, key)
+			ie. MCS1.HealthTypeValue(id, key)
 		there is a function to get every type of the set
-			ie. MCS.GetHealthTypes()
+			ie. MCS1.GetHealthTypes()
 --]]
 
 local function includeTypeSet(fl, dir, typeSet)
@@ -195,25 +198,25 @@ end
 
 local _, dirs = file.Find("mcs_types/*", "LUA")
 for _, typeSet in ipairs(dirs) do
-	MCS.Types[typeSet] = MCS.Types[typeSet] or {}
+	MCS1.Types[typeSet] = MCS1.Types[typeSet] or {}
 
-	MCS[MCS.ToCapital(typeSet) .. "Type"] = function(id)
+	MCS1[MCS1.ToCapital(typeSet) .. "Type"] = function(id)
 		if not id then return end
 
-		return MCS.Types[typeSet][id]
+		return MCS1.Types[typeSet][id]
 	end
 
-	MCS[MCS.ToCapital(typeSet) .. "TypeValue"] = function(id, key)
+	MCS1[MCS1.ToCapital(typeSet) .. "TypeValue"] = function(id, key)
 		if not id or not key then return end
 
-		local TYPE = MCS.Types[typeSet][id]
+		local TYPE = MCS1.Types[typeSet][id]
 		if not TYPE then return end
 
 		return TYPE[key]
 	end
 
-	MCS["Get" .. MCS.ToCapital(typeSet) .. "Types"] = function()
-		return MCS.Types[typeSet]
+	MCS1["Get" .. MCS1.ToCapital(typeSet) .. "Types"] = function()
+		return MCS1.Types[typeSet]
 	end
 
 	local subdir = "mcs_types/" .. typeSet .. "/"
@@ -225,7 +228,7 @@ for _, typeSet in ipairs(dirs) do
 end
 
 for set, types in pairs(inheritTypes) do
-	local typeSet = MCS.Types[set]
+	local typeSet = MCS1.Types[set]
 	if not typeSet then continue end
 
 	for id, _ in pairs(types) do

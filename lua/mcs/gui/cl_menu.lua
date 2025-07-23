@@ -28,11 +28,11 @@ This function adds buttons to a DIconLayout according to a table of health/armor
 ]]--
 local function addButtonRow(tbl, frame, isHealth)
 	for id, _type in pairs(tbl) do
-		local name = MCS.L(string.format("mcs.%s.%s.name", _type.Set, id))
+		local name = MCS1.L(string.format("mcs.%s.%s.name", _type.Set, id))
 		local newButton = vgui.Create("DImageButton")
 
 		frame:Add(newButton)
-		newButton:SetMaterial(MCS.GetIconMaterial(_type))
+		newButton:SetMaterial(MCS1.GetIconMaterial(_type))
 		newButton.m_Image:SetImageColor(_type.Color or color_white)
 		newButton:SetSize(80, 80)
 		newButton:SetTooltip(name)
@@ -50,7 +50,7 @@ local function addButtonRow(tbl, frame, isHealth)
 
 				HealthSelImg = addSelIndicator(newButton, true)
 
-				hook.Run("MCS_SelectedHealth", MCS.HealthType(id))
+				hook.Run("MCS_SelectedHealth", MCS1.HealthType(id))
 			else
 				if ArmorSel == id then return end
 
@@ -61,7 +61,7 @@ local function addButtonRow(tbl, frame, isHealth)
 
 				ArmorSelImg = addSelIndicator(newButton, true)
 
-				hook.Run("MCS_SelectedArmor", MCS.ArmorType(id))
+				hook.Run("MCS_SelectedArmor", MCS1.ArmorType(id))
 			end
 		end
 	end
@@ -168,7 +168,7 @@ local function makeAugmentMenu(panel, swep, printName)
 		reset:SetMaterial("icon16/cross.png")
 	end
 
-	for id, dmgType in SortedPairsByMemberValue(MCS.GetDamageTypes(), "Order") do
+	for id, dmgType in SortedPairsByMemberValue(MCS1.GetDamageTypes(), "Order") do
 		if dmgType.Hidden then continue end
 		if not dmgType.AugmentDamage then continue end
 		if ply.MCS_Augments[swep] == id then continue end
@@ -177,7 +177,7 @@ local function makeAugmentMenu(panel, swep, printName)
 			local pass, message = ply:MCS_SetAugment(id, swep)
 
 			if pass then
-				panel:SetText(MCS.L(string.format("mcs.damage.%s.augment", id), printName))
+				panel:SetText(MCS1.L(string.format("mcs.damage.%s.augment", id), printName))
 				panel:SizeToContentsX(20)
 				panel:SetEnabled(false)
 				panel:SetTooltip(string.format("#mcs.damage.%s.name", id))
@@ -190,7 +190,7 @@ local function makeAugmentMenu(panel, swep, printName)
 			end
 		end)
 
-		opt:SetMaterial(MCS.GetIconMaterial(dmgType))
+		opt:SetMaterial(MCS1.GetIconMaterial(dmgType))
 		opt.m_Image:SetImageColor(dmgType.Color or color_white)
 	end
 
@@ -199,17 +199,17 @@ end
 
 local function makeNPCMenu(panel, spawnName)
 	local _menu = DermaMenu()
-	MCS.ShowNPCMenus(spawnName, _menu)
+	MCS1.ShowNPCMenus(spawnName, _menu)
 	_menu:Open()
 end
 
 local function drawNPCButton(panel, spawnName, w, h)
-	local data = MCS.GetNPCData(spawnName)
+	local data = MCS1.GetNPCData(spawnName)
 
 	if data[1] then
-		local healthType = MCS.HealthType(data[1])
+		local healthType = MCS1.HealthType(data[1])
 		if healthType then
-			surface.SetMaterial(MCS.GetIconMaterial(healthType))
+			surface.SetMaterial(MCS1.GetIconMaterial(healthType))
 
 			local color = healthType.Color or color_white
 			surface.SetDrawColor(color:Unpack())
@@ -219,9 +219,9 @@ local function drawNPCButton(panel, spawnName, w, h)
 	end
 
 	if data[2] then
-		local armorType = MCS.ArmorType(data[2])
+		local armorType = MCS1.ArmorType(data[2])
 		if armorType then
-			surface.SetMaterial(MCS.GetIconMaterial(armorType))
+			surface.SetMaterial(MCS1.GetIconMaterial(armorType))
 
 			local color = armorType.Color or color_white
 			surface.SetDrawColor(color:Unpack())
@@ -231,9 +231,9 @@ local function drawNPCButton(panel, spawnName, w, h)
 	end
 
 	if data[3] then
-		local dmgType = MCS.DamageType(data[3])
+		local dmgType = MCS1.DamageType(data[3])
 		if dmgType then
-			surface.SetMaterial(MCS.GetIconMaterial(dmgType))
+			surface.SetMaterial(MCS1.GetIconMaterial(dmgType))
 
 			local color = dmgType.Color or color_white
 			surface.SetDrawColor(color:Unpack())
@@ -270,10 +270,10 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 	IconList:SetBorder(16)
 
 	addLabel("#mcs.ui.health", IconList)
-	addButtonRow(MCS.GetHealthTypes(), IconList, true)
+	addButtonRow(MCS1.GetHealthTypes(), IconList, true)
 
 	addLabel("#mcs.ui.armor", IconList)
-	addButtonRow(MCS.GetArmorTypes(), IconList, false)
+	addButtonRow(MCS1.GetArmorTypes(), IconList, false)
 
 	-- Settings container
 	local SettingsZone = vgui.Create("Panel", NewFrame)
@@ -295,7 +295,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		local hp = tonumber(MaxHpEntry:GetText())
 		if not hp then return end
 
-		MCS.SetMax(hp)
+		MCS1.SetMax(hp)
 	end
 
 	table.insert(update, function()
@@ -310,7 +310,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		local ap = tonumber(MaxArmorEntry:GetText())
 		if not ap then return end
 
-		MCS.SetMax(ap, true)
+		MCS1.SetMax(ap, true)
 	end
 
 	table.insert(update, function()
@@ -477,7 +477,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 					local dmgID = ply.MCS_Augments[swep]
 					if not dmgID then return end
 
-					local dmgType = MCS.DamageType(dmgID)
+					local dmgType = MCS1.DamageType(dmgID)
 					if not dmgType then return end
 
 					surface.SetDrawColor(dmgType.Color or color_white)
@@ -489,7 +489,7 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 			end
 
 			if ply.MCS_Augments[swep] then
-				NewButton:SetText(MCS.L(string.format("mcs.damage.%s.augment", ply.MCS_Augments[swep]), swepEnt:GetPrintName()))
+				NewButton:SetText(MCS1.L(string.format("mcs.damage.%s.augment", ply.MCS_Augments[swep]), swepEnt:GetPrintName()))
 				NewButton:SetTooltip(string.format("#mcs.damage.%s.name", ply.MCS_Augments[swep]))
 			else
 				NewButton:SetText(printName)
@@ -564,12 +564,12 @@ spawnmenu.AddCreationTab("#mcs.material_combat_system", function()
 		if not LocalPlayer():IsSuperAdmin() then return end
 
 		for spawnName, panel in pairs(NPCGrid.NPCs) do
-			if not MCS.NPCData[spawnName] then
+			if not MCS1.NPCData[spawnName] then
 				panel:Remove()
 			end
 		end
 
-		for spawnName, data in pairs(MCS.NPCData) do
+		for spawnName, data in pairs(MCS1.NPCData) do
 			local NewButton
 			if NPCGrid.NPCs[spawnName] then
 				NewButton = NPCGrid.NPCs[spawnName]

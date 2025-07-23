@@ -7,7 +7,7 @@ TYPE.ServerName = "Burning"
 TYPE.Icon = "icon16/fire.png"
 TYPE.Color = Color(255,255,255)
 
-MCS.InheritType(TYPE, "meat-plasmatic-thermal")
+MCS1.InheritType(TYPE, "meat-plasmatic-thermal")
 TYPE.InflictSound = "ambient/fire/ignite.wav"
 
 TYPE.DamageTypes = {
@@ -28,4 +28,4 @@ end
 function TYPE:PlayerSetupMove()
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

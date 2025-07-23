@@ -1,5 +1,24 @@
 -- MCS_GetArmor() and friends are located in mcs_framework/util! this folder is for health and armor *types*
 
+--[[ determines whether the specified armor type can be equipped given the healthtype
+	inputs:
+		armorType - the armor type to check
+		healthTypeOrID - the health type to check against
+	output:
+		whether the armor type inputted would be equippable
+--]]
+function MCS1.IsEquippableArmor(armorType, healthTypeOrID)
+	if not armorType then return false end
+	if not healthTypeOrID then return true end
+
+	local hpID = type(healthTypeOrID) == "string" and healthTypeOrID or healthTypeOrID.ID
+
+	if armorType.HealthTypes and not armorType.HealthTypes[hpID] then return false end
+	if armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[hpID] then return false end
+
+	return true
+end
+
 local ENTITY = FindMetaTable("Entity")
 
 --[[ Get a value from a entity's health type
@@ -23,15 +42,15 @@ end
 function ENTITY:MCS_GetHealthType()
 	local healthTypeID = self:GetNWString("MCS_HealthType", -1)
 	if healthTypeID == -1 then
-		local data = MCS.GetNPCData(self:MCS_GetSpawnName())
+		local data = MCS1.GetNPCData(self:MCS_GetSpawnName())
 		if data[1] then
 			healthTypeID = data[1]
 		else
-			healthTypeID = MCS.GetConVar("mcs_sv_default_health_type"):GetString()
+			healthTypeID = MCS1.GetConVar("mcs_sv_default_health_type"):GetString()
 		end
 	end
 
-	return MCS.HealthType(healthTypeID)
+	return MCS1.HealthType(healthTypeID)
 end
 
 --[[ Set the entity's health type by id
@@ -46,7 +65,7 @@ end
 		serverside, use this to set the health type of an entity
 --]]
 function ENTITY:MCS_SetHealthType(id, force)
-	if not MCS.HealthType(id) then return false, "mcs.error.invalid_health_type" end
+	if not MCS1.HealthType(id) then return false, "mcs.error.invalid_health_type" end
 	if id == self:GetNWString("MCS_HealthType", -1) then return true end
 
 	if CLIENT then
@@ -72,9 +91,8 @@ function ENTITY:MCS_SetHealthType(id, force)
 
 	self:MCS_LocalTypeHook("health", id, "OnSwitchTo")
 
-	local armorType = self:MCS_GetArmorType()
-	if (armorType.HealthTypes and not armorType.HealthTypes[id]) or (armorType.HealthTypeBlacklist and armorType.HealthTypeBlacklist[id]) then
-		self:MCS_SetArmorType(MCS.GetConVar("mcs_sv_default_armor_type"):GetString(), true)
+	if not MCS1.IsEquippableArmor(self:MCS_GetArmorType(), id) then
+		self:MCS_SetArmorType(MCS1.GetConVar("mcs_sv_default_armor_type"):GetString(), true)
 	end
 
 	if self:IsPlayer() then
@@ -104,15 +122,15 @@ end
 function ENTITY:MCS_GetArmorType()
 	local armorTypeID = self:GetNWString("MCS_ArmorType", -1)
 	if armorTypeID == -1 then
-		local data = MCS.GetNPCData(self:MCS_GetSpawnName())
+		local data = MCS1.GetNPCData(self:MCS_GetSpawnName())
 		if data[2] then
 			armorTypeID = data[2]
 		else
-			armorTypeID = MCS.GetConVar("mcs_sv_default_armor_type"):GetString()
+			armorTypeID = MCS1.GetConVar("mcs_sv_default_armor_type"):GetString()
 		end
 	end
 
-	return MCS.ArmorType(armorTypeID)
+	return MCS1.ArmorType(armorTypeID)
 end
 
 --[[ Set the entity's armor type by id
@@ -127,7 +145,7 @@ end
 		serverside, use this to set the armor type of an entity
 --]]
 function ENTITY:MCS_SetArmorType(id, force)
-	local armorType = MCS.ArmorType(id)
+	local armorType = MCS1.ArmorType(id)
 	if not armorType then return false, "mcs.error.invalid_armor_type" end
 	if id == self:GetNWString("MCS_ArmorType", -1) then return true end
 

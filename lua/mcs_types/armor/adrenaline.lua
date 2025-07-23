@@ -93,8 +93,8 @@ function TYPE:HandleArmorReduction(dmg)
 	local maxArmorAmt = self:MCS_GetMaxArmor()
 
 	if armorAmt < maxArmorAmt then
-		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * MCS.VanillaMag(1 - this.dmgMult, "armorDrain"), maxArmorAmt))
-		dmg:ScaleDamage(MCS.VanillaMag(this.dmgMult, "armorDamage"))
+		self:MCS_SetArmor(math.min(armorAmt + dmg:GetDamage() * MCS1.VanillaMag(1 - this.dmgMult, "armorDrain"), maxArmorAmt))
+		dmg:ScaleDamage(MCS1.VanillaMag(this.dmgMult, "armorDamage"))
 	end
 
 	return true
@@ -118,4 +118,4 @@ TYPE.OnSwitchTo = enable
 TYPE.OnEnabled = enable
 TYPE.OnPlayerSpawn = enable
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

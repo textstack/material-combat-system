@@ -7,7 +7,7 @@ TYPE.ServerName = "Bleed"
 TYPE.Icon = "icon16/cut_red.png"
 TYPE.Color = Color(255,255,255)
 
-MCS.InheritType(TYPE, "loricate-penetrating")
+MCS1.InheritType(TYPE, "loricate-penetrating")
 TYPE.InflictSound = "ambient/machines/slicer1.wav"
 
 TYPE.DamageTypes = {
@@ -17,4 +17,4 @@ TYPE.HealthTypes = {
 	["meat"] = true
 }
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

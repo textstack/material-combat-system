@@ -58,4 +58,4 @@ function TYPE:EffectExpired(count)
 	--
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

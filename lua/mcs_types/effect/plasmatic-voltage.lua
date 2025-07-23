@@ -43,4 +43,4 @@ function TYPE:EffectExpired()
 	self.MCS_PlasmaVolForce = nil
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

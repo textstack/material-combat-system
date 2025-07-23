@@ -1,14 +1,14 @@
-local enabledCvar = CreateClientConVar("mcs_hud_enabled", 1, true, true, "Whether the MCS hud is enabled (0 = false, 1 = let server decide, 2 = true).", 0, 2)
-local healthArmorCvar = CreateClientConVar("mcs_hud_show_health_armor", 1, true, true, "Whether the MCS hus shows health and armor (0 = false, 1 = let server decide, 2 = true).", 0, 2)
-local xPosCvar = CreateClientConVar("mcs_hud_pos_x", 0.374522, true, true, "The horizontal position of the MCS hud.", 0, 1)
-local yPosCvar = CreateClientConVar("mcs_hud_pos_y", 0.984000, true, true, "The vertical position of the MCS hud.", 0, 1)
+local enabledCvar = CreateClientConVar("mcs_hud_enabled", 1, true, true, "Whether the MCS1 hud is enabled (0 = false, 1 = let server decide, 2 = true).", 0, 2)
+local healthArmorCvar = CreateClientConVar("mcs_hud_show_health_armor", 1, true, true, "Whether the MCS1 hus shows health and armor (0 = false, 1 = let server decide, 2 = true).", 0, 2)
+local xPosCvar = CreateClientConVar("mcs_hud_pos_x", 0.374522, true, true, "The horizontal position of the MCS1 hud.", 0, 1)
+local yPosCvar = CreateClientConVar("mcs_hud_pos_y", 0.984000, true, true, "The vertical position of the MCS1 hud.", 0, 1)
 
 local enabledMat = Material("icon16/photo_delete.png")
 local disabledMat = Material("icon16/photo_add.png")
 local haEnabledMat = Material("icon16/heart_delete.png")
 local haDisabledMat = Material("icon16/heart_add.png")
 
-surface.CreateFont("MCSHud", {
+surface.CreateFont("MCS1Hud", {
 	font = "Arial",
 	size = 20,
 	weight = 500,
@@ -51,11 +51,11 @@ function PANEL:Init()
 		local armorText = ""
 		if not armorType.HideOnHud then
 			aC = armorType.Color or color_white
-			armorText = string.format("\n<color=%s,%s,%s>%s</color>", aC.r, aC.g, aC.b, MCS.L(string.format("mcs.armor.%s.abbr", armorType.ID)))
+			armorText = string.format("\n<color=%s,%s,%s>%s</color>", aC.r, aC.g, aC.b, MCS1.L(string.format("mcs.armor.%s.abbr", armorType.ID)))
 		end
 
 		local hC = healthType.Color or color_white
-		local parsed = markup.Parse(string.format("<font=MCSHud><color=%s,%s,%s>%s</color>%s</font>", hC.r, hC.g, hC.b, MCS.L(string.format("mcs.health.%s.abbr", healthType.ID)), armorText))
+		local parsed = markup.Parse(string.format("<font=MCS1Hud><color=%s,%s,%s>%s</color>%s</font>", hC.r, hC.g, hC.b, MCS1.L(string.format("mcs.health.%s.abbr", healthType.ID)), armorText))
 		parsed:Draw(h - 2, 4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
 		local newW = h + parsed:GetWidth() + 2
@@ -75,7 +75,7 @@ function PANEL:Init()
 			if not self.InContextMenu then return end
 
 			surface.SetDrawColor(192, 192, 192)
-			draw.SimpleText(MCS.L("mcs.ui.no_effects"), "MCSHud", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(MCS1.L("mcs.ui.no_effects"), "MCS1Hud", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			return
 		end
 
@@ -86,13 +86,13 @@ function PANEL:Init()
 		local y = goDown and 2 or h - 2
 		for id, data in SortedPairs(effectList) do
 			local countStr = data.count > 1 and string.format("%s x ", data.count) or ""
-			local text = string.format("%s%s", countStr, MCS.L(string.format("mcs.effect.%s.name", id)))
+			local text = string.format("%s%s", countStr, MCS1.L(string.format("mcs.effect.%s.name", id)))
 
-			local effect = MCS.EffectType(id)
+			local effect = MCS1.EffectType(id)
 			local color = effect.Color or color_white
 
 			surface.SetDrawColor(color:Unpack())
-			surface.SetMaterial(MCS.GetIconMaterial(effect))
+			surface.SetMaterial(MCS1.GetIconMaterial(effect))
 
 			if goDown then
 				if goRight then
@@ -124,7 +124,7 @@ function PANEL:Init()
 		local eData = effectData[id]
 
 		eData.textScale = eData.textScale or 1.25
-		eData.count = eData.count or MCS.MAX_EFFECT_COUNT + 1
+		eData.count = eData.count or MCS1.MAX_EFFECT_COUNT + 1
 		eData.procID = eData.procID or data.procID
 
 		if data.count > eData.count or eData.procID ~= data.procID then
@@ -136,7 +136,7 @@ function PANEL:Init()
 		eData.procID = data.procID
 		eData.count = data.count
 
-		surface.SetFont("MCSHud")
+		surface.SetFont("MCS1Hud")
 		local x1, y1 = statusDisplay:LocalToScreen(0, 0)
 		local xAdd, yAdd = 0, 0
 		local w, h = surface.GetTextSize(text)
@@ -161,10 +161,10 @@ function PANEL:Init()
 		m:Translate(-pos)
 
 		cam.PushModelMatrix(m, true)
-		draw.SimpleText(text, "MCSHud", x + xAdd, y + yAdd, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw.SimpleText(text, "MCS1Hud", x + xAdd, y + yAdd, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		cam.PopModelMatrix()
 
-		eData.textScale = MCS.Dampen(10, eData.textScale, 1)
+		eData.textScale = MCS1.Dampen(10, eData.textScale, 1)
 	end
 
 	statusDisplay:Dock(FILL)
@@ -359,7 +359,7 @@ end
 function PANEL:DrawHealthType(healthType, w, h)
 	local color = healthType.Color or color_white
 	surface.SetDrawColor(color:Unpack())
-	surface.SetMaterial(MCS.GetIconMaterial(healthType))
+	surface.SetMaterial(MCS1.GetIconMaterial(healthType))
 
 	local drawW = h - 8
 	surface.DrawTexturedRect(4, 4, drawW, drawW)
@@ -370,7 +370,7 @@ function PANEL:DrawArmorType(armorType, w, h)
 
 	local color = armorType.Color or color_white
 	surface.SetDrawColor(color:Unpack())
-	surface.SetMaterial(MCS.GetIconMaterial(armorType))
+	surface.SetMaterial(MCS1.GetIconMaterial(armorType))
 
 	local drawW = h / 2 - 8
 	surface.DrawTexturedRect(h * 0.8, h / 2 + 4, drawW, drawW)
@@ -395,18 +395,18 @@ local doDraw = GetConVar("cl_drawhud"):GetBool()
 local cameraOut
 
 local function hideHud()
-	if not IsValid(MCS.Hud) then return end
+	if not IsValid(MCS1.Hud) then return end
 
 	if cameraOut or not doDraw or not mcsEnabled then
-		MCS.Hud:Hide()
+		MCS1.Hud:Hide()
 	else
-		MCS.Hud:Show()
+		MCS1.Hud:Show()
 	end
 end
 
 local function fixPos()
-	if not IsValid(MCS.Hud) then return end
-	MCS.Hud:FixPosition()
+	if not IsValid(MCS1.Hud) then return end
+	MCS1.Hud:FixPosition()
 end
 
 cvars.AddChangeCallback("mcs_hud_pos_x", fixPos, "MCS_HudFix")
@@ -422,8 +422,8 @@ hook.Add("PlayerSwitchWeapon", "MCS_HideHud", function(_, _, newWeapon)
 	hideHud()
 end)
 
-hook.Add("Tick", "MCS_CheckMCSEnabled", function()
-	if not IsValid(MCS.Hud) then return end
+hook.Add("Tick", "MCS_CheckMCS1Enabled", function()
+	if not IsValid(MCS1.Hud) then return end
 
 	local curEnabled = LocalPlayer():MCS_GetEnabled()
 	if curEnabled ~= mcsEnabled then
@@ -433,13 +433,13 @@ hook.Add("Tick", "MCS_CheckMCSEnabled", function()
 end)
 
 timer.Create("MCS_MakeHud", 5, 0, function()
-	if not IsValid(MCS.Hud) then
-		MCS.Hud = vgui.Create("mcs_hud")
+	if not IsValid(MCS1.Hud) then
+		MCS1.Hud = vgui.Create("mcs_hud")
 	end
 end)
 
 -- hotload support
-if IsValid(MCS.Hud) then
-	MCS.Hud:Remove()
-	MCS.Hud = vgui.Create("mcs_hud")
+if IsValid(MCS1.Hud) then
+	MCS1.Hud:Remove()
+	MCS1.Hud = vgui.Create("mcs_hud")
 end

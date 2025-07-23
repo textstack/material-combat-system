@@ -32,4 +32,4 @@ function TYPE:OnEffectProc(count)
 	self:MCS_TypelessDamage(self:GetMaxHealth() / 20)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

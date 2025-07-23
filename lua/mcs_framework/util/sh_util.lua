@@ -1,5 +1,5 @@
-MCS.NOTIFY_FORMAT_NET_SIZE = 6
-MCS.SET_MAX_NET_SIZE = 22
+MCS1.NOTIFY_FORMAT_NET_SIZE = 6
+MCS1.SET_MAX_NET_SIZE = 22
 
 vector_one = Vector(1, 1, 1)
 
@@ -13,7 +13,7 @@ function ENTITY:MCS_GetEnabled()
 
 	if enabled == -1 then
 		if self:IsNextBot() or self:IsNPC() or self:IsPlayer() then
-			enabled = MCS.GetConVar("mcs_sv_enable_by_default"):GetBool()
+			enabled = MCS1.GetConVar("mcs_sv_enable_by_default"):GetBool()
 		else
 			enabled = false
 		end
@@ -109,13 +109,13 @@ function ENTITY:MCS_Notify(tag, ...)
 	if not self:IsPlayer() then return end
 
 	if CLIENT then
-		self:ChatPrint(MCS.L(tag, ...))
+		self:ChatPrint(MCS1.L(tag, ...))
 	else
 		local items = {...}
 
 		net.Start("mcs_notify")
 		net.WriteString(tag)
-		net.WriteUInt(table.Count(items), MCS.NOTIFY_FORMAT_NET_SIZE)
+		net.WriteUInt(table.Count(items), MCS1.NOTIFY_FORMAT_NET_SIZE)
 		for _, item in ipairs(items) do
 			net.WriteString(tostring(item))
 		end
@@ -127,7 +127,7 @@ end
 local function tchelper(first, rest)
 	return first:upper() .. rest:lower()
 end
-function MCS.ToCapital(str)
+function MCS1.ToCapital(str)
 	str = str:gsub("(%a)([%w_']*)", tchelper)
 	return str
 end
@@ -140,7 +140,7 @@ end
 	output:
 		the magnified value
 --]]
-function MCS.Magnitude(value, magnitude, center)
+function MCS1.Magnitude(value, magnitude, center)
 	return (value - center) * magnitude + center
 end
 
@@ -159,8 +159,8 @@ local vanillaMagDefaults = {
 	usage:
 		any situation where an armor or health type has custom damage multipliers
 --]]
-function MCS.VanillaMag(value, _type)
-	return MCS.Magnitude(value, 1 - MCS.GetConVar("mcs_sv_damage_vanillaness"):GetFloat(), vanillaMagDefaults[_type])
+function MCS1.VanillaMag(value, _type)
+	return MCS1.Magnitude(value, 1 - MCS1.GetConVar("mcs_sv_damage_vanillaness"):GetFloat(), vanillaMagDefaults[_type])
 end
 
 --[[ Applies one frame's worth of a dampening effect on a value from A to B
@@ -171,6 +171,14 @@ end
 	usage:
 		whenever you want to smooth out a changing value or animate something moving without knowledge of when it will change
 ==]]
-function MCS.Dampen(speed, from, to)
+function MCS1.Dampen(speed, from, to)
 	return Lerp(1 - math.exp(-speed * FrameTime()), from, to)
 end
+
+--HACK: allow compatability with mods that use the old global name if Mac's Simple NPCS is not installed
+hook.Add("PostGamemodeLoaded", "MCS_MCSBackupTable", function()
+	if MCS.Spawns and MCS.Config and MCS.Themes then return end
+
+	table.Merge(MCS1, MCS)
+	MCS = MCS1
+end)

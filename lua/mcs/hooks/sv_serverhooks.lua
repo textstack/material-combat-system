@@ -1,5 +1,5 @@
-MCS.CreateGameTypeHook("PostEntityTakeDamage", "PostTakeDamage")
-MCS.CreateGameTypeHook("PlayerSpawn", "OnPlayerSpawn")
+MCS1.CreateGameTypeHook("PostEntityTakeDamage", "PostTakeDamage")
+MCS1.CreateGameTypeHook("PlayerSpawn", "OnPlayerSpawn")
 
 gameevent.Listen("entity_killed")
 hook.Add("entity_killed", "MCS_EntityKilled", function(data)
@@ -49,13 +49,13 @@ hook.Add("PlayerSpawn", "MCS_PlayerSpawnHpArmor", function(ply)
 end
 )
 
-MCS.ANTI_HEAL_CLASS_RESTRICT = {
+MCS1.ANTI_HEAL_CLASS_RESTRICT = {
 	["item_healthvial"] = true,
 	["item_healthkit"] = true,
 	["item_healthcharger"] = true
 }
 
-MCS.ANTI_ARMOR_CLASS_RESTRICT = {
+MCS1.ANTI_ARMOR_CLASS_RESTRICT = {
 	["item_battery"] = true,
 	["item_suitcharger"] = true,
 	["item_suit"] = true
@@ -64,11 +64,11 @@ MCS.ANTI_ARMOR_CLASS_RESTRICT = {
 local function pickupRestrict(ply, item)
 	local itemClass = item:GetClass()
 
-	if ply.MCS_AntiHeal and (MCS.ANTI_HEAL_CLASS_RESTRICT[itemClass] or string.find(itemClass, "health")) then
+	if ply.MCS_AntiHeal and (MCS1.ANTI_HEAL_CLASS_RESTRICT[itemClass] or string.find(itemClass, "health")) then
 		return false
 	end
 
-	if ply.MCS_AntiArmor and (MCS.ANTI_ARMOR_CLASS_RESTRICT[itemClass] or string.find(itemClass, "armor") or string.find(itemClass, "suit")) then
+	if ply.MCS_AntiArmor and (MCS1.ANTI_ARMOR_CLASS_RESTRICT[itemClass] or string.find(itemClass, "armor") or string.find(itemClass, "suit")) then
 		return false
 	end
 end

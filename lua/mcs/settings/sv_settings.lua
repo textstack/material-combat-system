@@ -8,7 +8,7 @@ net.Receive("mcs_settings", function(_, ply)
 
 	local setting = net.ReadString()
 
-	local conVar = MCS.GetConVar("mcs_sv_" .. setting)
+	local conVar = MCS1.GetConVar("mcs_sv_" .. setting)
 	if not conVar then
 		ply:MCS_Notify("mcs.error.invalid_setting")
 		return

@@ -15,4 +15,4 @@ TYPE.AugmentDamage = DMG_BURN
 -- the game damage types that this type maps to
 TYPE.GameDamage = DMG_BURN + DMG_SLOWBURN + DMG_PLASMA
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

@@ -15,4 +15,4 @@ TYPE.AugmentDamage = DMG_NERVEGAS
 -- the game damage types that this type maps to
 TYPE.GameDamage = DMG_DROWN + DMG_PARALYZE + DMG_NERVEGAS + DMG_POISON + DMG_DROWNRECOVER + DMG_ACID
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

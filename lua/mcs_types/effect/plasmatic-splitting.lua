@@ -55,4 +55,4 @@ function TYPE:EffectExpired()
 	self.MCS_PlasmaSplRepairMax = nil
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

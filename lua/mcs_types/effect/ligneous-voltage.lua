@@ -30,4 +30,4 @@ function TYPE:HandleArmorReduction()
 	return true
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

@@ -26,4 +26,4 @@ function TYPE:EffectInstantDamage(count, dmg)
 	self:MCS_RepairArmor(amt)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

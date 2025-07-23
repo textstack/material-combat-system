@@ -39,4 +39,4 @@ function TYPE:EffectInstantDamage(count, dmg)
 	phys:AddVelocity(knockback)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

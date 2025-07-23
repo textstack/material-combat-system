@@ -36,4 +36,4 @@ function TYPE:DrawOverlay(count)
 	end
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

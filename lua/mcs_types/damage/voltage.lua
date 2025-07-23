@@ -15,4 +15,4 @@ TYPE.AugmentDamage = DMG_SHOCK
 -- the game damage types that this type maps to
 TYPE.GameDamage = DMG_SHOCK
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

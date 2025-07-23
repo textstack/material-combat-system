@@ -1,9 +1,9 @@
 net.Receive("mcs_npcdata", function()
 	if net.ReadBool() then
-		MCS.NPCData = {}
+		MCS1.NPCData = {}
 	end
 
-	local count = net.ReadUInt(MCS.NPC_DATA_COUNT_NET_SIZE)
+	local count = net.ReadUInt(MCS1.NPC_DATA_COUNT_NET_SIZE)
 	for i = 1, count do
 		local spawnName = net.ReadString()
 		local healthType = net.ReadString()
@@ -11,26 +11,26 @@ net.Receive("mcs_npcdata", function()
 		local augment = net.ReadString()
 
 		if healthType == "" and armorType == "" and augment == "" then
-			MCS.NPCData[spawnName] = nil
+			MCS1.NPCData[spawnName] = nil
 		else
-			MCS.NPCData[spawnName] = {}
+			MCS1.NPCData[spawnName] = {}
 
 			if healthType == "" then
-				MCS.NPCData[spawnName][1] = nil
+				MCS1.NPCData[spawnName][1] = nil
 			else
-				MCS.NPCData[spawnName][1] = healthType
+				MCS1.NPCData[spawnName][1] = healthType
 			end
 
 			if armorType == "" then
-				MCS.NPCData[spawnName][2] = nil
+				MCS1.NPCData[spawnName][2] = nil
 			else
-				MCS.NPCData[spawnName][2] = armorType
+				MCS1.NPCData[spawnName][2] = armorType
 			end
 
 			if augment == "" then
-				MCS.NPCData[spawnName][3] = nil
+				MCS1.NPCData[spawnName][3] = nil
 			else
-				MCS.NPCData[spawnName][3] = augment
+				MCS1.NPCData[spawnName][3] = augment
 			end
 		end
 	end
@@ -45,11 +45,11 @@ end)
 	return:
 		whether the operation was successful
 --]]
-function MCS.SetNPCData(spawnName, healthID, armorID, augmentID)
+function MCS1.SetNPCData(spawnName, healthID, armorID, augmentID)
 	if not LocalPlayer():IsSuperAdmin() then return false end
 
-	MCS.NPCData[spawnName] = MCS.NPCData[spawnName] or {}
-	local data = MCS.NPCData[spawnName]
+	MCS1.NPCData[spawnName] = MCS1.NPCData[spawnName] or {}
+	local data = MCS1.NPCData[spawnName]
 
 	if healthID then
 		if healthID == "" then
@@ -90,25 +90,25 @@ end
 		spawnName - the spawnName to set the data for
 		menu - the menu to add the elements to
 --]]
-function MCS.ShowHealthMenu(spawnName, dMenu)
-	local data = MCS.GetNPCData(spawnName)
+function MCS1.ShowHealthMenu(spawnName, dMenu)
+	local data = MCS1.GetNPCData(spawnName)
 
 	if data[1] then
 		local none = dMenu:AddOption("#mcs.default", function()
-			MCS.SetNPCData(spawnName, "")
+			MCS1.SetNPCData(spawnName, "")
 		end)
 
 		none:SetIcon("icon16/cross.png")
 	end
 
-	for id, _type in pairs(MCS.GetHealthTypes()) do
+	for id, _type in pairs(MCS1.GetHealthTypes()) do
 		if id == data[1] then continue end
 
 		local opt = dMenu:AddOption(string.format("#mcs.health.%s.name", id), function()
-			MCS.SetNPCData(spawnName, id)
+			MCS1.SetNPCData(spawnName, id)
 		end)
 
-		opt:SetMaterial(MCS.GetIconMaterial(_type))
+		opt:SetMaterial(MCS1.GetIconMaterial(_type))
 		opt.m_Image:SetImageColor(_type.Color or color_white)
 	end
 end
@@ -118,29 +118,29 @@ end
 		spawnName - the spawnName to set the data for (usually the class)
 		menu - the menu to add the elements to
 --]]
-function MCS.ShowArmorMenu(spawnName, dMenu)
-	local data = MCS.GetNPCData(spawnName)
+function MCS1.ShowArmorMenu(spawnName, dMenu)
+	local data = MCS1.GetNPCData(spawnName)
 
 	if data[2] then
 		local none = dMenu:AddOption("#mcs.default", function()
-			MCS.SetNPCData(spawnName, nil, "")
+			MCS1.SetNPCData(spawnName, nil, "")
 		end)
 
 		none:SetIcon("icon16/cross.png")
 	end
 
-	for id, _type in pairs(MCS.GetArmorTypes()) do
+	for id, _type in pairs(MCS1.GetArmorTypes()) do
 		if id == data[2] then continue end
 
-		if data[1] and ((_type.HealthTypes and not _type.HealthTypes[data[1]]) or (_type.HealthTypeBlacklist and _type.HealthTypeBlacklist[data[1]])) then
+		if not MCS1.IsEquippableArmor(_type, data[1]) then
 			continue
 		end
 
 		local opt = dMenu:AddOption(string.format("#mcs.armor.%s.name", id), function()
-			MCS.SetNPCData(spawnName, nil, id)
+			MCS1.SetNPCData(spawnName, nil, id)
 		end)
 
-		opt:SetMaterial(MCS.GetIconMaterial(_type))
+		opt:SetMaterial(MCS1.GetIconMaterial(_type))
 		opt.m_Image:SetImageColor(_type.Color or color_white)
 	end
 end
@@ -150,25 +150,25 @@ end
 		spawnName - the spawnName to set the data for (usually the class)
 		menu - the menu to add the elements to
 --]]
-function MCS.ShowAugmentMenu(spawnName, dMenu)
-	local data = MCS.GetNPCData(spawnName)
+function MCS1.ShowAugmentMenu(spawnName, dMenu)
+	local data = MCS1.GetNPCData(spawnName)
 
 	if data[3] then
 		local none = dMenu:AddOption("#mcs.none", function()
-			MCS.SetNPCData(spawnName, nil, nil, "")
+			MCS1.SetNPCData(spawnName, nil, nil, "")
 		end)
 
 		none:SetIcon("icon16/cross.png")
 	end
 
-	for id, _type in SortedPairsByMemberValue(MCS.GetDamageTypes(), "Order") do
+	for id, _type in SortedPairsByMemberValue(MCS1.GetDamageTypes(), "Order") do
 		if id == data[3] then continue end
 
 		local opt = dMenu:AddOption(string.format("#mcs.damage.%s.name", id), function()
-			MCS.SetNPCData(spawnName, nil, nil, id)
+			MCS1.SetNPCData(spawnName, nil, nil, id)
 		end)
 
-		opt:SetMaterial(MCS.GetIconMaterial(_type))
+		opt:SetMaterial(MCS1.GetIconMaterial(_type))
 		opt.m_Image:SetImageColor(_type.Color or color_white)
 	end
 end
@@ -179,13 +179,13 @@ local function setIcon(opt, datum, typeName, fallback)
 		return
 	end
 
-	local _type = MCS[typeName .. "Type"](datum)
+	local _type = MCS1[typeName .. "Type"](datum)
 	if not _type then
 		opt:SetIcon(fallback)
 		return
 	end
 
-	opt:SetMaterial(MCS.GetIconMaterial(_type))
+	opt:SetMaterial(MCS1.GetIconMaterial(_type))
 	opt.m_Image:SetImageColor(_type.Color or color_white)
 end
 
@@ -194,19 +194,19 @@ end
 		spawnName - the spawnName to set the data for (usually the class)
 		menu - the menu to add the elements to
 --]]
-function MCS.ShowNPCMenus(spawnName, dMenu)
-	local data = MCS.GetNPCData(spawnName)
+function MCS1.ShowNPCMenus(spawnName, dMenu)
+	local data = MCS1.GetNPCData(spawnName)
 
 	local hpMenu, hpParent = dMenu:AddSubMenu("#mcs.ui.set_class_health")
-	MCS.ShowHealthMenu(spawnName, hpMenu)
+	MCS1.ShowHealthMenu(spawnName, hpMenu)
 	setIcon(hpParent, data[1], "Health", "icon16/heart.png")
 
 	local apMenu, apParent = dMenu:AddSubMenu("#mcs.ui.set_class_armor")
-	MCS.ShowArmorMenu(spawnName, apMenu)
+	MCS1.ShowArmorMenu(spawnName, apMenu)
 	setIcon(apParent, data[2], "Armor", "icon16/shield.png")
 
 	local augMenu, augParent = dMenu:AddSubMenu("#mcs.ui.set_class_augment")
-	MCS.ShowAugmentMenu(spawnName, augMenu)
+	MCS1.ShowAugmentMenu(spawnName, augMenu)
 	setIcon(augParent, data[3], "Damage", "icon16/gun.png")
 end
 
@@ -214,5 +214,5 @@ hook.Add("SpawnmenuIconMenuOpen", "MCS_NPCspawnNameSetting", function(dMenu, ico
 	if contentType ~= "npc" then return end
 	if not LocalPlayer():IsSuperAdmin() then return end
 
-	MCS.ShowNPCMenus(icon:GetSpawnName(), dMenu)
+	MCS1.ShowNPCMenus(icon:GetSpawnName(), dMenu)
 end)

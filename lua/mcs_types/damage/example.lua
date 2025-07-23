@@ -33,4 +33,4 @@ TYPE.GameDamage = DMG_POISON + DMG_CRUSH
 -- generic damage only applies when damage has *no* other type
 TYPE.Generic = true
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

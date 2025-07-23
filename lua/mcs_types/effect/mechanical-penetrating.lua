@@ -24,4 +24,4 @@ function TYPE:OnDeath(count)
 	util.BlastDamage(self, self, self:WorldSpaceCenter(), count * 59, self:GetMaxHealth() * 0.05 * count)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

@@ -23,4 +23,4 @@ function TYPE:EffectInstantDamage(count, dmg)
 	if not IsValid(dmg) or not IsValid(self) then return end
 	self:MCS_Heal(dmg:GetDamage() * count * 2)
 end
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

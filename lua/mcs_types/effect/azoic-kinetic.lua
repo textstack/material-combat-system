@@ -31,4 +31,4 @@ function TYPE:EffectInstantDamage(count, dmg)
 	})
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

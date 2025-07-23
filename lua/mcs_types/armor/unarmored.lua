@@ -48,4 +48,4 @@ end
 TYPE.EntityGetArmor = noArmor
 TYPE.EntityGetMaxArmor = noArmor
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

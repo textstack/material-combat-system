@@ -63,4 +63,4 @@ TYPE.HealthTypes = {
 
 -- hooks (self = player this typeset is applied to)
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

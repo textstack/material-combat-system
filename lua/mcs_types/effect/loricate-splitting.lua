@@ -18,4 +18,4 @@ TYPE.HealthTypes = {
 	["loricate"] = true
 }
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

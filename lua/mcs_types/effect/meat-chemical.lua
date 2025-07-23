@@ -30,4 +30,4 @@ function TYPE:EffectExpired()
 	self:MCS_SetCanHeal(true)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

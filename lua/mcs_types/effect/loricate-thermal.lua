@@ -24,4 +24,4 @@ function TYPE:EffectInstantDamage(count, dmg)
 	self:MCS_ArmorDamage(dmg:GetDamage() * count)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

@@ -75,4 +75,4 @@ function TYPE:EffectExpired()
 	self:SetNW2Int("MCS_MechaMove", -1)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

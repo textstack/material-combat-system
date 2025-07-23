@@ -1,3 +1,7 @@
+MCS1 = MCS1 or {}
+
+-- Mac's Simple NPCS already uses the name MCS for their global table
+-- There are some hacks to make sure MCS-compatible addons can still use this name though
 MCS = MCS or {}
 
 local function addFile(File, directory)
@@ -45,5 +49,6 @@ end
 
 includeDir("mcs_framework")
 includeDir("mcs")
+includeDir("mcs_module")
 
 MCS_LOADED = true

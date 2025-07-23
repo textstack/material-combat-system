@@ -29,4 +29,4 @@ function TYPE:EffectInstantDamage(count, dmg)
 	self:TakeDamageInfo(newDmg)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

@@ -23,4 +23,4 @@ function TYPE:OnEffectProc(count)
 	self:MCS_TypelessDamage(count)
 end
 
-MCS.RegisterType(TYPE)
+MCS1.RegisterType(TYPE)

@@ -6,23 +6,23 @@
 		the formatted and translated string,
 		whether the string is translated or not
 	example:
-		print(MCS.L("foo", "bar"))
+		print(MCS1.L("foo", "bar"))
 		-- in mcs.properties, "foo" maps to "%s law"
 		-- output would be "bar law"
 --]]
-function MCS.L(key, ...)
+function MCS1.L(key, ...)
 	local lang = language.GetPhrase(key)
 
 	local format = {}
 	for _, item in ipairs({...}) do
-		local l = MCS.L(item)
+		local l = MCS1.L(item)
 		table.insert(format, l)
 	end
 
 	return string.format(lang, unpack(format)), lang ~= key
 end
 
-MCS.ICON_FALLBACK = Material("mcs_icons/armor/unarmored.png")
+MCS1.ICON_FALLBACK = Material("mcs_icons/armor/unarmored.png")
 
 --[[ Gets the icon material for a type
 	inputs:
@@ -32,16 +32,16 @@ MCS.ICON_FALLBACK = Material("mcs_icons/armor/unarmored.png")
 		the material for the type's icon, or a fallback material
 --]]
 local fallbacks = {}
-function MCS.GetIconMaterial(_type, fallback)
+function MCS1.GetIconMaterial(_type, fallback)
 	if not _type or not _type.Icon then
-		if type(fallback) ~= "string" then return MCS.ICON_FALLBACK end
+		if type(fallback) ~= "string" then return MCS1.ICON_FALLBACK end
 
 		if not fallbacks[fallback] then
 			fallbacks[fallback] = Material(fallback)
 		end
 
 		if fallbacks[fallback]:IsError() then
-			fallbacks[fallback] = MCS.ICON_FALLBACK
+			fallbacks[fallback] = MCS1.ICON_FALLBACK
 		end
 
 		return fallbacks[fallback]
@@ -59,7 +59,7 @@ function MCS.GetIconMaterial(_type, fallback)
 	end
 
 	if not setMat or _type.Material:IsError() then
-		_type.Material = MCS.ICON_FALLBACK
+		_type.Material = MCS1.ICON_FALLBACK
 	end
 
 	return _type.Material
@@ -69,7 +69,7 @@ net.Receive("mcs_notify", function()
 	local tag = net.ReadString()
 
 	local items = {}
-	local itemCount = net.ReadUInt(MCS.NOTIFY_FORMAT_NET_SIZE)
+	local itemCount = net.ReadUInt(MCS1.NOTIFY_FORMAT_NET_SIZE)
 	for i = 1, itemCount do
 		table.insert(items, net.ReadString())
 	end
