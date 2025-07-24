@@ -1,14 +1,14 @@
-local enabledCvar = CreateClientConVar("mcs_hud_enabled", 1, true, true, "Whether the MCS1 hud is enabled (0 = false, 1 = let server decide, 2 = true).", 0, 2)
-local healthArmorCvar = CreateClientConVar("mcs_hud_show_health_armor", 1, true, true, "Whether the MCS1 hus shows health and armor (0 = false, 1 = let server decide, 2 = true).", 0, 2)
-local xPosCvar = CreateClientConVar("mcs_hud_pos_x", 0.374522, true, true, "The horizontal position of the MCS1 hud.", 0, 1)
-local yPosCvar = CreateClientConVar("mcs_hud_pos_y", 0.984000, true, true, "The vertical position of the MCS1 hud.", 0, 1)
+local enabledCvar = CreateClientConVar("mcs_hud_enabled", 1, true, true, "Whether the MCS hud is enabled (0 = false, 1 = let server decide, 2 = true).", 0, 2)
+local healthArmorCvar = CreateClientConVar("mcs_hud_show_health_armor", 1, true, true, "Whether the MCS hus shows health and armor (0 = false, 1 = let server decide, 2 = true).", 0, 2)
+local xPosCvar = CreateClientConVar("mcs_hud_pos_x", 0.374522, true, true, "The horizontal position of the MCS hud.", 0, 1)
+local yPosCvar = CreateClientConVar("mcs_hud_pos_y", 0.984000, true, true, "The vertical position of the MCS hud.", 0, 1)
 
 local enabledMat = Material("icon16/photo_delete.png")
 local disabledMat = Material("icon16/photo_add.png")
 local haEnabledMat = Material("icon16/heart_delete.png")
 local haDisabledMat = Material("icon16/heart_add.png")
 
-surface.CreateFont("MCS1Hud", {
+surface.CreateFont("MCSHud", {
 	font = "Arial",
 	size = 20,
 	weight = 500,
@@ -55,7 +55,7 @@ function PANEL:Init()
 		end
 
 		local hC = healthType.Color or color_white
-		local parsed = markup.Parse(string.format("<font=MCS1Hud><color=%s,%s,%s>%s</color>%s</font>", hC.r, hC.g, hC.b, MCS1.L(string.format("mcs.health.%s.abbr", healthType.ID)), armorText))
+		local parsed = markup.Parse(string.format("<font=MCSHud><color=%s,%s,%s>%s</color>%s</font>", hC.r, hC.g, hC.b, MCS1.L(string.format("mcs.health.%s.abbr", healthType.ID)), armorText))
 		parsed:Draw(h - 2, 4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP)
 
 		local newW = h + parsed:GetWidth() + 2
@@ -75,7 +75,7 @@ function PANEL:Init()
 			if not self.InContextMenu then return end
 
 			surface.SetDrawColor(192, 192, 192)
-			draw.SimpleText(MCS1.L("mcs.ui.no_effects"), "MCS1Hud", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(MCS1.L("mcs.ui.no_effects"), "MCSHud", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			return
 		end
 
@@ -136,7 +136,7 @@ function PANEL:Init()
 		eData.procID = data.procID
 		eData.count = data.count
 
-		surface.SetFont("MCS1Hud")
+		surface.SetFont("")
 		local x1, y1 = statusDisplay:LocalToScreen(0, 0)
 		local xAdd, yAdd = 0, 0
 		local w, h = surface.GetTextSize(text)
@@ -161,7 +161,7 @@ function PANEL:Init()
 		m:Translate(-pos)
 
 		cam.PushModelMatrix(m, true)
-		draw.SimpleText(text, "MCS1Hud", x + xAdd, y + yAdd, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw.SimpleText(text, "MCSHud", x + xAdd, y + yAdd, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		cam.PopModelMatrix()
 
 		eData.textScale = MCS1.Dampen(10, eData.textScale, 1)

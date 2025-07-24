@@ -1,4 +1,4 @@
-local modeCvar = CreateClientConVar("mcs_targetid_mode", -1, true, true, "What MCS1 targetid mode to use. (-1 = let server decide, 0 = off, 1 = minimal, 2 = normal).", -1, 2)
+local modeCvar = CreateClientConVar("mcs_targetid_mode", -1, true, true, "What MCS targetid mode to use. (-1 = let server decide, 0 = off, 1 = minimal, 2 = normal).", -1, 2)
 local sModeCvar
 
 local targetIDMult = 0.008
@@ -7,7 +7,7 @@ local targetIDStartFade = 2
 local targetIDEndFade = 3
 local healthBarScale = 150
 
-surface.CreateFont("MCS1TargetID", {
+surface.CreateFont("MCSTargetID", {
 	font = "Arial",
 	size = 30,
 	weight = 500,
@@ -15,7 +15,7 @@ surface.CreateFont("MCS1TargetID", {
 	--outline = true,
 })
 
-surface.CreateFont("MCS1TargetID2", {
+surface.CreateFont("MCSTargetID2", {
 	font = "Arial",
 	size = 12,
 	weight = 500,
@@ -108,7 +108,7 @@ local function drawEffect(ent, data, id, x, y)
 	surface.DrawTexturedRect(x - w / 2, y - w / 2, w, w)
 
 	if data.count > 1 then
-		draw.SimpleTextOutlined(string.format("%s x", data.count), "MCS1TargetID2", x + 5, y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, color_black)
+		draw.SimpleTextOutlined(string.format("%s x", data.count), "MCSTargetID2", x + 5, y, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, color_black)
 	end
 
 	cam.PopModelMatrix()
@@ -145,7 +145,7 @@ local function drawNametag(ent, ply, pos)
 		name = ent.PrintName or string.format("#%s", ent:GetClass())
 	end
 
-	draw.SimpleTextOutlined(name, "MCS1TargetID", pos.x, pos.y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM, 2, color_black)
+	draw.SimpleTextOutlined(name, "MCSTargetID", pos.x, pos.y, color, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM, 2, color_black)
 
 	local healthScale = math.Clamp(math.log(ent:GetMaxHealth() / 1000, 10) / 5 + 1, 0.75, 2)
 	local w = healthScale * healthBarScale
