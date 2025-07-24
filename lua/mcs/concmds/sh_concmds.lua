@@ -23,7 +23,7 @@ end, function(cmd, arg)
 	end
 
 	return autoCompletes
-end, "Set your MCS1 health type.", FCVAR_NONE)
+end, "Set your MCS health type.", FCVAR_NONE)
 
 concommand.Add("mcs_set_armor_type", function(ply, _, args)
 	if CLIENT then return end
@@ -50,7 +50,7 @@ end, function(cmd, arg)
 	end
 
 	return autoCompletes
-end, "Set your MCS1 armor type.", FCVAR_NONE)
+end, "Set your MCS armor type.", FCVAR_NONE)
 
 concommand.Add("mcs_set_augment", function(ply, _, args)
 	if CLIENT then return end

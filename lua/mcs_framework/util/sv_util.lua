@@ -8,7 +8,7 @@ local mcsEntities = {}
 		enabled - whether the player has the system enabled
 	example:
 		jimmy:MCS_SetEnabled(true)
-		-- jimmy now has MCS1 enabled
+		-- jimmy now has MCS enabled
 --]]
 function ENTITY:MCS_SetEnabled(enabled)
 	if enabled then
@@ -159,7 +159,7 @@ function ENTITY:MCS_SetCanRepairArmor(enabled)
 	self.MCS_AntiArmor = true
 end
 
---[[ Returns every entity with MCS1 enabled
+--[[ Returns every entity with MCS enabled
 	output:
 		the mcs entities; validity not guaranteed
 --]]
@@ -173,7 +173,7 @@ for _, ent in ents.Iterator() do
 	end
 end
 
-hook.Add("OnEntityCreated", "MCS_FindMCS1Ents", function(ent)
+hook.Add("OnEntityCreated", "MCS_FindMCSEnts", function(ent)
 	timer.Simple(0, function()
 		if IsValid(ent) then
 			if ent.NPCName then
@@ -187,7 +187,7 @@ hook.Add("OnEntityCreated", "MCS_FindMCS1Ents", function(ent)
 	end)
 end)
 
-hook.Add("EntityRemoved", "MCS_FindMCS1Ents", function(ent)
+hook.Add("EntityRemoved", "MCS_FindMCSEnts", function(ent)
 	mcsEntities[ent:EntIndex()] = nil
 end)
 

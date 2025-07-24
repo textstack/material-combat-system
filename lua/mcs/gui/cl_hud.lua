@@ -422,7 +422,7 @@ hook.Add("PlayerSwitchWeapon", "MCS_HideHud", function(_, _, newWeapon)
 	hideHud()
 end)
 
-hook.Add("Tick", "MCS_CheckMCS1Enabled", function()
+hook.Add("Tick", "MCS_CheckMCSEnabled", function()
 	if not IsValid(MCS1.Hud) then return end
 
 	local curEnabled = LocalPlayer():MCS_GetEnabled()

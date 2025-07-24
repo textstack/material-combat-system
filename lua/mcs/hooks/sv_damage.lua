@@ -2,7 +2,7 @@
 	inputs:
 		dmg - the CTakeDamageInfo to check
 	output:
-		the MCS1 damage types that the damageinfo has
+		the MCS damage types that the damageinfo has
 --]]
 function MCS1.CalculateDamageTypes(dmg)
 	local gameDamageType = dmg:GetDamageType()

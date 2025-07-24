@@ -59,11 +59,11 @@ OnPlayerSpawn(transition) SERVER
 
 OnEnabled() SERVER
     description:
-        called when the entity gets MCS1 enabled
+        called when the entity gets MCS enabled
 
 OnDisabled() SERVER
     description:
-        called when the entity gets MCS1 disabled
+        called when the entity gets MCS disabled
 
 OnEffectProc() SERVER
     description:
