@@ -136,7 +136,7 @@ function PANEL:Init()
 		eData.procID = data.procID
 		eData.count = data.count
 
-		surface.SetFont("")
+		surface.SetFont("MCSHud")
 		local x1, y1 = statusDisplay:LocalToScreen(0, 0)
 		local xAdd, yAdd = 0, 0
 		local w, h = surface.GetTextSize(text)
