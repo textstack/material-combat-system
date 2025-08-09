@@ -5,7 +5,7 @@ TYPE.Set = "damage"
 TYPE.ID = "subatomic"
 TYPE.ServerName = "Subatomic" -- the server doesn't have access to localization
 TYPE.Icon = "icon16/bricks.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.Order = 3
 

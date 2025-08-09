@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "loricate-thermal"
 TYPE.ServerName = "Armor Damage"
 TYPE.Icon = "icon16/fire.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.1

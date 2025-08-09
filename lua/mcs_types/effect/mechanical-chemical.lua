@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "mechanical-chemical"
 TYPE.ServerName = "Malfunction"
 TYPE.Icon = "icon16/cog_delete.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 MCS1.InheritType(TYPE, "mechanical-voltage")
 

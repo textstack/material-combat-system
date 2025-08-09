@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "azoic-kinetic"
 TYPE.ServerName = "Splash"
 TYPE.Icon = "icon16/asterisk_orange.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.5

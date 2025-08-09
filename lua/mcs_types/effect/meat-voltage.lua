@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "meat-voltage"
 TYPE.ServerName = "Flinch"
 TYPE.Icon = "icon16/lightning.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.MaxStacks = 1

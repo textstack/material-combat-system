@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "azoic-subatomic"
 TYPE.ServerName = "Relay"
 TYPE.Icon = "icon16/weather_sun.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.25

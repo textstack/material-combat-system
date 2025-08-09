@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "meat-subatomic"
 TYPE.ServerName = "Radiation Sickness"
 TYPE.Icon = "icon16/bricks.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 240
 TYPE.MaxStacks = 100

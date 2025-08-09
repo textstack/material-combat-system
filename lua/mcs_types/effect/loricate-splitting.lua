@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "loricate-splitting"
 TYPE.ServerName = "Thump"
 TYPE.Icon = "icon16/cut_red.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 1

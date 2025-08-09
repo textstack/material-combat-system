@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "loricate-chemical"
 TYPE.ServerName = "Death Knell"
 TYPE.Icon = "icon16/water.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.1

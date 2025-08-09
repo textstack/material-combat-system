@@ -5,7 +5,7 @@ TYPE.Set = "damage"
 TYPE.ID = "kinetic"
 TYPE.ServerName = "Kinetic" -- the server doesn't have access to localization
 TYPE.Icon = "icon16/asterisk_orange.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.Order = 0
 

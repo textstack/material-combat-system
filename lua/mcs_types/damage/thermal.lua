@@ -5,7 +5,7 @@ TYPE.Set = "damage"
 TYPE.ID = "thermal"
 TYPE.ServerName = "Thermal" -- the server doesn't have access to localization
 TYPE.Icon = "icon16/fire.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.Order = 5
 

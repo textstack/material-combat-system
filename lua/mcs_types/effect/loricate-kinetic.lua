@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "loricate-kinetic"
 TYPE.ServerName = "Knockback"
 TYPE.Icon = "icon16/asterisk_orange.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.5

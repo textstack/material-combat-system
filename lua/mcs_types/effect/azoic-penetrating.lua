@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "azoic-penetrating"
 TYPE.ServerName = "Shockwave"
 TYPE.Icon = "icon16/shield_delete.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 0.5

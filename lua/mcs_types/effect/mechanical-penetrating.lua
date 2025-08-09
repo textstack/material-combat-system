@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "mechanical-penetrating"
 TYPE.ServerName = "Explosive Death"
 TYPE.Icon = "icon16/bomb.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 10
 TYPE.InflictChance = 0.25
@@ -20,8 +20,10 @@ TYPE.HealthTypes = {
 }
 
 function TYPE:OnDeath(count)
-	self:EmitSound("ambient/explosions/explode_1.wav")
-	util.BlastDamage(self, self, self:WorldSpaceCenter(), count * 59, self:GetMaxHealth() * 0.05 * count)
+	self:MCS_CreateTimer("mechanical-penetrating", 0, 1, function()
+		self:EmitSound("ambient/explosions/explode_1.wav")
+		util.BlastDamage(self, self, self:WorldSpaceCenter(), count * 59, self:GetMaxHealth() * 0.05 * count)
+	end)
 end
 
 MCS1.RegisterType(TYPE)

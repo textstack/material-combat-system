@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "ligneous-voltage"
 TYPE.ServerName = "Armor Bypass"
 TYPE.Icon = "icon16/lightning.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.MaxStacks = 1
 TYPE.BaseTime = 1

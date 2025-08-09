@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "loricate-voltage"
 TYPE.ServerName = "Stop"
 TYPE.Icon = "icon16/lightning.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.MaxStacks = 1

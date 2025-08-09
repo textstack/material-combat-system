@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "plasmatic-voltage"
 TYPE.ServerName = "Inertia"
 TYPE.Icon = "icon16/lightning.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.15

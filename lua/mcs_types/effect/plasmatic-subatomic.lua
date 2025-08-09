@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "plasmatic-subatomic"
 TYPE.ServerName = "Life Pierce"
 TYPE.Icon = "icon16/bricks.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0
 TYPE.InflictChance = 1

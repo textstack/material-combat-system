@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "plasmatic-chemical"
 TYPE.ServerName = "Chemical Burn"
 TYPE.Icon = "icon16/water.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 10
 TYPE.MaxStacks = 1

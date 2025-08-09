@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "ligneous-thermal"
 TYPE.ServerName = "Burning"
 TYPE.Icon = "icon16/fire.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 MCS1.InheritType(TYPE, "meat-plasmatic-thermal")
 TYPE.InflictSound = "ambient/fire/ignite.wav"

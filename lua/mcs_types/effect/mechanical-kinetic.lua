@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "mechanical-kinetic"
 TYPE.ServerName = "Knocking"
 TYPE.Icon = "icon16/asterisk_orange.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 0.25
 TYPE.MaxStacks = 1

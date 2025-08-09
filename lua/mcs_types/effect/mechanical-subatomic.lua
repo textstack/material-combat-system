@@ -5,7 +5,7 @@ TYPE.Set = "effect"
 TYPE.ID = "mechanical-subatomic"
 TYPE.ServerName = "Interference"
 TYPE.Icon = "icon16/transmit_error.png"
-TYPE.Color = Color(255,255,255)
+TYPE.Color = color_white
 
 TYPE.BaseTime = 5
 TYPE.InflictChance = 0.25
