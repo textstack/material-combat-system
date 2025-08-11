@@ -1,7 +1,7 @@
 local ENTITY = FindMetaTable("Entity")
 
 local function defaultAug(ent)
-	return MCS1.GetNPCData(ent:MCS_GetSpawnName())[3]
+	return MCS1.DamageType(MCS1.GetNPCData(ent:MCS_GetSpawnName())[3])
 end
 
 --[[ Gives an entity's augment for the current damage instance
@@ -11,7 +11,7 @@ end
 		the damage type for the augment, or nil if there is none
 --]]
 function ENTITY:MCS_GetCurrentAugment(inflictor)
-	if self.MCS_Augment then return self.MCS_Augment end
+	if self.MCS_Augment then return MCS1.DamageType(self.MCS_Augment) end
 
 	if not self:IsPlayer() then return defaultAug(self) end
 	if not self.MCS_Augments then return defaultAug(self) end
@@ -53,6 +53,7 @@ function ENTITY:MCS_SetAugment(id, swep, force)
 		id = nil
 	end
 
+	-- put the augment on the entity itself if it's not a player
 	if not self:IsPlayer() then
 		self.MCS_Augment = id
 		return true
