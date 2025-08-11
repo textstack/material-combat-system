@@ -26,7 +26,7 @@ function TYPE:EffectFirstApplied()
 	self:MCS_SetCanRepairArmor(false)
 end
 
-function TYPE:OnApplyEffect(effect)
+function TYPE:OnApplyEffect(_, effect)
 	if effect.ID == "ligneous-thermal" then return true end
 end
 
